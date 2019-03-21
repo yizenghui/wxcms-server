@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     // put your router
 // });
 
+Route::get('gettoken','Api\AuthController@token');
 
 
 Route::get('/getswipers', function (Request $request) {
