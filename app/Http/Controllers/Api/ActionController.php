@@ -20,6 +20,9 @@ class ActionController extends Controller
 
         $article->view ++;
         $article->save();
+        if( !$user->hasBookmarked($article) ){
+            $user->bookmark($article);
+        }
         return '';
     }
 
@@ -35,7 +38,9 @@ class ActionController extends Controller
     public function userLikeArticle(Fan $user,Article $article){
         $article->liked ++;
         $article->save();
-        $user->like($article);
+        if( !$user->hasLiked($article) ){
+            $user->like($article);
+        }
         return '';
     }
 
@@ -52,7 +57,9 @@ class ActionController extends Controller
     public function userUnLikeArticle(Fan $user,Article $article){
         $article->liked --;
         $article->save();
-        $user->unlike($article);
+        if($user->hasLiked($article)){
+            $user->unlike($article);
+        }
         return '';
     }
 }
