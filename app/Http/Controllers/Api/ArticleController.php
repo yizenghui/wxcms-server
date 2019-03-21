@@ -28,7 +28,7 @@ class ArticleController extends Controller
     {
 
         $article = Article::findOrFail($id);
-        
+        $article->userlikearticle = $request->user()->hasLiked($article);
         return response()->json($article);
     }
 
@@ -39,5 +39,20 @@ class ArticleController extends Controller
         $data = Article::all();
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
+    }
+
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function likeusers($id,Request $request)
+    {
+
+        $article = Article::findOrFail($id);
+        $fans = $article->likers()->get();
+        return response()->json($fans);
     }
 }

@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Overtrue\LaravelFollow\Traits\CanFollow;
+use Overtrue\LaravelFollow\Traits\CanLike;
+use Overtrue\LaravelFollow\Traits\CanFavorite;
+use Overtrue\LaravelFollow\Traits\CanSubscribe;
+use Overtrue\LaravelFollow\Traits\CanVote;
+use Overtrue\LaravelFollow\Traits\CanBookmark;
 
 
 class Fan extends Authenticatable implements JWTSubject
 {
-    use Notifiable,SoftDeletes;
+    use Notifiable,SoftDeletes,CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
 
     /**
      * The attributes that are mass assignable.
