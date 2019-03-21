@@ -32,24 +32,24 @@ Route::get('/getswipers', function (Request $request) {
     ];
 });
 
-Route::get('gettoken','API\AuthController@token');
+Route::get('gettoken','Api\AuthController@token');
 
 Route::group(['middleware' => ['auth:api']], function () {
     
 
-    // Route::get('checktoken','API\AuthController@check');
+    // Route::get('checktoken','Api\AuthController@check');
 
-    Route::get('/action/view','API\ActionController@view'); // 查看文章行为
-    Route::get('/action/likearticle','API\ActionController@likearticle'); // 喜欢某个文章
-    Route::get('/action/unlikearticle','API\ActionController@unlikearticle'); // 取消喜欢某个文章
+    Route::get('/action/view','Api\ActionController@view'); // 查看文章行为
+    Route::get('/action/likearticle','Api\ActionController@likearticle'); // 喜欢某个文章
+    Route::get('/action/unlikearticle','Api\ActionController@unlikearticle'); // 取消喜欢某个文章
 
 
-    Route::get('/articles','API\ArticleController@index');
-    Route::get('/articles/recommend','API\ArticleController@recommend');
-    Route::get('/articles/{id}','API\ArticleController@show');
-    Route::get('/articles/{id}/likeusers','API\ArticleController@likeusers');
-    Route::get('/topics','API\TopicController@index');
-    Route::get('/topics/{id}','API\TopicController@show');
+    Route::get('/articles','Api\ArticleController@index');
+    Route::get('/articles/recommend','Api\ArticleController@recommend');
+    Route::get('/articles/{id}','Api\ArticleController@show');
+    Route::get('/articles/{id}/likeusers','Api\ArticleController@likeusers');
+    Route::get('/topics','Api\TopicController@index');
+    Route::get('/topics/{id}','Api\TopicController@show');
 });
 
 
