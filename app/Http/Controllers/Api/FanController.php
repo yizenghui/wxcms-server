@@ -23,4 +23,14 @@ class FanController extends Controller
         return response()->json($articles);
     }
 
+    public function getme(Request $request){
+        $user = $request->user();
+        return response()->json($user);
+    }
+
+    public function order(Request $request){
+        $user = $request->user();
+        return response()->json($user->orders);
+    }
+
 }

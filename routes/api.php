@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::get('/articles','Api\ArticleController@index');
     Route::get('/goodses','Api\GoodsController@index');
+    Route::get('/buygoods','Api\GoodsController@buy');
     Route::get('/articles/recommend','Api\ArticleController@recommend');
     Route::get('/articles/{id}','Api\ArticleController@show');
     Route::get('/articles/{id}/likeusers','Api\ArticleController@likeusers');
@@ -54,6 +55,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     
     Route::get('/user/footprint','Api\FanController@footprint');
     Route::get('/user/like','Api\FanController@like');
+    Route::get('/getme','Api\FanController@getme');
+    Route::get('/orders','Api\FanController@order');
 });
 
 

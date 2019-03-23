@@ -57,4 +57,13 @@ class Fan extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    
+    /**
+     * 获取用户的订单
+     */
+    public function orders()
+    {
+         return $this->hasMany(Order::class,'user_id');
+    }
 }
