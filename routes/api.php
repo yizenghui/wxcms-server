@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/articles/{id}/likeusers','Api\ArticleController@likeusers');
     Route::get('/topics','Api\TopicController@index');
     Route::get('/topics/{id}','Api\TopicController@show');
+    Route::get('/orders/{id}','Api\OrderController@show');
     
     Route::get('/user/footprint','Api\FanController@footprint');
     Route::get('/user/like','Api\FanController@like');

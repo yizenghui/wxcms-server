@@ -43,6 +43,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
             'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
         ),
+        'V' => 
+        array (
+            'Vinkla\\Hashids\\' => 15,
+        ),
         'T' => 
         array (
             'Tymon\\JWTAuth\\' => 14,
@@ -123,11 +127,16 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             'Illuminate\\' => 11,
         ),
+        'H' => 
+        array (
+            'Hashids\\' => 8,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GrahamCampbell\\Manager\\' => 23,
         ),
         'F' => 
         array (
@@ -182,6 +191,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Vinkla\\Hashids\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vinkla/hashids/src',
         ),
         'Tymon\\JWTAuth\\' => 
         array (
@@ -383,6 +396,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
+        'Hashids\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hashids/hashids/src',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -394,6 +411,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'GrahamCampbell\\Manager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/graham-campbell/manager/src',
         ),
         'Fideloper\\Proxy\\' => 
         array (
@@ -525,6 +546,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'App\\Http\\Controllers\\Api\\FanController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/FanController.php',
         'App\\Http\\Controllers\\Api\\GoodsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/GoodsController.php',
         'App\\Http\\Controllers\\Api\\LogController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/LogController.php',
+        'App\\Http\\Controllers\\Api\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/OrderController.php',
         'App\\Http\\Controllers\\Api\\TopicController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/TopicController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -540,6 +562,9 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Resources\\ArticleCollection' => __DIR__ . '/../..' . '/app/Http/Resources/ArticleCollection.php',
         'App\\Http\\Resources\\ArticleResource' => __DIR__ . '/../..' . '/app/Http/Resources/ArticleResource.php',
+        'App\\Http\\Resources\\GoodsResource' => __DIR__ . '/../..' . '/app/Http/Resources/GoodsResource.php',
+        'App\\Http\\Resources\\OrderInfoResource' => __DIR__ . '/../..' . '/app/Http/Resources/OrderInfoResource.php',
+        'App\\Http\\Resources\\OrderResource' => __DIR__ . '/../..' . '/app/Http/Resources/OrderResource.php',
         'App\\Http\\Resources\\TopicCollection' => __DIR__ . '/../..' . '/app/Http/Resources/TopicCollection.php',
         'App\\Http\\Resources\\TopicResource' => __DIR__ . '/../..' . '/app/Http/Resources/TopicResource.php',
         'App\\Models\\Article' => __DIR__ . '/../..' . '/app/Models/Article.php',
@@ -1924,6 +1949,9 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'GrahamCampbell\\Manager\\AbstractManager' => __DIR__ . '/..' . '/graham-campbell/manager/src/AbstractManager.php',
+        'GrahamCampbell\\Manager\\ConnectorInterface' => __DIR__ . '/..' . '/graham-campbell/manager/src/ConnectorInterface.php',
+        'GrahamCampbell\\Manager\\ManagerInterface' => __DIR__ . '/..' . '/graham-campbell/manager/src/ManagerInterface.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
         'GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
         'GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',
@@ -2061,6 +2089,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Hamcrest\\Type\\IsString' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Type/IsString.php',
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
+        'Hashids\\Hashids' => __DIR__ . '/..' . '/hashids/hashids/src/Hashids.php',
+        'Hashids\\HashidsException' => __DIR__ . '/..' . '/hashids/hashids/src/HashidsException.php',
+        'Hashids\\HashidsInterface' => __DIR__ . '/..' . '/hashids/hashids/src/HashidsInterface.php',
+        'Hashids\\Math' => __DIR__ . '/..' . '/hashids/hashids/src/Math.php',
         'Illuminate\\Auth\\Access\\AuthorizationException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/AuthorizationException.php',
         'Illuminate\\Auth\\Access\\Gate' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/Gate.php',
         'Illuminate\\Auth\\Access\\HandlesAuthorization' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/HandlesAuthorization.php',
@@ -5030,6 +5062,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Tymon\\JWTAuth\\Validators\\TokenValidator' => __DIR__ . '/..' . '/tymon/jwt-auth/src/Validators/TokenValidator.php',
         'Tymon\\JWTAuth\\Validators\\Validator' => __DIR__ . '/..' . '/tymon/jwt-auth/src/Validators/Validator.php',
         'TypeError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/TypeError.php',
+        'Vinkla\\Hashids\\Facades\\Hashids' => __DIR__ . '/..' . '/vinkla/hashids/src/Facades/Hashids.php',
+        'Vinkla\\Hashids\\HashidsFactory' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsFactory.php',
+        'Vinkla\\Hashids\\HashidsManager' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsManager.php',
+        'Vinkla\\Hashids\\HashidsServiceProvider' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsServiceProvider.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',
