@@ -122,6 +122,7 @@ class BossController extends Controller
         $form->display('ID');
         $form->text('name','商家名')->rules('required')->required();
         $form->text('wxid','微信号ID')->rules('required')->required();
+        $form->image('qrcode','微信二维码')->rules('required');
         $form->textarea('bio','商家简介');
         $form->cropper('avatar','商家头像');
         $form->text('linkman','联系人');

@@ -138,6 +138,10 @@ class GoodsController extends Controller
         $form->textarea('intro','简介');
         $form->number('stock','库存量')->default(0);
         $form->number('out','出货量')->default(0);
+        $form->text('tag','标签')->rules('max:6');
+        $form->select('tag_style','标签样式')->options([''=>'无','red'=>'红','blue'=>'蓝','grey'=>'灰']);
+        $form->text('name','商品名称')->rules('required')->required();
+
         $form->datetime('lower_at','下架时间')->default(date('Y-m-d 23:59:59',time()+86400*7));
         $form->datetime('invalid_at','兑换卷失效时间')->default(date('Y-m-d 23:59:59',time()+86400*37));
         $form->simplemde('body','商品描述正文');

@@ -16,8 +16,9 @@ class CreateBossesTable extends Migration
         Schema::create('bosses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('商家名');
-            $table->string('bio')->comment('商家简介')->nullable();
             $table->string('wxid')->comment('微信号ID');
+            $table->string('qrcode')->comment('微信二维码')->nullable();
+            $table->string('bio')->comment('商家简介')->nullable();
             $table->string('avatar')->comment('商家头像')->nullable();
             $table->string('mobile')->comment('商家电话')->nullable();
             $table->string('email')->comment('商家邮箱')->nullable();

@@ -21,6 +21,7 @@ class OrderInfoResource extends Resource
         $goods = $this->goods;
         $boss = $goods->boss;
         $boss->avatar = config('app.url').'/uploads/'.$boss->avatar;
+        $boss->qrcode = config('app.url').'/uploads/'.$boss->qrcode;
         $token = Hashids::encode($this->id);
         return [
             'id'   => (string)$this->id,
@@ -37,6 +38,13 @@ class OrderInfoResource extends Resource
             'delivery_at' => $this->delivery_at, // 发货时间
             'cover' =>  config('app.url').'/uploads/'.$this->cover,
             'wxto'  => '/pages/user/exchange?id='.$this->id,
+            'guidesteps'=>[
+                [ 'icon'=>'usefullfill','name'=>'联系客服','intro'=>'点击售后客服名片，识别名片中的二维码，将售后客服添加为微信好友。' ], 
+                [ 'icon'=>'radioboxfill','name'=>'发送密令','intro'=>'复制兑换卷密令并将其发给售后客服（提醒：兑换密令不要告诉别人，以免被盗用、冒领）。' ],
+                [ 'icon'=>'radioboxfill','name'=>'核对信息','intro'=>'售后客服收到密令核对无误后，收集、确认必要的信息（如：收货地址、话费充值手机号）。'],
+                [ 'icon'=>'radioboxfill','name'=>'物品发放','intro'=>'向您发放相应兑换物品，并提供回执（快递单号、充值记录、转帐记录等）。'],
+                [ 'icon'=>'roundcheckfill','name'=>'完成兑换','intro'=>'发放兑换物品后，完成兑换。如有疑问或问题，可咨询售后客服或向在线客服申诉。']
+            ]
         ];
 
         return parent::toArray($request);

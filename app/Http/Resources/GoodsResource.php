@@ -22,6 +22,8 @@ class GoodsResource extends Resource
             'intro' => $this->intro,
             'stock' => $this->stock,
             'out' => $this->out,
+            'tag' => $this->tag,
+            'tag_style' => $this->tag_style,
             'lower_at' => $this->lower_at,
             'invalid_at' => $this->invalid_at,
             'cover' =>  config('app.url').'/uploads/'.$this->cover,

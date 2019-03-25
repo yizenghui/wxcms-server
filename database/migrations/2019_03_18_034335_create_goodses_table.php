@@ -21,11 +21,15 @@ class CreateGoodsesTable extends Migration
             $table->dateTime('lower_at')->comment('下架时间 如果小于当前 为已下架商品');
             $table->integer('stock')->default(0)->comment('库存量为0不再允许兑换');
             $table->integer('out')->default(0)->comment('出货量');
+            $table->string('tag')->comment('标签')->nullable();
+            $table->string('tag_style')->comment('标签样式')->nullable();
             $table->dateTime('invalid_at')->comment('兑换后生成有效期')->nullable();
             $table->string('cover')->comment('封面图')->nullable();
             $table->integer('boss_id')->comment('商品提供商家id');
             $table->string('intro')->comment('描述')->nullable();
             $table->text('body')->comment('详情页')->nullable();
+            $table->string('tag')->comment('标签')->nullable();
+            $table->string('tag_style')->comment('标签样式')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
