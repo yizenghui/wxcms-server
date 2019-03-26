@@ -13,7 +13,13 @@ class ActionController extends Controller
     public function task(Request $request){
         $user = $request->user();
         // 每日组队、签到、阅读、点赞、评论、吸新、粉丝签到
-        return response()->json($user);
+        // 
+        $items = [];
+        $items[] = ['name'=>'签到 +30','intro'=>'已完成','wxto'=>'','icon'=>'squarecheck','iconcolor'=>'red'];
+        $items[] = ['name'=>'阅读 +2','intro'=>'1 / 10 * 2','wxto'=>'','icon'=>'attention','iconcolor'=>'red'];
+        $items[] = ['name'=>'点赞 +5','intro'=>'1 / 5 * 6','wxto'=>'','icon'=>'appreciate','iconcolor'=>'red'];
+        // $items[] = ['name'=>'','intro'=>'','wxto'=>'','icon'=>'','iconcolor'=>''];
+        return response()->json($items);
     }
 
     public function view(Request $request){

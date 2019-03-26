@@ -117,7 +117,9 @@ class FanController extends Controller
 
         $form->display('ID');
         $form->text('name','昵称');
-        $form->text('openid','开放ID');
+        $form->number('point','剩余积分');
+        $form->number('current_point','可用积分');
+        $form->number('total_point','总积分');
         $form->display('Created at');
         $form->display('Updated at');
 
