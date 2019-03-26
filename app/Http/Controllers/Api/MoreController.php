@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\OrderResource;
 
-class FanController extends Controller
+class MoreController extends Controller
 {
     // 
     public function footprint(Request $request){
@@ -36,14 +36,6 @@ class FanController extends Controller
     }
 
     public function getuserinfo(Request $request){
-        $user = $request->user();
-        return response()->json($user);
-    }
-
-    /**
-     * 每日组队
-     */
-    public function team(Request $request){
         $user = $request->user();
         return response()->json($user);
     }

@@ -10,6 +10,12 @@ use App\Models\Fan;
 class ActionController extends Controller
 {
 
+    public function task(Request $request){
+        $user = $request->user();
+        // 每日组队、签到、阅读、点赞、评论、吸新、粉丝签到
+        return response()->json($user);
+    }
+
     public function view(Request $request){
         $article = Article::findOrFail($request->get('article_id'));
         // $this->userView($request->user(),$article);
