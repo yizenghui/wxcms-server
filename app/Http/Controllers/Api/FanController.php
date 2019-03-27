@@ -26,6 +26,8 @@ class FanController extends Controller
 
     public function getme(Request $request){
         $user = $request->user();
+        $user->task = $user->todaytask();
+        $user->task->total = intval( $user->task->total );
         return response()->json($user);
     }
 
@@ -37,7 +39,14 @@ class FanController extends Controller
 
     public function getuserinfo(Request $request){
         $user = $request->user();
+        $user->task = $user->todaytask();
+        $user->task->total = intval( $user->task->total );
         return response()->json($user);
+    }
+
+    public function pointlog(Request $request){
+        $user = $request->user();
+        return response()->json($user->pointlogs);
     }
 
     /**

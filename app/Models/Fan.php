@@ -85,6 +85,14 @@ class Fan extends Authenticatable implements JWTSubject
          return $this->hasMany(Order::class,'user_id');
     }
 
+    /**
+     * 用户积分记录
+     */
+    public function pointlogs()
+    {
+         return $this->hasMany(PointLog::class,'user_id');
+    }
+
     
     /**
      * 用户所有任务
@@ -94,6 +102,13 @@ class Fan extends Authenticatable implements JWTSubject
          return $this->hasMany(Task::class,'user_id');
     }
     
+    /**
+     * 用户今日任务
+     */
+    public function todaytask()
+    {
+        return Task::firstOrCreate(['user_id' =>$this->id,'did'=>date('Ymd')]);
+    }
     /**
      * 用户所创建的队伍
      */

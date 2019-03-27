@@ -31,7 +31,7 @@ return [
     /*
      * 点赞可以获得积分
      */
-    'like_action' => env('POINT_LiKE_ACTION', 2),
+    'like_action' => env('POINT_LiKE_ACTION', 5),
 
     /*
      * 一天可以获得6次点赞积分
