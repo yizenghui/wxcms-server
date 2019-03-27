@@ -16,6 +16,7 @@
         "lcobucci/jwt": "^3.2",
         "overtrue/laravel-follow": "^1.1",
         "overtrue/laravel-wechat": "~4.0",
+        "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-tags": "^2.1",
         "tymon/jwt-auth": "dev-develop",
         "vinkla/hashids": "3.3"

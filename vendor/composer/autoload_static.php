@@ -27,6 +27,8 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'f0e7e63bbb278a92db02393536748c5f' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Support/Helpers.php',
         '6747f579ad6817f318cc3a7e7a0abb93' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'e91d0dc994644828154ae2387ede1ca8' => __DIR__ . '/..' . '/spatie/string/src/string_functions.php',
+        '72b1e3f4a2af9b30b3f137b3ec2057fc' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -46,6 +48,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'V' => 
         array (
             'Vinkla\\Hashids\\' => 15,
+        ),
+        'U' => 
+        array (
+            'Underscore\\' => 11,
         ),
         'T' => 
         array (
@@ -82,7 +88,9 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
             'Spatie\\Translatable\\' => 20,
             'Spatie\\Tags\\' => 12,
+            'Spatie\\String\\' => 14,
             'Spatie\\EloquentSortable\\' => 24,
+            'Spatie\\Activitylog\\' => 19,
         ),
         'R' => 
         array (
@@ -97,6 +105,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpParser\\' => 10,
+            'Patchwork\\' => 10,
         ),
         'O' => 
         array (
@@ -195,6 +204,11 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Vinkla\\Hashids\\' => 
         array (
             0 => __DIR__ . '/..' . '/vinkla/hashids/src',
+        ),
+        'Underscore\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/anahkiasen/underscore-php/src',
+            1 => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests',
         ),
         'Tymon\\JWTAuth\\' => 
         array (
@@ -316,9 +330,17 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/..' . '/spatie/laravel-tags/src',
         ),
+        'Spatie\\String\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/string/src',
+        ),
         'Spatie\\EloquentSortable\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/eloquent-sortable/src',
+        ),
+        'Spatie\\Activitylog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-activitylog/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -351,6 +373,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Patchwork\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork',
         ),
         'Overtrue\\Socialite\\' => 
         array (
@@ -575,6 +601,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'App\\Models\\Fund' => __DIR__ . '/../..' . '/app/Models/Fund.php',
         'App\\Models\\Goods' => __DIR__ . '/../..' . '/app/Models/Goods.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
+        'App\\Models\\PointLog' => __DIR__ . '/../..' . '/app/Models/PointLog.php',
         'App\\Models\\Task' => __DIR__ . '/../..' . '/app/Models/Task.php',
         'App\\Models\\Team' => __DIR__ . '/../..' . '/app/Models/Team.php',
         'App\\Models\\Topic' => __DIR__ . '/../..' . '/app/Models/Topic.php',
@@ -3157,6 +3184,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Namshi\\JOSE\\Signer\\SecLib\\RSA' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Signer/SecLib/RSA.php',
         'Namshi\\JOSE\\Signer\\SignerInterface' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Signer/SignerInterface.php',
         'Namshi\\JOSE\\SimpleJWS' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/SimpleJWS.php',
+        'Normalizer' => __DIR__ . '/..' . '/patchwork/utf8/src/Normalizer.php',
         'Overtrue\\LaravelFollow\\Events\\Event' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/Event.php',
         'Overtrue\\LaravelFollow\\Events\\RelationAttached' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/RelationAttached.php',
         'Overtrue\\LaravelFollow\\Events\\RelationAttaching' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/RelationAttaching.php',
@@ -3589,6 +3617,16 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'ParseError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
         'Parsedown' => __DIR__ . '/..' . '/erusev/parsedown/Parsedown.php',
+        'Patchwork\\PHP\\Shim\\Iconv' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/PHP/Shim/Iconv.php',
+        'Patchwork\\PHP\\Shim\\Intl' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/PHP/Shim/Intl.php',
+        'Patchwork\\PHP\\Shim\\Mbstring' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/PHP/Shim/Mbstring.php',
+        'Patchwork\\PHP\\Shim\\Normalizer' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/PHP/Shim/Normalizer.php',
+        'Patchwork\\PHP\\Shim\\Xml' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/PHP/Shim/Xml.php',
+        'Patchwork\\TurkishUtf8' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/TurkishUtf8.php',
+        'Patchwork\\Utf8' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8.php',
+        'Patchwork\\Utf8\\BestFit' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/BestFit.php',
+        'Patchwork\\Utf8\\Bootup' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/Bootup.php',
+        'Patchwork\\Utf8\\WindowsStreamWrapper' => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork/Utf8/WindowsStreamWrapper.php',
         'PharIo\\Manifest\\Application' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Application.php',
         'PharIo\\Manifest\\ApplicationName' => __DIR__ . '/..' . '/phar-io/manifest/src/values/ApplicationName.php',
         'PharIo\\Manifest\\Author' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Author.php',
@@ -4283,8 +4321,25 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'SebastianBergmann\\ResourceOperations\\ResourceOperations' => __DIR__ . '/..' . '/sebastian/resource-operations/src/ResourceOperations.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SessionUpdateTimestampHandlerInterface' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',
+        'Spatie\\Activitylog\\ActivityLogStatus' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/ActivityLogStatus.php',
+        'Spatie\\Activitylog\\ActivityLogger' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/ActivityLogger.php',
+        'Spatie\\Activitylog\\ActivitylogServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/ActivitylogServiceProvider.php',
+        'Spatie\\Activitylog\\CleanActivitylogCommand' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/CleanActivitylogCommand.php',
+        'Spatie\\Activitylog\\Contracts\\Activity' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Contracts/Activity.php',
+        'Spatie\\Activitylog\\Exceptions\\CouldNotLogActivity' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Exceptions/CouldNotLogActivity.php',
+        'Spatie\\Activitylog\\Exceptions\\CouldNotLogChanges' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Exceptions/CouldNotLogChanges.php',
+        'Spatie\\Activitylog\\Exceptions\\InvalidConfiguration' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Exceptions/InvalidConfiguration.php',
+        'Spatie\\Activitylog\\Models\\Activity' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Models/Activity.php',
+        'Spatie\\Activitylog\\Traits\\CausesActivity' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Traits/CausesActivity.php',
+        'Spatie\\Activitylog\\Traits\\DetectsChanges' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Traits/DetectsChanges.php',
+        'Spatie\\Activitylog\\Traits\\LogsActivity' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/Traits/LogsActivity.php',
         'Spatie\\EloquentSortable\\Sortable' => __DIR__ . '/..' . '/spatie/eloquent-sortable/src/Sortable.php',
         'Spatie\\EloquentSortable\\SortableTrait' => __DIR__ . '/..' . '/spatie/eloquent-sortable/src/SortableTrait.php',
+        'Spatie\\String\\Exceptions\\ErrorCreatingStringException' => __DIR__ . '/..' . '/spatie/string/src/Exceptions/ErrorCreatingStringException.php',
+        'Spatie\\String\\Exceptions\\UnknownFunctionException' => __DIR__ . '/..' . '/spatie/string/src/Exceptions/UnknownFunctionException.php',
+        'Spatie\\String\\Exceptions\\UnsetOffsetException' => __DIR__ . '/..' . '/spatie/string/src/Exceptions/UnsetOffsetException.php',
+        'Spatie\\String\\Integrations\\Underscore' => __DIR__ . '/..' . '/spatie/string/src/Integrations/Underscore.php',
+        'Spatie\\String\\Str' => __DIR__ . '/..' . '/spatie/string/src/Str.php',
         'Spatie\\Tags\\HasSlug' => __DIR__ . '/..' . '/spatie/laravel-tags/src/HasSlug.php',
         'Spatie\\Tags\\HasTags' => __DIR__ . '/..' . '/spatie/laravel-tags/src/HasTags.php',
         'Spatie\\Tags\\Tag' => __DIR__ . '/..' . '/spatie/laravel-tags/src/Tag.php',
@@ -5065,6 +5120,34 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Tymon\\JWTAuth\\Validators\\TokenValidator' => __DIR__ . '/..' . '/tymon/jwt-auth/src/Validators/TokenValidator.php',
         'Tymon\\JWTAuth\\Validators\\Validator' => __DIR__ . '/..' . '/tymon/jwt-auth/src/Validators/Validator.php',
         'TypeError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/TypeError.php',
+        'Underscore\\Dispatch' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Dispatch.php',
+        'Underscore\\DispatchTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/DispatchTest.php',
+        'Underscore\\Dummies\\DummyClass' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Dummies/DummyClass.php',
+        'Underscore\\Dummies\\DummyDefault' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Dummies/DummyDefault.php',
+        'Underscore\\Method' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Method.php',
+        'Underscore\\MethodTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/MethodTest.php',
+        'Underscore\\Methods\\ArraysMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/ArraysMethods.php',
+        'Underscore\\Methods\\CollectionMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/CollectionMethods.php',
+        'Underscore\\Methods\\FunctionsMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/FunctionsMethods.php',
+        'Underscore\\Methods\\NumberMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/NumberMethods.php',
+        'Underscore\\Methods\\ObjectMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/ObjectMethods.php',
+        'Underscore\\Methods\\StringsMethods' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Methods/StringsMethods.php',
+        'Underscore\\Parse' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Parse.php',
+        'Underscore\\ParseTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/ParseTest.php',
+        'Underscore\\Traits\\Repository' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Traits/Repository.php',
+        'Underscore\\Types\\Arrays' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Types/Arrays.php',
+        'Underscore\\Types\\ArraysTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Types/ArraysTest.php',
+        'Underscore\\Types\\Functions' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Types/Functions.php',
+        'Underscore\\Types\\FunctionsTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Types/FunctionsTest.php',
+        'Underscore\\Types\\Number' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Types/Number.php',
+        'Underscore\\Types\\NumberTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Types/NumberTest.php',
+        'Underscore\\Types\\Object' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Types/Object.php',
+        'Underscore\\Types\\ObjectTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Types/ObjectTest.php',
+        'Underscore\\Types\\StringTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/Types/StringTest.php',
+        'Underscore\\Types\\Strings' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Types/Strings.php',
+        'Underscore\\Underscore' => __DIR__ . '/..' . '/anahkiasen/underscore-php/src/Underscore.php',
+        'Underscore\\UnderscoreTest' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/UnderscoreTest.php',
+        'Underscore\\UnderscoreTestCase' => __DIR__ . '/..' . '/anahkiasen/underscore-php/tests/UnderscoreTestCase.php',
         'Vinkla\\Hashids\\Facades\\Hashids' => __DIR__ . '/..' . '/vinkla/hashids/src/Facades/Hashids.php',
         'Vinkla\\Hashids\\HashidsFactory' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsFactory.php',
         'Vinkla\\Hashids\\HashidsManager' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsManager.php',

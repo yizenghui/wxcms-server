@@ -13,11 +13,11 @@ use Overtrue\LaravelFollow\Traits\CanFavorite;
 use Overtrue\LaravelFollow\Traits\CanSubscribe;
 use Overtrue\LaravelFollow\Traits\CanVote;
 use Overtrue\LaravelFollow\Traits\CanBookmark;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Fan extends Authenticatable implements JWTSubject
 {
-    use Notifiable,SoftDeletes,CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
+    use Notifiable, SoftDeletes, LogsActivity, CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +36,8 @@ class Fan extends Authenticatable implements JWTSubject
     protected $hidden = [
         'openid',
     ];
-
+    
+    protected static $logUnguarded = true;
     
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -58,6 +59,23 @@ class Fan extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * 更改积分记录
+     * 变化值,描述,如果有id自动保存
+     */
+    public function changePoint($change, $intro='', $autosave = true){
+        $this->point += $change;
+        $this->total_point += $change;
+        if($this->id && $autosave){
+            if( $this->save() ){
+                $log = new PointLog;
+                $log->user_id = $this->id;
+                $log->change = $change;
+                $log->intro = $intro;
+                $log->save();
+            }
+        }
+    }
     
     /**
      * 获取用户的订单
@@ -65,5 +83,31 @@ class Fan extends Authenticatable implements JWTSubject
     public function orders()
     {
          return $this->hasMany(Order::class,'user_id');
+    }
+
+    
+    /**
+     * 用户所有任务
+     */
+    public function tasks()
+    {
+         return $this->hasMany(Task::class,'user_id');
+    }
+    
+    /**
+     * 用户所创建的队伍
+     */
+    public function teams()
+    {
+         return $this->hasMany(Team::class,'user_id');
+    }
+
+    
+    /**
+     * 用户所加入的队伍
+     */
+    public function joinTeams()
+    {
+        return $this->belongsToMany(Team::class,'teamables','user_id');
     }
 }

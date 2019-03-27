@@ -41,4 +41,12 @@ class CreateTeamsTable extends Migration
         Schema::dropIfExists('teams');
         Schema::dropIfExists('teamables');
     }
+    
+    /**
+     * 队伍中的成员
+     */
+    public function users()
+    {
+        return $this->belongsToMany(Fan::class,'teamables','team_id','user_id');
+    }
 }
