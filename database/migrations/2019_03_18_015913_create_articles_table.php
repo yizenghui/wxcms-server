@@ -19,6 +19,8 @@ class CreateArticlesTable extends Migration
             $table->string('author')->comment('作者')->nullable();
             $table->string('intro')->comment('描述(导读)')->nullable();
             $table->string('cover')->comment('封面')->nullable();
+            $table->string('audio')->comment('音频')->nullable();
+            $table->string('video')->comment('视频')->nullable();
             $table->text('body')->comment('正文');
             $table->integer('topic_id')->comment('专题id');
             $table->integer('view')->comment('页面展示数');

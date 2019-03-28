@@ -11,8 +11,7 @@ class ArticleController extends Controller
 {
     //
     public function index(Request $request){
-        $data = Article::all();
-        // dd($data);
+        $data = Article::simplePaginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -26,7 +25,6 @@ class ArticleController extends Controller
      */
     public function show($id,Request $request)
     {
-
         $article = Article::findOrFail($id);
         $article->userlikearticle = $request->user()->hasLiked($article);
         return response()->json($article);
@@ -36,7 +34,7 @@ class ArticleController extends Controller
      * 获取推荐文章(小程序首页用)
      */
     public function recommend(){
-        $data = Article::all();
+        $data = Article::simplePaginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -50,7 +48,6 @@ class ArticleController extends Controller
      */
     public function likeusers($id,Request $request)
     {
-
         $article = Article::findOrFail($id);
         $fans = $article->likers()->get();
         return response()->json($fans);

@@ -46,7 +46,8 @@ class FanController extends Controller
 
     public function pointlog(Request $request){
         $user = $request->user();
-        return response()->json($user->pointlogs);
+        $pointlogs = $user->pointlogs()->orderBy('id','desc')->get();
+        return response()->json($pointlogs);
     }
 
     /**

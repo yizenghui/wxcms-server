@@ -85,9 +85,9 @@ class ActionController extends Controller
     }
     
     public function userUnLikeArticle(Fan $user,Article $article){
-        $article->liked --;
-        $article->save();
         if($user->hasLiked($article)){
+            $article->liked --;
+            $article->save();
             $user->unlike($article);
         }
         return '';

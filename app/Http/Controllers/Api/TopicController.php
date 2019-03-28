@@ -11,12 +11,11 @@ class TopicController extends Controller
 {
     //
     public function index(){
-        $topics = TopicResource::collection(Topic::all());
+        $data = Topic::simplePaginate(20);
+        $topics = TopicResource::collection($data);
         return response()->json($topics);
     }
 
-
-    
     /**
      * Display the specified resource.
      *
@@ -25,9 +24,8 @@ class TopicController extends Controller
      */
     public function show($id,Request $request)
     {
-
         $topic = Topic::findOrFail($id);
-        
         return response()->json($topic);
     }
+
 }

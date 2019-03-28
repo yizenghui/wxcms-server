@@ -32,6 +32,15 @@ Route::get('/getswipers', function (Request $request) {
     ];
 });
 
+
+Route::get('/getuserswipers', function (Request $request) {
+    return [
+        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-1.jpg','wxto'=>''],
+        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-2.jpg','wxto'=>''],
+        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-3.jpg','wxto'=>''],
+    ];
+});
+
 Route::get('gettoken','Api\AuthController@token');
 
 Route::group(['middleware' => ['auth:api']], function () {
