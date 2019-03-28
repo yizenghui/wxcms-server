@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -18,8 +19,14 @@ class Task extends Model
     ];
 
 
-    public function todaySigned(){
+    public function todaySign(){
         
+        if( !$this->todayHasSign() ){
+            $this->sign_at = Carbon::now();
+            $this->total += $this->todaySignAction();
+            return true;
+        }
+        return false;
     }
 
     
@@ -34,12 +41,22 @@ class Task extends Model
         if($this->todayHasTeam()) return config('point.like_action') * 2;
         return config('point.like_action');
     }
+    // 今日点签到加分数（如果有组队双倍得分）
+    public function todaySignAction(){
+        if($this->todayHasTeam()) return config('point.sign_action') * 2;
+        return config('point.sign_action');
+    }
     // 今日组队成功?
     public function todayHasTeam(){
         if($this->team_id) return true;
         return false;
     }
 
+    // 今日组队成功?
+    public function todayHasSign(){
+        if($this->sign_at) return true;
+        return false;
+    }
 
     // 今日阅读加1,未受限时返回true
     public function todayReadAdd(){

@@ -7,6 +7,12 @@ return [
      */
     'enabled' => env('POINT_ENABLED', true),
 
+    
+    /*
+     * 默认pid 如果用户pid为0，默认为此值。
+     */
+    'default_pid' => env('POINT_ENABLED', 0),
+
     /*
      * 签到可以获利积分
      */

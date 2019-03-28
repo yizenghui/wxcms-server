@@ -24,10 +24,15 @@ class FanController extends Controller
         return response()->json($articles);
     }
 
+
     public function getme(Request $request){
         $user = $request->user();
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
+        $user->avatar = $user->avatar?$user->avatar:'https://image.weilanwl.com/img/square-3.jpg';
+        
+        $user->name = $user->name?$user->name:'游客'.$user->id;
+        
         return response()->json($user);
     }
 
@@ -41,6 +46,10 @@ class FanController extends Controller
         $user = $request->user();
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
+        $user->avatar = $user->avatar?$user->avatar:'https://image.weilanwl.com/img/square-3.jpg';
+        
+        $user->name = $user->name?$user->name:'游客'.$user->id;
+        
         return response()->json($user);
     }
 
@@ -48,6 +57,12 @@ class FanController extends Controller
         $user = $request->user();
         $pointlogs = $user->pointlogs()->orderBy('id','desc')->get();
         return response()->json($pointlogs);
+    }
+
+    public function tasklog(Request $request){
+        $user = $request->user();
+        $logs = $user->tasks()->orderBy('id','desc')->get();
+        return response()->json($logs);
     }
 
     /**

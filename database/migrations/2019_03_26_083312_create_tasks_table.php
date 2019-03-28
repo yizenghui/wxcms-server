@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->integer('user_id')->comment('关联用户id')->default(0);
             $table->integer('did')->comment('日期ID 格式：20190101')->default(0);
             $table->integer('team_id')->comment('成功组队id')->default(0);
-            $table->dateTime('sign_at')->comment('签到时间')->nullable();
+            $table->timestamp('sign_at')->comment('签到时间')->nullable();
             $table->integer('read_num')->comment('阅读量')->default(0);
             $table->integer('like_num')->comment('点赞数')->default(0);
             $table->integer('comment_num')->comment('评论数')->default(0);
