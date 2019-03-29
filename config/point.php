@@ -11,7 +11,7 @@ return [
     /*
      * 默认pid 如果用户pid为0，默认为此值。
      */
-    'default_pid' => env('POINT_ENABLED', 0),
+    'default_fromid' => env('POINT_DEFAULT_FROMID', 0),
 
     /*
      * 签到可以获利积分
@@ -34,6 +34,7 @@ return [
     'day_read_num' => env('POINT_DAY_READ_NUM', 10),
 
     
+
     /*
      * 点赞可以获得积分
      */
@@ -45,6 +46,28 @@ return [
     'day_like_num' => env('POINT_DAY_LiKE_NUM', 6),
 
     
+    /*
+     * 邀请新人访问可以获得积分
+     */
+    'interview_action' => env('POINT_INTERVIEW_ACTION', 10),
+
+    /*
+     * 一天可以获得100次邀请新人积分
+     */
+    'day_interview_num' => env('POINT_DAY_INTERVIEW_NUM', 100),
+
+    
+    /*
+     * 受邀用户签到
+     */
+    'fansign_action' => env('POINT_FANSIGN_ACTION', 3),
+
+    /*
+     * 一天可以获得300次邀请新人签到积分
+     */
+    'day_fansign_num' => env('POINT_DAY_FANSIGN_NUM', 300),
+
+
     /*
      * 组队双倍积分功能是否开启
      */

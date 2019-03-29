@@ -19,13 +19,14 @@ class AuthController extends Controller
   //
   public function token(Request $request){
     $app = EasyWeChat::miniProgram(); // 小程序
-    $pid = intval($request->get('pid'));
+    // 约定fromid位置
+    $formid = intval($request->server('HTTP_FORMID'));
     $ret = $app->auth->session($request->get('code'));
     if( array_get($ret,'errcode') ){
       // todo 出错处理
       return response()->json($ret);
     }
-    // https://laravelacademy.org/post/8900.html
+    
     $openid = array_get($ret,'openid');
     $session_key = array_get($ret,'session_key');
 
@@ -37,9 +38,22 @@ class AuthController extends Controller
       $newFan = new Fan();
       $newFan->openid      = $openid;
       $newFan->session_key = $session_key;
-      $newFan->pid = $pid;
+      $newFan->formid = $formid;
       $newFan->save();
       $fan = $newFan;
+
+      //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
+      $formid = $formid?$formid:config('point.default_fromid');
+      if($formid){
+        $fromuser = Fan::find($formid);
+        if($fromuser->id && !$fromuser->lock_at ){
+          $_task = $fromuser->todaytask();
+          if($_task->todayInterviewAdd()){
+            $fromuser->changePoint($_task->todayInterviewAction(),'邀请新用户');
+            $_task->save();
+          }
+        }
+      }
     }
     if( $fan->session_key !== $session_key ){
       $fan->session_key = $session_key;
@@ -55,6 +69,7 @@ class AuthController extends Controller
     // $token = auth('api')->attempt($fan->toArray());
     // $success['token'] =  JWTAuth::attempt($fan->toArray());
     $success['token'] =  $token;
+    $success['uid'] =  $fan->id;
     return response()->json($success);
   }
 
@@ -72,7 +87,6 @@ class AuthController extends Controller
 }
 
   public function check(Request $request){
-    
     return response()->json($request->user());
 }
 

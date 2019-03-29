@@ -99,4 +99,57 @@ class Task extends Model
         if( $this->like_num>config('point.day_like_num') ) return true;
         return false;
     }
+
+    
+    
+    // 今日阅读加1,未受限时返回true
+    public function todayInterviewAdd(){
+        $this->join_num ++;
+        if( !$this->todayInterviewMax() ){
+            $this->total += $this->todayInterviewAction();
+            return true;
+        }
+        return false;
+    }
+
+    // 今日邀请新用户加分数(不享受组队加成)
+    public function todayInterviewAction(){
+        return config('point.interview_action');
+    }
+
+    // 今日邀请新用户人数(最大显示每日可完成最大次数)
+    public function todayInterview(){
+        if( $this->todayInterviewMax() ) return config('point.day_interview_num');
+        return intval($this->join_num);
+    }
+
+    public function todayInterviewMax(){
+        if( $this->join_num>config('point.day_interview_num') ) return true;
+        return false;
+    }
+    
+    // 今日粉丝签到加1,未受限时返回true
+    public function todayFansignAdd(){
+        $this->sign_num ++;
+        if( !$this->todayFansignMax() ){
+            $this->total += $this->todayFansignAction();
+            return true;
+        }
+        return false;
+    }
+
+    // 今日点赞加分数(不享受组队加成)
+    public function todayFansignAction(){
+        return config('point.fansign_action');
+    }
+    // 今日受邀人签到分成
+    public function todayFansign(){
+        if( $this->todayFansignMax() ) return config('point.day_fansign_num');
+        return intval($this->sign_num);
+    }
+
+    public function todayFansignMax(){
+        if( $this->sign_num>config('point.day_fansign_num') ) return true;
+        return false;
+    }
 }
