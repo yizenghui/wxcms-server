@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::get('/action/task','Api\ActionController@task'); // 用户每日任务
     Route::get('/action/view','Api\ActionController@view'); // 查看文章行为
+    Route::get('/action/sign','Api\ActionController@sign'); // 查看文章行为(用户签到)
     Route::get('/action/likearticle','Api\ActionController@likearticle'); // 喜欢某个文章
     Route::get('/action/unlikearticle','Api\ActionController@unlikearticle'); // 取消喜欢某个文章
 
