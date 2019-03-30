@@ -123,9 +123,9 @@ class ArticleController extends Controller
         $form->select('topic_id','所属专题')->options(Topic::all()->pluck('name', 'id'))->rules('required')->required();
         $form->text('title','标题')->rules('required')->required();
         $form->text('author','作者');
-        $form->simplemde('body','正文')->rules('required')->required();
-        $form->cropper('cover','封面图');
         $form->textarea('intro','描述(导读)');
+        $form->cropper('cover','封面图');
+        $form->simplemde('body','正文')->rules('required')->required();
         $form->number('view','浏览量')->default(0);
         $form->number('commented','评论数')->default(0);
         $form->number('liked','喜欢人数')->default(0);
