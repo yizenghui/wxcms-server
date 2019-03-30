@@ -14,7 +14,7 @@ class GoodsController extends Controller
     //
     
     public function index(Request $request){
-        $data = Goods::where('lower_at','>',Carbon::now())->all();
+        $data = Goods::where('lower_at','>',Carbon::now())->get();
         $goodes = GoodsResource::collection($data);
         return response()->json($goodes);
     }
