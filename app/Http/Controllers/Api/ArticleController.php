@@ -11,7 +11,12 @@ class ArticleController extends Controller
 {
     //
     public function index(Request $request){
-        $data = Article::simplePaginate(10);
+        $topic_id = $request->get('topic');
+        if( $topic_id ){
+            $data = Article::where('topic_id','=',$topic_id)->orderBy('id','desc')->simplePaginate(10);
+        }else{
+            $data = Article::orderBy('id','desc')->simplePaginate(10);
+        }
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -34,7 +39,7 @@ class ArticleController extends Controller
      * 获取推荐文章(小程序首页用)
      */
     public function recommend(){
-        $data = Article::simplePaginate(10);
+        $data = Article::orderBy('id','desc')->simplePaginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
