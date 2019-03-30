@@ -85,7 +85,20 @@ class ActionController extends Controller
         if($task->todaySign()){
             $user->changePoint($task->todaySignAction(),'签到');
             $task->save();
-            // todo 上级
+            
+            
+            $formid = $user->formid?$user->formid:config('point.default_fromid');
+            if($formid){
+                $fromuser = Fan::find($formid);
+                if($fromuser->id && !$fromuser->lock_at ){
+                    $_task = $fromuser->todaytask();
+                    if($_task->todayFansignAdd()){
+                    $fromuser->changePoint($_task->todayFansignAction(),'受邀用户签到');
+                    $_task->save();
+                    }
+                }
+            }
+
         }
         $user->task = $task;
         return response()->json($user);
