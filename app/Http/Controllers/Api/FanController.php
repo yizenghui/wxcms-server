@@ -6,20 +6,22 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PointLogResource;
+use App\Http\Resources\TaskResource;
 
 class FanController extends Controller
 {
     // 
     public function footprint(Request $request){
         $user = $request->user();
-        $data = $user->bookmarks(\App\Models\Article::class)->get();
+        $data = $user->bookmarks(\App\Models\Article::class)->simplePaginate(20);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
 
     public function like(Request $request){
         $user = $request->user();
-        $data = $user->likes(\App\Models\Article::class)->get();
+        $data = $user->likes(\App\Models\Article::class)->simplePaginate(20);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -38,7 +40,7 @@ class FanController extends Controller
 
     public function order(Request $request){
         $user = $request->user();
-        $orders = OrderResource::collection($user->orders);
+        $orders = OrderResource::collection($user->orders()->simplePaginate(10));
         return response()->json($orders);
     }
 
@@ -55,14 +57,14 @@ class FanController extends Controller
 
     public function pointlog(Request $request){
         $user = $request->user();
-        $pointlogs = $user->pointlogs()->orderBy('id','desc')->get();
-        return response()->json($pointlogs);
+        $pointlogs = $user->pointlogs()->orderBy('id','desc')->simplePaginate(20);
+        return response()->json(PointLogResource::collection($pointlogs));
     }
 
     public function tasklog(Request $request){
         $user = $request->user();
-        $logs = $user->tasks()->orderBy('id','desc')->get();
-        return response()->json($logs);
+        $logs = $user->tasks()->orderBy('id','desc')->simplePaginate(10);
+        return response()->json(TaskResource::collection($logs));
     }
 
     /**

@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Goods;
 use App\Models\Order;
 use App\Http\Resources\GoodsResource;
+use Carbon\Carbon;
 
 class GoodsController extends Controller
 {
     //
     
     public function index(Request $request){
-        $data = Goods::all();
+        $data = Goods::where('lower_at','>',Carbon::now())->simplePaginate(10);
         $goodes = GoodsResource::collection($data);
         return response()->json($goodes);
     }
