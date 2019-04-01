@@ -179,6 +179,7 @@ return [
 
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Overtrue\LaravelFollow\FollowServiceProvider::class,
+        zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
 
     ],
 

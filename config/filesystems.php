@@ -69,6 +69,20 @@ return [
             'visibility' => 'public',
             'url' => env('APP_URL').'/uploads',
         ],
+
+        'qiniu' => [
+            'driver'  => 'qiniu',
+            'domains' => [
+                'default'   => 'pp6ljlwkl.bkt.clouddn.com', //你的七牛域名
+                'https'     => '',         //你的HTTPS域名
+                'custom'    => 'wxcms.wechatrank.com',                //你的自定义域名
+             ],
+            'access_key'=> 'ju5Jhukr3xSn3Fjs0epF7xh0U5yfmXRl1sxUgFJL',  //AccessKey
+            'secret_key'=> 'xYF5q64uGDh3V-NR_oOFSLE2c0moo-3CQ99cKDm0',  //SecretKey
+            'bucket'    => 'wxcms',  //Bucket名字
+            'notify_url'=> '',  //持久化处理回调地址
+            'url'       => 'http://static.wechatrank.com',  // 填写文件访问根url
+        ],
     ],
 
 ];

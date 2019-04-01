@@ -124,6 +124,7 @@ class ArticleController extends Controller
         $form->text('title','标题')->rules('required')->required();
         $form->text('author','作者');
         $form->simplemde('body','正文')->rules('required')->required();
+        // $form->image('cover','封面图');
         $form->cropper('cover','封面图');
         $form->textarea('intro','描述(导读)');
         $form->number('view','浏览量')->default(0);

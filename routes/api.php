@@ -65,6 +65,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/topics/{id}','Api\TopicController@show');
     Route::get('/orders/{id}','Api\OrderController@show');
     
+    
+    Route::get('/team/create','Api\TeamController@create');
+    Route::get('/team/show','Api\TeamController@show');
+    Route::get('/team/join','Api\TeamController@join');
+    Route::get('/team/getme','Api\TeamController@getme');
+
     Route::post('/asyncuserdata','Api\AuthController@asyncuserdata');
     Route::get('/user/footprint','Api\FanController@footprint');
     Route::get('/user/like','Api\FanController@like');

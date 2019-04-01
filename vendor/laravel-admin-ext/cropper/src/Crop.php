@@ -44,17 +44,17 @@ class Crop extends File
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $type = $result[2];
-            $new_file = $path . "/" . date('Ymd', time()) . "/";
-            if (!file_exists($new_file)) {
-                //检查是否有该文件夹，如果没有就创建，并给予最高权限
-                mkdir($new_file, 0755, true);
-            }
-            $new_file = $new_file . md5(microtime()) . ".{$type}";
-            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
-                return $new_file;
-            } else {
+            $new_file ="base64img/". date('YmdHis')  . ".{$type}";
+        
+        
+            $disk = \Storage::disk(config('admin.upload.disk')); //使用laravel-admin上传
+            $file=base64_decode(str_replace($result[1], '', $base64_image_content));
+            $filename = $disk->put($new_file, $file);//上传
+            if (!$filename) {
                 return false;
             }
+            $img_url = $disk->url($new_file); //获取下载链接
+            return $img_url;
         } else {
             return false;
         }
@@ -67,14 +67,7 @@ class Crop extends File
             //base64转图片 返回的是绝对路径
             $imagePath = $this->base64_image_content($base64,public_path('uploads/base64img'));
             if ($imagePath !== false) {
-                //删除旧图片
-                @unlink(public_path('uploads/').$this->original);
-                //处理图片地址
-                preg_match('/base64img\/.*/is',$imagePath,$matches);
-
-                $this->callInterventionMethods($imagePath);
-
-                return $matches[0];
+                return $imagePath;
             } else {
                 return 'lost';
             }

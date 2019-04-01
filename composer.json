@@ -19,7 +19,8 @@
         "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-tags": "^2.1",
         "tymon/jwt-auth": "dev-develop",
-        "vinkla/hashids": "3.3"
+        "vinkla/hashids": "3.3",
+        "zgldh/qiniu-laravel-storage": "^0.10.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

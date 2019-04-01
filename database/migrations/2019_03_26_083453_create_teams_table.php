@@ -19,7 +19,7 @@ class CreateTeamsTable extends Migration
             $table->string('name')->comment('队伍名字')->nullable();
             $table->integer('user_id')->comment('队长id');
             $table->integer('total')->comment('今日获得总积分')->default(0);
-            $table->dateTime('full_at')->comment('组队满员时间')->nullable();
+            $table->timestamp('full_at')->comment('组队满员时间')->nullable();
             $table->string('user_ids')->comment('满员时记录队员ids')->nullable();
             $table->timestamps();
             $table->softDeletes();
