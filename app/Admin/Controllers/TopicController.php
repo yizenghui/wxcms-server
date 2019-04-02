@@ -87,7 +87,7 @@ class TopicController extends Controller
             if(!$url) return '';
 
             $url = \Storage::disk(config('admin.upload.disk'))->url($url);
-            $image = "<img style='width: 90px;' src='/uploads/{$url}'>";
+            $image = "<img style='width: 90px;' src='{$url}'>";
             return $image;
         });
         $grid->order('排序号')->editor();
