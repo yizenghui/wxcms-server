@@ -21,9 +21,9 @@ class TeamController extends Controller
         $team = Team::Create(['user_id' => $user->id, 'did' => date('Ymd'), 'name' => $team_name,'total'=>0]);
         $user->joinTeams()->attach($team->id);
         $team->users;
+        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+        $team->intro = $intro;
         $user->team = $team;
-        $intro = '距离组队成功还差'.( 5-count($user->team->users)).'人。（奖励：获得任务积分*2）' ;
-        $user->team->intro = $intro;
         return response()->json($user);
     }
 
@@ -90,7 +90,10 @@ class TeamController extends Controller
         $user->team = $user->joinTeams()->where('teams.did','=',date('Ymd'))->first();
         if($user->team){
             $user->team->users;
-            $intro = '距离组队成功还差'.( 5-count($user->team->users)).'人。（奖励：获得任务积分*2）' ;
+            $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+            if(count($user->team->users)>=5){
+                $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
+            }
             $user->team->intro = $intro;
         }
         return response()->json($user);
