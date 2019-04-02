@@ -43,6 +43,7 @@ class TeamController extends Controller
         $team->can_join = false; //标记不能再进队
         $team->intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
         if(count($team->users)>=5){
+
             // 发放完成组队奖励
             $ids = collect($team->users)->pluck('id')->all();
             $tasks = Task::where('did', '=', date('Ymd'))->whereIn('user_id',$ids)->get();
@@ -54,6 +55,7 @@ class TeamController extends Controller
                 ->whereIn('user_id',$ids)
                 ->update(['team_id',$team->id]);
             }
+            $team->intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
         }
         $user->team = $team;
         return response()->json($user);
