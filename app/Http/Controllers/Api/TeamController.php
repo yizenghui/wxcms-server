@@ -90,7 +90,7 @@ class TeamController extends Controller
         $user->team = $user->joinTeams()->where('teams.did','=',date('Ymd'))->first();
         if($user->team){
             $user->team->users;
-            $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+            $intro = '距离组队成功还差'.( 5-count($user->team->users)).'人。（奖励：获得任务积分*2）' ;
             if(count($user->team->users)>=5){
                 $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
             }
