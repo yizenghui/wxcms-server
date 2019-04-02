@@ -26,7 +26,7 @@ class GoodsResource extends Resource
             'tag_style' => $this->tag_style,
             'lower_at' => $this->lower_at,
             'invalid_at' => $this->invalid_at,
-            'cover' =>  config('app.url').'/uploads/'.$this->cover,
+            'cover' =>  \Storage::disk(config('admin.upload.disk'))->downloadUrl($this->cover,'https'),
             'wxto'  => '/pages/user/goodsinfo?id='.$this->id,
         ];
 

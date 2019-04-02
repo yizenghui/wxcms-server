@@ -18,7 +18,7 @@ class TopicResource extends Resource
             'id'   => (string)$this->id,
             'name' => $this->name,
             'intro' => $this->intro,
-            'cover' =>  config('app.url').'/uploads/'.$this->cover,
+            'cover' => \Storage::disk(config('admin.upload.disk'))->url($this->cover),
             'wxto'  => '/pages/topic/list?id='.$this->id,
         ];
 
