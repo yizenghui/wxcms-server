@@ -13,4 +13,13 @@ class Article extends Model
 {
     use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
     use SoftDeletes;
+
+    
+    /**
+     * 作家
+     */
+    public function author()
+    {
+        return $this->belongsTo(Author::class,'author_id');
+    }
 }

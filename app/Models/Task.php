@@ -152,4 +152,13 @@ class Task extends Model
         if( $this->sign_num>config('point.day_fansign_num') ) return true;
         return false;
     }
+
+    
+    /**
+     * 有队伍的人了
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class,'team_id');
+    }
 }

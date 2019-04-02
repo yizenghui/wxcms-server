@@ -25,7 +25,7 @@ class OrderResource extends Resource
             'canuse' => $canuse, 
             'lower_at' => $this->lower_at,  // 失效时间 (如果已经发货，不再显示失效时间)
             'delivery_at' => $this->delivery_at, // 发货时间
-            'cover' => \Storage::disk(config('admin.upload.disk'))->url($this->cover),
+            'cover' => \Storage::disk(config('admin.upload.disk'))->downloadUrl($this->cover),
             'wxto'  => '/pages/user/exchange?id='.$this->id,
         ];
 

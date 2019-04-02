@@ -41,6 +41,17 @@ class ActionController extends Controller
             $task = $user->todaytask();
             if($task->todayReadAdd()){
                 $user->changePoint($task->todayReadAction(),'阅读');
+                if($task->team_id){
+                    $team = $task->team;
+                    $team->total += $task->todayReadAction();
+                    $team->save();
+                }
+                if( $article->author_id){
+                    $author = $article->author;
+                    $author->point ++;
+                    $author->total_point ++;
+                    $author->save();
+                }
             }
             $task->save();
         }
@@ -66,6 +77,11 @@ class ActionController extends Controller
                 $task = $user->todaytask();
                 if($task->todayLikeAdd()){
                     $user->changePoint($task->todayLikeAction(),'点赞');
+                    if($task->team_id){
+                        $team = $task->team;
+                        $team->total += $task->todayLikeAction();
+                        $team->save();
+                    }
                 }
                 $task->save();
             }

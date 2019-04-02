@@ -31,6 +31,7 @@ class ArticleController extends Controller
     public function show($id,Request $request)
     {
         $article = Article::findOrFail($id);
+        $article->author;
         $article->userlikearticle = $request->user()->hasLiked($article);
         return response()->json($article);
     }

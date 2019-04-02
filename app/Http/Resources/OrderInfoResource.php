@@ -20,8 +20,8 @@ class OrderInfoResource extends Resource
 
         $goods = $this->goods;
         $boss = $goods->boss;
-        $boss->avatar = \Storage::disk(config('admin.upload.disk'))->url($boss->avatar);
-        $boss->qrcode = \Storage::disk(config('admin.upload.disk'))->url($boss->qrcode);
+        $boss->avatar = \Storage::disk(config('admin.upload.disk'))->downloadUrl($boss->avatar);
+        $boss->qrcode = \Storage::disk(config('admin.upload.disk'))->downloadUrl($boss->qrcode);
         $token = Hashids::encode($this->id);
         return [
             'id'   => (string)$this->id,
@@ -36,7 +36,7 @@ class OrderInfoResource extends Resource
             'canuse' => $canuse, 
             'lower_at' => $this->lower_at,  // 失效时间 (如果已经发货，不再显示失效时间)
             'delivery_at' => $this->delivery_at, // 发货时间
-            'cover' => \Storage::disk(config('admin.upload.disk'))->url($this->cover),
+            'cover' => \Storage::disk(config('admin.upload.disk'))->downloadUrl($this->cover),
             'wxto'  => '/pages/user/exchange?id='.$this->id,
             'guidesteps'=>[
                 [ 'icon'=>'usefullfill','name'=>'联系客服','intro'=>'点击售后客服名片，识别名片中的二维码，将售后客服添加为微信好友。' ], 

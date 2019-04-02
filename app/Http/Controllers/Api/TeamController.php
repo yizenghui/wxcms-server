@@ -21,7 +21,7 @@ class TeamController extends Controller
         $team = Team::Create(['user_id' => $user->id, 'did' => date('Ymd'), 'name' => $team_name,'total'=>0]);
         $user->joinTeams()->attach($team->id);
         $team->users;
-        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。' ;
         $team->intro = $intro;
         $user->team = $team;
         return response()->json($user);
@@ -41,7 +41,7 @@ class TeamController extends Controller
         return response()->json(['message'=>'已经加入该队伍']); 
         $user->joinTeams()->attach($team->id);
         $team->users;
-        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。' ;
         if(count($team->users)==5){ //组队达5人时执行
             // 发放完成组队奖励
             $ids = collect($team->users)->pluck('id')->all();
@@ -55,7 +55,7 @@ class TeamController extends Controller
                     $t->save();
                 }
             }
-            $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
+            $intro = '组队成功。进行阅读、点赞可获得积分*2' ;
         }  
         $team->intro = $intro;
         $team->can_join = false; //标记不能再进队
@@ -67,9 +67,9 @@ class TeamController extends Controller
         $team_id = $request->get('team_id');
         $team = Team::findOrFail($team_id);
         $team->users;
-        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。' ;
         if(count($team->users)>=5){
-            $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
+            $intro = '组队成功。进行阅读、点赞可获得积分*2' ;
         }
         $team->intro = $intro;
         $user = $request->user();
@@ -90,9 +90,9 @@ class TeamController extends Controller
         $user->team = $user->joinTeams()->where('teams.did','=',date('Ymd'))->first();
         if($user->team){
             $user->team->users;
-            $intro = '距离组队成功还差'.( 5-count($user->team->users)).'人。（奖励：获得任务积分*2）' ;
+            $intro = '距离组队成功还差'.( 5-count($user->team->users)).'人。' ;
             if(count($user->team->users)>=5){
-                $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
+                $intro = '组队成功。进行阅读、点赞可获得积分*2' ;
             }
             $user->team->intro = $intro;
         }

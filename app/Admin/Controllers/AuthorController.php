@@ -2,17 +2,15 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Article;
+use App\Models\Author;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use App\Models\Topic;
-use App\Models\Author;
 
-class ArticleController extends Controller
+class AuthorController extends Controller
 {
     use HasResourceActions;
 
@@ -81,16 +79,18 @@ class ArticleController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Article);
+        $grid = new Grid(new Author);
+
         $grid->id('ID');
-        $grid->title('标题');
-        $grid->author()->name('作者');
-        $grid->view('浏览量');
-        $grid->commented('评论数');
-        $grid->liked('喜欢人数');
-        $grid->recommend_at('推荐截止');
+        $grid->name('姓名');
+        // $grid->avatar()->display(function ($url) {
+        //     if(!$url) return '';
+        //     $image = "<img style='width: 90px;' src='/uploads/{$url}'>";
+        //     return $image;
+        // });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
+
         return $grid;
     }
 
@@ -102,7 +102,7 @@ class ArticleController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Article::findOrFail($id));
+        $show = new Show(Author::findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -118,20 +118,23 @@ class ArticleController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Article);
+        $form = new Form(new Author);
 
         $form->display('ID');
-        $form->select('topic_id','所属专题')->options(Topic::all()->pluck('name', 'id'))->rules('required')->required();
-        $form->text('title','标题')->rules('required')->required();
-        $form->select('author_id','作者')->options(Author::all()->pluck('name', 'id'))->rules('required')->required();
-        // $form->image('cover','封面图');
-        $form->cropper('cover','封面图');
-        $form->textarea('intro','描述(导读)');
-        $form->simplemde('body','正文')->rules('required')->required();
-        $form->number('view','浏览量')->default(0);
-        $form->number('commented','评论数')->default(0);
-        $form->number('liked','喜欢人数')->default(0);
-        $form->datetime('recommend_at','推荐截止')->default(date('Y-m-d 23:59:59',time()+86400*60));
+
+        
+        $form->text('name','作者名');
+        $form->number('user_id','粉丝ID')->default(0);
+        $form->cropper('avatar','头像');
+        $form->textarea('intro','描述');
+        $form->text('mobile','手机');
+        $form->text('email','邮箱');
+        $form->text('wxid','微信号');
+        $form->text('wxappid','微信公众号');
+        $form->datetime('sign_at','签约时间');
+        $form->number('point','剩余积分')->default(0);
+        $form->number('current_point','当前可用积分')->default(0);
+        $form->number('total_point','总积分')->default(0);
         $form->display('Created at');
         $form->display('Updated at');
 
