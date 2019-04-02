@@ -41,8 +41,7 @@ class TeamController extends Controller
         return response()->json(['message'=>'已经加入该队伍']); 
         $user->joinTeams()->attach($team->id);
         $team->users;
-        $team->can_join = false; //标记不能再进队
-        $team->intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
+        $intro = '距离组队成功还差'.( 5-count($team->users)).'人。（奖励：获得任务积分*2）' ;
         if(count($team->users)==5){ //组队达5人时执行
             // 发放完成组队奖励
             $ids = collect($team->users)->pluck('id')->all();
@@ -51,14 +50,17 @@ class TeamController extends Controller
                 $team->full_at = Carbon::now();
                 $team->user_ids = implode(',',$ids);
                 $team->save();
-                Task::where('did', '=', date('Ymd'))
-                ->whereIn('user_id',$ids)
-                ->update(['team_id',$team->id]);
+                foreach($tasks as $t){
+                    $t->team_id = $team->id;
+                    $t->save();
+                }
             }
-            $team->intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
-        }
-        $user->team = $team;
-        return response()->json($user);
+            $intro = '组队成功。奖励：进行任务可获得积分*2（对阅读、点赞有效）' ;
+        }  
+        $team->intro = $intro;
+        $team->can_join = false; //标记不能再进队
+        $team->user = $user;
+        return response()->json($team);
     }
     
     public function show(Request $request){
