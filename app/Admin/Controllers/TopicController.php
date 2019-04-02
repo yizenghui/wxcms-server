@@ -85,6 +85,8 @@ class TopicController extends Controller
         $grid->name('标题');
         $grid->cover()->display(function ($url) {
             if(!$url) return '';
+
+            $url = \Storage::disk(config('admin.upload.disk'))->url($url);
             $image = "<img style='width: 90px;' src='/uploads/{$url}'>";
             return $image;
         });
