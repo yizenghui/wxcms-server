@@ -20,7 +20,7 @@ class ActionController extends Controller
         $items[] = ['name'=>'签到 +'.config('point.sign_action'), 'intro'=>$task->sign_at?'已完成':'未完成', 'wxto'=>'/pages/user/index', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
         $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num').' * '.config('point.read_action'), 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
         $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num').' * '.config('point.like_action'), 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
-        $items[] = ['name'=>'组队','intro'=>'阅读、点赞得双倍积分','wxto'=>'/pages/user/team','icon'=>'group','iconcolor'=>'green'];
+        $items[] = ['name'=>'组队','intro'=>'组队成功后阅读、点赞得双倍积分','wxto'=>'/pages/user/team','icon'=>'group','iconcolor'=>'green'];
         return response()->json($items);
     }
 
