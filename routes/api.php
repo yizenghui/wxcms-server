@@ -41,6 +41,13 @@ Route::get('/getuserswipers', function (Request $request) {
     ];
 });
 
+Route::get('config/userhome','Api\AuthController@userhome');
+Route::get('config/teamhome','Api\AuthController@teamhome');
+Route::get('config/home','Api\AuthController@home');
+Route::get('config/topichome','Api\AuthController@topichome');
+Route::get('config/topiclist','Api\AuthController@topiclist');
+Route::get('config/articleinfo','Api\AuthController@articleinfo');
+
 Route::get('gettoken','Api\AuthController@token');
 
 Route::group(['middleware' => ['auth:api']], function () {
