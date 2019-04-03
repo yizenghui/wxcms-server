@@ -21,8 +21,9 @@ class ArticleResource extends Resource
             'id'   => (string)$this->id,
             'title' => $this->title,
             'intro' => $this->intro?$this->intro:'',
+            'cover' =>  $this->cover, //后台保存完整路径
             // 'cover' =>  $this->cover?\Storage::disk(config('admin.upload.disk'))->url($this->cover):'', // 这个没有https 还没弄清楚什么原因
-            'cover' =>  $this->cover?\Storage::disk(config('admin.upload.disk'))->downloadUrl($this->cover,'https'):'', // 手动强制 https
+            // 'cover' =>  $this->cover?\Storage::disk(config('admin.upload.disk'))->downloadUrl($this->cover,'https'):'', // 手动强制 https
             'view'  => $this->view, //浏览数
             'commented'  => $this->commented, //评论数
             'liked'  => $this->liked, //点赞数
