@@ -59,6 +59,8 @@ return array(
     'Overtrue\\Socialite\\' => array($vendorDir . '/overtrue/socialite/src'),
     'Overtrue\\LaravelWeChat\\' => array($vendorDir . '/overtrue/laravel-wechat/src'),
     'Overtrue\\LaravelFollow\\' => array($vendorDir . '/overtrue/laravel-follow/src'),
+    'Overtrue\\LaravelFilesystem\\Qiniu\\' => array($vendorDir . '/overtrue/laravel-filesystem-qiniu/src'),
+    'Overtrue\\Flysystem\\Qiniu\\' => array($vendorDir . '/overtrue/flysystem-qiniu/src'),
     'Namshi\\JOSE\\' => array($vendorDir . '/namshi/jose/src/Namshi/JOSE'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),

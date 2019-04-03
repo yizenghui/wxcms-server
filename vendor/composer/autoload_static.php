@@ -22,13 +22,13 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
+        '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'f0e7e63bbb278a92db02393536748c5f' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Support/Helpers.php',
         '6747f579ad6817f318cc3a7e7a0abb93' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'e91d0dc994644828154ae2387ede1ca8' => __DIR__ . '/..' . '/spatie/string/src/string_functions.php',
-        '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '72b1e3f4a2af9b30b3f137b3ec2057fc' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/helpers.php',
     );
 
@@ -121,6 +121,8 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
             'Overtrue\\Socialite\\' => 19,
             'Overtrue\\LaravelWeChat\\' => 23,
             'Overtrue\\LaravelFollow\\' => 23,
+            'Overtrue\\LaravelFilesystem\\Qiniu\\' => 33,
+            'Overtrue\\Flysystem\\Qiniu\\' => 25,
         ),
         'N' => 
         array (
@@ -407,6 +409,14 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/..' . '/overtrue/laravel-follow/src',
         ),
+        'Overtrue\\LaravelFilesystem\\Qiniu\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/overtrue/laravel-filesystem-qiniu/src',
+        ),
+        'Overtrue\\Flysystem\\Qiniu\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src',
+        ),
         'Namshi\\JOSE\\' => 
         array (
             0 => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE',
@@ -572,6 +582,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
     public static $classMap = array (
         'App\\Admin\\Controllers\\ArticleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ArticleController.php',
         'App\\Admin\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AuthController.php',
+        'App\\Admin\\Controllers\\AuthorController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AuthorController.php',
         'App\\Admin\\Controllers\\BossController' => __DIR__ . '/../..' . '/app/Admin/Controllers/BossController.php',
         'App\\Admin\\Controllers\\CashController' => __DIR__ . '/../..' . '/app/Admin/Controllers/CashController.php',
         'App\\Admin\\Controllers\\ExampleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ExampleController.php',
@@ -3206,6 +3217,13 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Namshi\\JOSE\\Signer\\SignerInterface' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/Signer/SignerInterface.php',
         'Namshi\\JOSE\\SimpleJWS' => __DIR__ . '/..' . '/namshi/jose/src/Namshi/JOSE/SimpleJWS.php',
         'Normalizer' => __DIR__ . '/..' . '/patchwork/utf8/src/Normalizer.php',
+        'Overtrue\\Flysystem\\Qiniu\\Plugins\\FetchFile' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/Plugins/FetchFile.php',
+        'Overtrue\\Flysystem\\Qiniu\\Plugins\\FileUrl' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/Plugins/FileUrl.php',
+        'Overtrue\\Flysystem\\Qiniu\\Plugins\\PrivateDownloadUrl' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/Plugins/PrivateDownloadUrl.php',
+        'Overtrue\\Flysystem\\Qiniu\\Plugins\\RefreshFile' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/Plugins/RefreshFile.php',
+        'Overtrue\\Flysystem\\Qiniu\\Plugins\\UploadToken' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/Plugins/UploadToken.php',
+        'Overtrue\\Flysystem\\Qiniu\\QiniuAdapter' => __DIR__ . '/..' . '/overtrue/flysystem-qiniu/src/QiniuAdapter.php',
+        'Overtrue\\LaravelFilesystem\\Qiniu\\QiniuStorageServiceProvider' => __DIR__ . '/..' . '/overtrue/laravel-filesystem-qiniu/src/QiniuStorageServiceProvider.php',
         'Overtrue\\LaravelFollow\\Events\\Event' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/Event.php',
         'Overtrue\\LaravelFollow\\Events\\RelationAttached' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/RelationAttached.php',
         'Overtrue\\LaravelFollow\\Events\\RelationAttaching' => __DIR__ . '/..' . '/overtrue/laravel-follow/src/Events/RelationAttaching.php',
