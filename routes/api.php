@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     
     Route::get('/team/create','Api\TeamController@create');
     Route::get('/team/show','Api\TeamController@show');
+    Route::get('/team/search','Api\TeamController@search');
     Route::get('/team/join','Api\TeamController@join');
     Route::get('/team/getme','Api\TeamController@getme');
 

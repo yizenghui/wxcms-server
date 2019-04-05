@@ -83,6 +83,16 @@ class TeamController extends Controller
         $team->user = $user;
         return response()->json($team);
     }
+    
+    public function search(Request $request){
+        $id = intval($request->get('team_id'));
+        if(!$id) return response()->json(['message'=>'输入不正确！']); 
+        
+        $team = Team::where('id','=',$id)->where('did','=',date('Ymd'))->first();
+        if(!$team) return response()->json(['message'=>'队伍不存在！']); 
+        
+        return response()->json($team);
+    }
 
     public function getme(Request $request){
         $user = $request->user();

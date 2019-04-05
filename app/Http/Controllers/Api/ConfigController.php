@@ -30,6 +30,12 @@ class ConfigController extends Controller
      */
     public function teamhome(){
         return [
+            'rule'=>[
+
+            ],
+            'reward'=>[
+                
+            ],
             'swipers'=>[
                 ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-1.jpg','wxto'=>''],
                 ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-2.jpg','wxto'=>''],
