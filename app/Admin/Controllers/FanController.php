@@ -92,10 +92,28 @@ class FanController extends Controller
 
         
         $grid->filter(function($filter){
-            $filter->like('name', '名称');
-            $filter->eq('formid', '推荐人id');
-            $filter->between('lock_at', '锁定时间')->datetime();
 
+            $filter->column(1/2, function ($filter) {
+                
+                $filter->like('name', '名称');
+                $filter->like('city', '城市');
+
+            });
+            
+            $filter->column(1/2, function ($filter) {
+                $filter->in('gender','性别')->checkbox([ '0' => '未知', '1' => '男', '2' => '女']);
+                
+                $filter->group('formid', '推荐人id', function ($group) {
+                    $group->equal('等于');
+                    $group->gt('大于');
+                    $group->lt('小于');
+                    $group->nlt('不小于');
+                    $group->ngt('不大于');
+                });
+                $filter->between('lock_at', '锁定时间')->datetime();
+            });
+            
+            
         
         });
         return $grid;
