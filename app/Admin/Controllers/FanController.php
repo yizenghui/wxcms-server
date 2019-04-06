@@ -82,12 +82,12 @@ class FanController extends Controller
         $grid = new Grid(new Fan);
         $grid->id('ID')->sortable();
         $grid->name('昵称');
-        $grid->formid('推荐人id');
+        $grid->formid('推荐人id')->sortable();
         $grid->point('剩余积分')->sortable();
         $grid->total_point('总积分')->sortable();
         // $grid->current_point('可用积分')->sortable();
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+        $grid->created_at('Created at')->sortable();
+        $grid->updated_at('Updated at')->sortable();
 
 
         
