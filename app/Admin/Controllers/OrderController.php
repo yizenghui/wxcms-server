@@ -9,6 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Vinkla\Hashids\Facades\Hashids;
+
 
 class OrderController extends Controller
 {
@@ -81,10 +83,37 @@ class OrderController extends Controller
     {
         $grid = new Grid(new Order);
 
+        //  $token = Hashids::encode($this->id);
         $grid->id('ID');
-        $grid->created_at('Created at');
+        $grid->user()->name('名称');
+        $grid->name('名称');
+        $grid->num('数量');
+        $grid->point_total('积分小计');
+        $grid->cash_total('现金价值')->display(function ($t) {
+            return ($t/100).'元';
+        });
+        $grid->delivery_at('发货时间');
+        $grid->lower_at('失效时间');
+        // $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
+        $grid->filter(function($filter){
+
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+        
+            $filter->where(function ($query) {
+                $ids = Hashids::encode($this->input);
+                if($ids) $query->where('id', '=', $ids[0]);
+            }, '密令查询');
+            // 在这里添加字段过滤器
+            $filter->like('name', '名称');
+            
+            $filter->between('delivery_at', '发货时间')->datetime();
+            $filter->between('lower_at', '失效时间')->datetime();
+
+        
+        });
         return $grid;
     }
 
@@ -114,7 +143,12 @@ class OrderController extends Controller
     {
         $form = new Form(new Order);
 
-        $form->display('ID');
+        $form->display('id','ID');
+        
+
+        $form->datetime('delivery_at','发货时间');
+        $form->simplemde('prove','发货证明');
+
         $form->display('Created at');
         $form->display('Updated at');
 

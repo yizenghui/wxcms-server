@@ -83,6 +83,9 @@ class FanController extends Controller
 
         $grid->id('ID');
         $grid->name('昵称');
+        $grid->point('剩余积分');
+        $grid->total_point('总积分');
+        $grid->current_point('可用积分');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 

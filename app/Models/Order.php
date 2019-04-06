@@ -16,4 +16,11 @@ class Order extends Model
     {
         return $this->belongsTo(Goods::class,'goods_id');
     }
+    /**
+     * 下单用户
+     */
+    public function user()
+    {
+        return $this->belongsTo(Fan::class,'user_id');
+    }
 }
