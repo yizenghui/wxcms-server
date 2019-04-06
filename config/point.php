@@ -7,6 +7,10 @@ return [
      */
     'enabled' => env('POINT_ENABLED', true),
 
+    /**
+     * 周期性结算 true 时当前可用积分需要周期结算，false 是余额为可用积分
+     */
+    'cycle_clearing' => env('POINT_CYCLE_CLEARING', false),
     
     /*
      * 默认pid 如果用户pid为0，默认为此值。
@@ -16,7 +20,7 @@ return [
     /*
      * 签到可以获利积分
      */
-    'sign_action' => env('POINT_SIGN_ACTION', 30),
+    'sign_action' => env('POINT_SIGN_ACTION', 10),
 
     /**
      * 一天可以获得1次签到签到积分
@@ -26,7 +30,7 @@ return [
     /*
      * 阅读可以获得积分
      */
-    'read_action' => env('POINT_READ_ACTION', 2),
+    'read_action' => env('POINT_READ_ACTION', 1),
 
     /*
      * 一天可以获得10次阅读积分
@@ -38,12 +42,12 @@ return [
     /*
      * 点赞可以获得积分
      */
-    'like_action' => env('POINT_LiKE_ACTION', 5),
+    'like_action' => env('POINT_LiKE_ACTION', 2),
 
     /*
-     * 一天可以获得6次点赞积分
+     * 一天可以获得5次点赞积分
      */
-    'day_like_num' => env('POINT_DAY_LiKE_NUM', 6),
+    'day_like_num' => env('POINT_DAY_LiKE_NUM', 5),
 
     
     /*
@@ -60,7 +64,7 @@ return [
     /*
      * 受邀用户签到
      */
-    'fansign_action' => env('POINT_FANSIGN_ACTION', 3),
+    'fansign_action' => env('POINT_FANSIGN_ACTION', 2),
 
     /*
      * 一天可以获得300次邀请新人签到积分

@@ -60,6 +60,22 @@ class Fan extends Authenticatable implements JWTSubject
     }
 
     /**
+     * 获取当前积分(支持两种策略)
+     */
+    public function getCurrentPointAttribute($value)
+    {
+        if(config('point.cycle_clearing')) return $value;
+        return $this->point;
+    }
+
+    /**
+     * 获取用户头像
+     */
+    public function getAvatarAttribute($value)
+    {
+        return  $value?$value:'https://image.weilanwl.com/img/square-3.jpg';
+    }
+    /**
      * 更改积分记录
      * 变化值,描述,如果有id自动保存
      */

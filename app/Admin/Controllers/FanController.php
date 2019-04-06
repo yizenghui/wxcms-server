@@ -80,15 +80,24 @@ class FanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Fan);
-
-        $grid->id('ID');
+        $grid->id('ID')->sortable();
         $grid->name('昵称');
-        $grid->point('剩余积分');
-        $grid->total_point('总积分');
-        $grid->current_point('可用积分');
+        $grid->formid('推荐人id');
+        $grid->point('剩余积分')->sortable();
+        $grid->total_point('总积分')->sortable();
+        // $grid->current_point('可用积分')->sortable();
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
+
+        
+        $grid->filter(function($filter){
+            $filter->like('name', '名称');
+            $filter->eq('formid', '推荐人id');
+            $filter->between('lock_at', '锁定时间')->datetime();
+
+        
+        });
         return $grid;
     }
 
@@ -123,6 +132,7 @@ class FanController extends Controller
         $form->number('point','剩余积分');
         $form->number('current_point','可用积分');
         $form->number('total_point','总积分');
+        $form->datetime('lock_at','锁定用户');
         $form->display('Created at');
         $form->display('Updated at');
 
