@@ -26,14 +26,14 @@ Route::get('gettoken','Api\AuthController@token');
 
 Route::get('/getswipers', function (Request $request) {
     return [
-        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407105115.jpeg','wxto'=>''],
+        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
     ];
 });
 
 
 Route::get('/getuserswipers', function (Request $request) {
     return [
-        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407105115.jpeg','wxto'=>''],
+        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
     ];
 });
 
