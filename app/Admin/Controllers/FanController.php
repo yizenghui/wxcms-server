@@ -94,15 +94,8 @@ class FanController extends Controller
         $grid->filter(function($filter){
 
             $filter->column(1/2, function ($filter) {
-                
                 $filter->like('name', '名称');
                 $filter->like('city', '城市');
-
-            });
-            
-            $filter->column(1/2, function ($filter) {
-                $filter->in('gender','性别')->checkbox([ '0' => '未知', '1' => '男', '2' => '女']);
-                
                 $filter->group('formid', '推荐人id', function ($group) {
                     $group->equal('等于');
                     $group->gt('大于');
@@ -110,7 +103,14 @@ class FanController extends Controller
                     $group->nlt('不小于');
                     $group->ngt('不大于');
                 });
+
+            });
+            
+            $filter->column(1/2, function ($filter) {
+                $filter->in('gender','性别')->checkbox([ '0' => '未知', '1' => '男', '2' => '女']);
                 $filter->between('lock_at', '锁定时间')->datetime();
+                $filter->between('created_at', '创建时间')->datetime();
+                $filter->between('updated_at', '更新时间')->datetime();
             });
             
             
