@@ -73,7 +73,7 @@ class Fan extends Authenticatable implements JWTSubject
      */
     public function getAvatarAttribute($value)
     {
-        return  $value?$value:'https://image.weilanwl.com/img/square-3.jpg';
+        return  $value?$value:'https://wx1.wechatrank.com/base64img/20190408174722.png';
     }
     /**
      * 更改积分记录
