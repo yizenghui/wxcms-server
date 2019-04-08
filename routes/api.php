@@ -26,18 +26,14 @@ Route::get('gettoken','Api\AuthController@token');
 
 Route::get('/getswipers', function (Request $request) {
     return [
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-1.jpg','wxto'=>''],
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-2.jpg','wxto'=>''],
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-3.jpg','wxto'=>''],
+        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
     ];
 });
 
 
 Route::get('/getuserswipers', function (Request $request) {
     return [
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-1.jpg','wxto'=>''],
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-2.jpg','wxto'=>''],
-        ['name'=>'','cover'=>'https://image.weilanwl.com/img/4x3-3.jpg','wxto'=>''],
+        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
     ];
 });
 

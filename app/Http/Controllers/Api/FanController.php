@@ -31,7 +31,6 @@ class FanController extends Controller
         $user = $request->user();
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
-        $user->avatar = $user->avatar?$user->avatar:'https://image.weilanwl.com/img/square-3.jpg';
         
         $user->name = $user->name?$user->name:'游客'.$user->id;
         
@@ -48,7 +47,6 @@ class FanController extends Controller
         $user = $request->user();
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
-        $user->avatar = $user->avatar?$user->avatar:'https://image.weilanwl.com/img/square-3.jpg';
         
         $user->name = $user->name?$user->name:'游客'.$user->id;
         
