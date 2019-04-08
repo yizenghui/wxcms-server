@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Goods;
 use App\Models\Order;
+use App\Models\PointLog;
 use App\Http\Resources\GoodsResource;
 use Carbon\Carbon;
 
@@ -47,9 +48,14 @@ class GoodsController extends Controller
         $user->current_point -= $order->point_total;
         $goods->out += $num; // 加销量
         $goods->stock -= $num; //减库存
-        // $user->save(); // 保存用户数据
+        $user->save(); // 保存用户数据
         
-        $user->changePoint( -$order->point_total,'兑换');// 
+        $log = new PointLog;
+        $log->user_id = $user->id;
+        $log->change = -$order->point_total;
+        $log->intro = '兑换礼品消耗积分';
+        $log->save();
+
         $goods->save(); // 保存商品
         $order->save(); // 保存订单
         // todo 下单通知
