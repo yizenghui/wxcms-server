@@ -82,15 +82,19 @@ class ArticleController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Article);
-        $grid->id('ID');
+        $grid->id('ID')->sortable();
         $grid->title('标题');
         $grid->author()->name('作者');
-        $grid->view('浏览量');
-        $grid->commented('评论数');
-        $grid->liked('喜欢人数');
+        $grid->view('浏览量')->sortable();
+        // $grid->commented('评论数');
+        $grid->liked('喜欢人数')->sortable();
         $grid->recommend_at('推荐截止');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
+
+        $grid->filter(function($filter){
+            $filter->like('title', '标题');
+        });
         return $grid;
     }
 
