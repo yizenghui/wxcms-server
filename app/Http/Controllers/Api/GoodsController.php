@@ -45,10 +45,11 @@ class GoodsController extends Controller
         // 用户扣减积分
         $user->point -= $order->point_total; 
         $user->current_point -= $order->point_total;
-        
         $goods->out += $num; // 加销量
         $goods->stock -= $num; //减库存
-        $user->save(); // 保存用户数据
+        // $user->save(); // 保存用户数据
+        
+        $user->changePoint( -$order->point_total,'兑换');// 
         $goods->save(); // 保存商品
         $order->save(); // 保存订单
         // todo 下单通知
