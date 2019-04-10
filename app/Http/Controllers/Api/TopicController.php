@@ -11,7 +11,7 @@ class TopicController extends Controller
 {
     //
     public function index(){
-        $data = Topic::simplePaginate(20);
+        $data = Topic::orderBy('order')->simplePaginate(20);
         $topics = TopicResource::collection($data);
         return response()->json($topics);
     }
