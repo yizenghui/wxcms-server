@@ -72,8 +72,9 @@ class Crop extends File
                 return 'lost';
             }
         } else {
-            preg_match('/base64img\/.*/is',$base64,$matches);
-            return isset($matches[0]) ? $matches[0] : $base64;
+            return $base64;
+            // preg_match('/base64img\/.*/is',$base64,$matches);
+            // return isset($matches[0]) ? $matches[0] : $base64;
         }
     }
 
