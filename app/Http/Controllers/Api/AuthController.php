@@ -20,7 +20,8 @@ class AuthController extends Controller
   public function token(Request $request){
     $app = EasyWeChat::miniProgram(); // 小程序
     // 约定fromid位置
-    $formid = intval($request->server('HTTP_FORMID'));
+    $fromid = intval($request->server('HTTP_FROMID'));
+    if(!$fromid) $fromid = intval($request->server('HTTP_FORMID'));
     $ret = $app->auth->session($request->get('code'));
     if( array_get($ret,'errcode') ){
       // todo 出错处理
@@ -38,14 +39,14 @@ class AuthController extends Controller
       $newFan = new Fan();
       $newFan->openid      = $openid;
       $newFan->session_key = $session_key;
-      $newFan->formid = $formid;
+      $newFan->fromid = $fromid;
       $newFan->save();
       $fan = $newFan;
 
       //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
-      $formid = $formid?$formid:config('point.default_fromid');
-      if($formid){
-        $fromuser = Fan::find($formid);
+      $fromid = $fromid?$fromid:config('point.default_fromid');
+      if($fromid){
+        $fromuser = Fan::find($fromid);
         if($fromuser->id && !$fromuser->lock_at ){
           $_task = $fromuser->todaytask();
           if($_task->todayInterviewAdd()){
