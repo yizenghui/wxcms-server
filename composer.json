@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "encore/laravel-admin": "^1.6",
         "fideloper/proxy": "~3.3",
+        "intervention/image": "^2.4",
         "laravel-admin-ext/cropper": "^1.0",
         "laravel-admin-ext/helpers": "^1.1",
         "laravel-admin-ext/simplemde": "^1.0",

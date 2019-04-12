@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Http\Resources\ArticleResource;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ArticleController extends Controller
 {
@@ -58,4 +59,41 @@ class ArticleController extends Controller
         $fans = $article->likers()->get();
         return response()->json($fans);
     }
+
+
+    public function poster(Request $request){
+        
+        $img = Image::canvas(600, 800, '#ffffff');
+
+        $data = Article::orderBy('id','desc')->simplePaginate(10);
+
+        $img->text('美文荐读：',50,50, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(36);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+        //        $font->align('center');
+            $font->valign('top');
+        //        $font->angle(90);
+        });
+
+        foreach($data as $k=>$article){
+            $img->text('* '.$article->title,50,100+30*$k, function($font) {
+                $font->file(storage_path('font.ttf'));
+                $font->size(24);
+                // $font->color('#fdf6e3');
+                $font->color('#000000');
+            //        $font->align('center');
+                $font->valign('top');
+            //        $font->angle(90);
+            });
+        }
+
+        $img2 = Image::make(storage_path('wxcms.png'));
+        $img2->resize(100, 100);
+        $img->insert($img2, 'bottom-right',50,50);
+
+        return  $img->response();
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Intervention\Image\ImageManagerStatic as Image;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +15,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/poster','Api\ArticleController@poster');
