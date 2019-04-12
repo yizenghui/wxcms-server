@@ -63,7 +63,7 @@ class ArticleController extends Controller
 
     public function poster(Request $request){
         
-        $img = Image::canvas(600, 500, '#ffffff');
+        $img = Image::canvas(600, 600, '#ffffff');
 
         $data = Article::orderBy('id','desc')->simplePaginate(10);
 
@@ -78,7 +78,7 @@ class ArticleController extends Controller
         });
 
         foreach($data as $k=>$article){
-            $img->text(str_limit('* '.$article->title,($k<7?44:36)),50,80+40*$k, function($font) {
+            $img->text(str_limit('* '.$article->title,44),50,80+40*$k, function($font) {
                 $font->file(storage_path('font.ttf'));
                 $font->size(24);
                 // $font->color('#fdf6e3');
@@ -92,6 +92,26 @@ class ArticleController extends Controller
         $img2 = Image::make(storage_path('wxcms.png'));
         $img2->resize(100, 100);
         $img->insert($img2, 'bottom-right',20,20);
+
+
+        $img->text('长按图片识别小程序二维码',450,520, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(18);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('bottom');
+        //        $font->angle(90);
+        });
+        $img->text('快来跟我一起阅读吧',450,560, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(18);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('bottom');
+        //        $font->angle(90);
+        });
 
         return  $img->response();
     }
