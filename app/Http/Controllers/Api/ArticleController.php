@@ -67,7 +67,7 @@ class ArticleController extends Controller
 
         $data = Article::orderBy('id','desc')->simplePaginate(10);
 
-        $img->text('美文荐读：',50,50, function($font) {
+        $img->text('美文荐读：',50,40, function($font) {
             $font->file(storage_path('font.ttf'));
             $font->size(36);
             // $font->color('#fdf6e3');
@@ -78,7 +78,7 @@ class ArticleController extends Controller
         });
 
         foreach($data as $k=>$article){
-            $img->text('* '.$article->title,50,100+40*$k, function($font) {
+            $img->text(str_limit('* '.$article->title,44),50,80+40*$k, function($font) {
                 $font->file(storage_path('font.ttf'));
                 $font->size(24);
                 // $font->color('#fdf6e3');
@@ -91,7 +91,7 @@ class ArticleController extends Controller
 
         $img2 = Image::make(storage_path('wxcms.png'));
         $img2->resize(100, 100);
-        $img->insert($img2, 'bottom-right',50,50);
+        $img->insert($img2, 'bottom-right',20,20);
 
         return  $img->response();
     }
