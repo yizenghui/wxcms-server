@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Article;
 use App\Http\Resources\ArticleResource;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -41,7 +42,7 @@ class ArticleController extends Controller
      * 获取推荐文章(小程序首页用)
      */
     public function recommend(){
-        $data = Article::orderBy('id','desc')->simplePaginate(10);
+        $data = Article::where( 'recommend_at', '>', Carbon::now() )->orderBy('id','desc')->simplePaginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -65,7 +66,7 @@ class ArticleController extends Controller
         
         $img = Image::canvas(600, 600, '#ffffff');
 
-        $data = Article::orderBy('id','desc')->simplePaginate(10);
+        $data = Article::where( 'recommend_at', '>', Carbon::now() )->orderBy('id','desc')->simplePaginate(10);
 
         $img->text('美文荐读：',50,30, function($font) {
             $font->file(storage_path('font.ttf'));
