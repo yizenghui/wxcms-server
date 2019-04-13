@@ -81,13 +81,13 @@
                 <div class="title m-b-md">
                     WxCMS
                 </div>
-                <div class="links">
+                <div class="links m-b-md">
                     <a href="#" onclick="alert('投稿邮箱：121258121@qq.com');">投稿</a>
                     <a href="#" onclick="alert('合作联系微信：yize1992');">合作</a>
                     <a href="/admin">后台</a>
                     <a href="https://github.com/yizenghui/wxcms">GitHub</a>
                 </div>
-                <div>WxCMS是一款适合微信自媒体免费内容运营的小程序，小程序基于Wepy+ColorUI打造。</div>
+                <div><strong>WxCMS</strong>是一款适合微信自媒体内容运营的小程序，小程序基于Wepy+ColorUI打造。</div>
             </div>
         </div>
     </body>

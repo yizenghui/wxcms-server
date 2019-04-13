@@ -96,7 +96,7 @@ class FanController extends Controller
             $filter->column(1/2, function ($filter) {
                 $filter->like('name', '名称');
                 $filter->like('city', '城市');
-                $filter->group('formid', '推荐人id', function ($group) {
+                $filter->group('fromid', '推荐人id', function ($group) {
                     $group->equal('等于');
                     $group->gt('大于');
                     $group->lt('小于');
