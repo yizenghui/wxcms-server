@@ -6,6 +6,7 @@ use Closure;
 use Encore\Admin\Exception\Handler;
 use Encore\Admin\Form\Builder;
 use Encore\Admin\Form\Field;
+use Encore\Admin\Form\HasHooks;
 use Encore\Admin\Form\Row;
 use Encore\Admin\Form\Tab;
 use Illuminate\Contracts\Support\Renderable;
@@ -15,7 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
@@ -53,7 +53,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\TimeRange      timeRange($start, $end, $label = '')
  * @method Field\Number         number($column, $label = '')
  * @method Field\Currency       currency($column, $label = '')
- * @method Field\HasMany        hasMany($relationName, $callback)
+ * @method Field\HasMany        hasMany($relationName, $label = '', $callback)
  * @method Field\SwitchField    switch($column, $label = '')
  * @method Field\Display        display($column, $label = '')
  * @method Field\Rate           rate($column, $label = '')
@@ -68,9 +68,17 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\MultipleFile   multipleFile($column, $label = '')
  * @method Field\Captcha        captcha($column, $label = '')
  * @method Field\Listbox        listbox($column, $label = '')
+ * @method Field\Table          table($column, $label, $builder)
  */
 class Form implements Renderable
 {
+    use HasHooks;
+
+    /**
+     * Remove flag in `has many` form.
+     */
+    const REMOVE_FLAG_NAME = '_remove_';
+
     /**
      * Eloquent model of the form.
      *
@@ -87,34 +95,6 @@ class Form implements Renderable
      * @var Builder
      */
     protected $builder;
-
-    /**
-     * Submitted callback.
-     *
-     * @var Closure[]
-     */
-    protected $submitted = [];
-
-    /**
-     * Saving callback.
-     *
-     * @var Closure[]
-     */
-    protected $saving = [];
-
-    /**
-     * Saved callback.
-     *
-     * @var Closure[]
-     */
-    protected $saved = [];
-
-    /**
-     * Callbacks after getting editing model.
-     *
-     * @var Closure[]
-     */
-    protected $editing = [];
 
     /**
      * Data for save to current model from input.
@@ -171,11 +151,6 @@ class Form implements Renderable
     protected $tab = null;
 
     /**
-     * Remove flag in `has many` form.
-     */
-    const REMOVE_FLAG_NAME = '_remove_';
-
-    /**
      * Field rows in form.
      *
      * @var array
@@ -188,9 +163,11 @@ class Form implements Renderable
     protected $isSoftDeletes = false;
 
     /**
-     * @var Closure
+     * Initialization closure array.
+     *
+     * @var []Closure
      */
-    protected static $initCallback;
+    protected static $initCallbacks;
 
     /**
      * Create a new form instance.
@@ -208,11 +185,9 @@ class Form implements Renderable
             $callback($this);
         }
 
-        $this->isSoftDeletes = in_array(SoftDeletes::class, class_uses($this->model));
+        $this->isSoftDeletes = in_array(SoftDeletes::class, class_uses_deep($this->model));
 
-        if (static::$initCallback instanceof Closure) {
-            call_user_func(static::$initCallback, $this);
-        }
+        $this->callInitCallbacks();
     }
 
     /**
@@ -222,7 +197,21 @@ class Form implements Renderable
      */
     public static function init(Closure $callback = null)
     {
-        static::$initCallback = $callback;
+        static::$initCallbacks[] = $callback;
+    }
+
+    /**
+     * Call the initialization closure array in sequence.
+     */
+    protected function callInitCallbacks()
+    {
+        if (empty(static::$initCallbacks)) {
+            return;
+        }
+
+        foreach (static::$initCallbacks as $callback) {
+            call_user_func($callback, $this);
+        }
     }
 
     /**
@@ -310,27 +299,47 @@ class Form implements Renderable
      */
     public function destroy($id)
     {
-        collect(explode(',', $id))->filter()->each(function ($id) {
-            $builder = $this->model()->newQuery();
-
-            if ($this->isSoftDeletes) {
-                $builder = $builder->withTrashed();
+        try {
+            if (($ret = $this->callDeleting()) instanceof Response) {
+                return $ret;
             }
 
-            $model = $builder->with($this->getRelations())->findOrFail($id);
+            collect(explode(',', $id))->filter()->each(function ($id) {
+                $builder = $this->model()->newQuery();
 
-            if ($this->isSoftDeletes && $model->trashed()) {
-                $this->deleteFiles($model, true);
-                $model->forceDelete();
+                if ($this->isSoftDeletes) {
+                    $builder = $builder->withTrashed();
+                }
 
-                return;
+                $model = $builder->with($this->getRelations())->findOrFail($id);
+
+                if ($this->isSoftDeletes && $model->trashed()) {
+                    $this->deleteFiles($model, true);
+                    $model->forceDelete();
+
+                    return;
+                }
+
+                $this->deleteFiles($model);
+                $model->delete();
+            });
+
+            if (($ret = $this->callDeleted()) instanceof Response) {
+                return $ret;
             }
 
-            $this->deleteFiles($model);
-            $model->delete();
-        });
+            $response = [
+                'status'  => true,
+                'message' => trans('admin.delete_succeeded'),
+            ];
+        } catch (\Exception $exception) {
+            $response = [
+                'status'  => false,
+                'message' => $exception->getMessage() ?: trans('admin.delete_failed'),
+            ];
+        }
 
-        return true;
+        return response()->json($response);
     }
 
     /**
@@ -364,7 +373,7 @@ class Form implements Renderable
      */
     public function store()
     {
-        $data = Input::all();
+        $data = \request()->all();
 
         // Handle validation errors.
         if ($validationMessages = $this->validationMessages($data)) {
@@ -441,7 +450,7 @@ class Form implements Renderable
 
         $this->relations = $this->getRelationInputs($this->inputs);
 
-        $this->updates = array_except($this->inputs, array_keys($this->relations));
+        $this->updates = Arr::except($this->inputs, array_keys($this->relations));
     }
 
     /**
@@ -453,7 +462,7 @@ class Form implements Renderable
      */
     protected function removeIgnoredFields($input)
     {
-        array_forget($input, $this->ignored);
+        Arr::forget($input, $this->ignored);
 
         return $input;
     }
@@ -470,12 +479,14 @@ class Form implements Renderable
         $relations = [];
 
         foreach ($inputs as $column => $value) {
-            if (method_exists($this->model, $column)) {
-                $relation = call_user_func([$this->model, $column]);
+            if (!method_exists($this->model, $column)) {
+                continue;
+            }
 
-                if ($relation instanceof Relations\Relation) {
-                    $relations[$column] = $value;
-                }
+            $relation = call_user_func([$this->model, $column]);
+
+            if ($relation instanceof Relations\Relation) {
+                $relations[$column] = $value;
             }
         }
 
@@ -483,81 +494,21 @@ class Form implements Renderable
     }
 
     /**
-     * Call editing callbacks.
-     *
-     * @return void
-     */
-    protected function callEditing()
-    {
-        foreach ($this->editing as $func) {
-            call_user_func($func, $this);
-        }
-    }
-
-    /**
-     * Call submitted callback.
-     *
-     * @return mixed
-     */
-    protected function callSubmitted()
-    {
-        foreach ($this->submitted as $func) {
-            if ($func instanceof Closure && ($ret = call_user_func($func, $this)) instanceof Response) {
-                return $ret;
-            }
-        }
-    }
-
-    /**
-     * Call saving callback.
-     *
-     * @return mixed
-     */
-    protected function callSaving()
-    {
-        foreach ($this->saving as $func) {
-            if ($func instanceof Closure && ($ret = call_user_func($func, $this)) instanceof Response) {
-                return $ret;
-            }
-        }
-    }
-
-    /**
-     * Callback after saving a Model.
-     *
-     * @return mixed|null
-     */
-    protected function callSaved()
-    {
-        foreach ($this->saved as $func) {
-            if ($func instanceof Closure && ($ret = call_user_func($func, $this)) instanceof Response) {
-                return $ret;
-            }
-        }
-    }
-
-    /**
      * Handle update.
      *
-     * @param int $id
+     * @param int  $id
+     * @param null $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return bool|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
      */
     public function update($id, $data = null)
     {
-        $data = ($data) ?: Input::all();
+        $data = ($data) ?: request()->all();
 
         $isEditable = $this->isEditable($data);
 
-        $data = $this->handleEditable($data);
-
-        $data = $this->handleFileDelete($data);
-
-        if ($this->handleOrderable($id, $data)) {
-            return response([
-                'status'  => true,
-                'message' => trans('admin.update_succeeded'),
-            ]);
+        if (($response = $this->handleColumnUpdates($id, $data)) instanceof Response) {
+            return $response;
         }
 
         /* @var Model $this->model */
@@ -575,9 +526,9 @@ class Form implements Renderable
         if ($validationMessages = $this->validationMessages($data)) {
             if (!$isEditable) {
                 return back()->withInput()->withErrors($validationMessages);
-            } else {
-                return response()->json(['errors' => array_dot($validationMessages->getMessages())], 422);
             }
+
+            return response()->json(['errors' => Arr::dot($validationMessages->getMessages())], 422);
         }
 
         if (($response = $this->prepare($data)) instanceof Response) {
@@ -677,6 +628,32 @@ class Form implements Renderable
     }
 
     /**
+     * Handle updates for single column.
+     *
+     * @param int   $id
+     * @param array $data
+     *
+     * @return array|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|Response
+     */
+    protected function handleColumnUpdates($id, $data)
+    {
+        $data = $this->handleEditable($data);
+
+        $data = $this->handleFileDelete($data);
+
+        $data = $this->handleFileSort($data);
+
+        if ($this->handleOrderable($id, $data)) {
+            return response([
+                'status'  => true,
+                'message' => trans('admin.update_succeeded'),
+            ]);
+        }
+
+        return $data;
+    }
+
+    /**
      * Handle editable update.
      *
      * @param array $input
@@ -689,8 +666,8 @@ class Form implements Renderable
             $name = $input['name'];
             $value = $input['value'];
 
-            array_forget($input, ['pk', 'value', 'name']);
-            array_set($input, $name, $value);
+            Arr::forget($input, ['pk', 'value', 'name']);
+            Arr::set($input, $name, $value);
         }
 
         return $input;
@@ -708,7 +685,33 @@ class Form implements Renderable
             unset($input['key']);
         }
 
-        Input::replace($input);
+        request()->replace($input);
+
+        return $input;
+    }
+
+    /**
+     * @param array $input
+     *
+     * @return array
+     */
+    protected function handleFileSort(array $input = [])
+    {
+        if (!array_key_exists(Field::FILE_SORT_FLAG, $input)) {
+            return $input;
+        }
+
+        $sorts = array_filter($input[Field::FILE_SORT_FLAG]);
+
+        if (empty($sorts)) {
+            return $input;
+        }
+
+        foreach ($sorts as $column => $order) {
+            $input[$column] = $order;
+        }
+
+        request()->replace($input);
 
         return $input;
     }
@@ -777,7 +780,7 @@ class Form implements Renderable
                     if (is_null($related)) {
                         $related = $relation->getRelated();
                         $qualifiedParentKeyName = $relation->getQualifiedParentKeyName();
-                        $localKey = array_last(explode('.', $qualifiedParentKeyName));
+                        $localKey = Arr::last(explode('.', $qualifiedParentKeyName));
                         $related->{$relation->getForeignKeyName()} = $this->model->{$localKey};
                     }
 
@@ -788,6 +791,7 @@ class Form implements Renderable
                     $related->save();
                     break;
                 case $relation instanceof Relations\BelongsTo:
+                case $relation instanceof Relations\MorphTo:
 
                     $parent = $this->model->$name;
 
@@ -803,8 +807,9 @@ class Form implements Renderable
                     $parent->save();
 
                     // When in creating, associate two models
-                    if (!$this->model->{$relation->getForeignKey()}) {
-                        $this->model->{$relation->getForeignKey()} = $parent->getKey();
+                    $foreignKeyMethod = (app()->version() < '5.8.0') ? 'getForeignKey' : 'getForeignKeyName';
+                    if (!$this->model->{$relation->{$foreignKeyMethod}()}) {
+                        $this->model->{$relation->{$foreignKeyMethod}()} = $parent->getKey();
 
                         $this->model->save();
                     }
@@ -829,7 +834,7 @@ class Form implements Renderable
 
                         $keyName = $relation->getRelated()->getKeyName();
 
-                        $instance = $relation->findOrNew(array_get($related, $keyName));
+                        $instance = $relation->findOrNew(Arr::get($related, $keyName));
 
                         if ($related[static::REMOVE_FLAG_NAME] == 1) {
                             $instance->delete();
@@ -837,7 +842,7 @@ class Form implements Renderable
                             continue;
                         }
 
-                        array_forget($related, static::REMOVE_FLAG_NAME);
+                        Arr::forget($related, static::REMOVE_FLAG_NAME);
 
                         $instance->fill($related);
 
@@ -866,7 +871,7 @@ class Form implements Renderable
             $columns = $field->column();
 
             // If column not in input array data, then continue.
-            if (!array_has($updates, $columns)) {
+            if (!Arr::has($updates, $columns)) {
                 continue;
             }
 
@@ -880,10 +885,10 @@ class Form implements Renderable
 
             if (is_array($columns)) {
                 foreach ($columns as $name => $column) {
-                    array_set($prepared, $column, $value[$name]);
+                    Arr::set($prepared, $column, $value[$name]);
                 }
             } elseif (is_string($columns)) {
-                array_set($prepared, $columns, $value);
+                Arr::set($prepared, $columns, $value);
             }
         }
 
@@ -918,7 +923,7 @@ class Form implements Renderable
     protected function prepareInsert($inserts)
     {
         if ($this->isHasOneRelation($inserts)) {
-            $inserts = array_dot($inserts);
+            $inserts = Arr::dot($inserts);
         }
 
         foreach ($inserts as $column => $value) {
@@ -933,7 +938,7 @@ class Form implements Renderable
         $prepared = [];
 
         foreach ($inserts as $key => $value) {
-            array_set($prepared, $key, $value);
+            Arr::set($prepared, $key, $value);
         }
 
         return $prepared;
@@ -962,54 +967,6 @@ class Form implements Renderable
     }
 
     /**
-     * Set after getting editing model callback.
-     *
-     * @param Closure $callback
-     *
-     * @return void
-     */
-    public function editing(Closure $callback)
-    {
-        $this->editing[] = $callback;
-    }
-
-    /**
-     * Set submitted callback.
-     *
-     * @param Closure $callback
-     *
-     * @return void
-     */
-    public function submitted(Closure $callback)
-    {
-        $this->submitted[] = $callback;
-    }
-
-    /**
-     * Set saving callback.
-     *
-     * @param Closure $callback
-     *
-     * @return void
-     */
-    public function saving(Closure $callback)
-    {
-        $this->saving[] = $callback;
-    }
-
-    /**
-     * Set saved callback.
-     *
-     * @param Closure $callback
-     *
-     * @return void
-     */
-    public function saved(Closure $callback)
-    {
-        $this->saved[] = $callback;
-    }
-
-    /**
      * Ignore fields to save.
      *
      * @param string|array $fields
@@ -1032,16 +989,16 @@ class Form implements Renderable
     protected function getDataByColumn($data, $columns)
     {
         if (is_string($columns)) {
-            return array_get($data, $columns);
+            return Arr::get($data, $columns);
         }
 
         if (is_array($columns)) {
             $value = [];
             foreach ($columns as $name => $column) {
-                if (!array_has($data, $column)) {
+                if (!Arr::has($data, $column)) {
                     continue;
                 }
-                $value[$name] = array_get($data, $column);
+                $value[$name] = Arr::get($data, $column);
             }
 
             return $value;
@@ -1189,8 +1146,8 @@ class Form implements Renderable
             $columns[] = $field->column();
         }
 
-        foreach (array_flatten($columns) as $column) {
-            if (str_contains($column, '.')) {
+        foreach (Arr::flatten($columns) as $column) {
+            if (Str::contains($column, '.')) {
                 list($relation) = explode('.', $column);
 
                 if (method_exists($this->model, $relation) &&
@@ -1297,6 +1254,8 @@ class Form implements Renderable
     /**
      * Disable form submit.
      *
+     * @param bool $disable
+     *
      * @return $this
      *
      * @deprecated
@@ -1310,6 +1269,8 @@ class Form implements Renderable
 
     /**
      * Disable form reset.
+     *
+     * @param bool $disable
      *
      * @return $this
      *
@@ -1325,6 +1286,8 @@ class Form implements Renderable
     /**
      * Disable View Checkbox on footer.
      *
+     * @param bool $disable
+     *
      * @return $this
      */
     public function disableViewCheck(bool $disable = true)
@@ -1337,6 +1300,8 @@ class Form implements Renderable
     /**
      * Disable Editing Checkbox on footer.
      *
+     * @param bool $disable
+     *
      * @return $this
      */
     public function disableEditingCheck(bool $disable = true)
@@ -1348,6 +1313,8 @@ class Form implements Renderable
 
     /**
      * Disable Creating Checkbox on footer.
+     *
+     * @param bool $disable
      *
      * @return $this
      */
@@ -1411,10 +1378,10 @@ class Form implements Renderable
     public function input($key, $value = null)
     {
         if (is_null($value)) {
-            return array_get($this->inputs, $key);
+            return Arr::get($this->inputs, $key);
         }
 
-        return array_set($this->inputs, $key, $value);
+        return Arr::set($this->inputs, $key, $value);
     }
 
     /**
@@ -1471,6 +1438,7 @@ class Form implements Renderable
             'multipleImage'  => Field\MultipleImage::class,
             'captcha'        => Field\Captcha::class,
             'listbox'        => Field\Listbox::class,
+            'table'          => Field\Table::class,
         ];
 
         foreach ($map as $abstract => $class) {
@@ -1511,7 +1479,7 @@ class Form implements Renderable
      */
     public static function forget($abstract)
     {
-        array_forget(static::$availableFields, $abstract);
+        Arr::forget(static::$availableFields, $abstract);
     }
 
     /**
@@ -1528,7 +1496,7 @@ class Form implements Renderable
             $method = static::$fieldAlias[$method];
         }
 
-        $class = array_get(static::$availableFields, $method);
+        $class = Arr::get(static::$availableFields, $method);
 
         if (class_exists($class)) {
             return $class;
@@ -1558,8 +1526,8 @@ class Form implements Renderable
 
             $assets = call_user_func([$field, 'getAssets']);
 
-            $css->push(array_get($assets, 'css'));
-            $js->push(array_get($assets, 'js'));
+            $css->push(Arr::get($assets, 'css'));
+            $js->push(Arr::get($assets, 'js'));
         }
 
         return static::$collectedAssets = [
@@ -1584,11 +1552,13 @@ class Form implements Renderable
      * Setter.
      *
      * @param string $name
-     * @param $value
+     * @param mixed  $value
+     *
+     * @return array
      */
     public function __set($name, $value)
     {
-        return array_set($this->inputs, $name, $value);
+        return Arr::set($this->inputs, $name, $value);
     }
 
     /**
@@ -1602,7 +1572,7 @@ class Form implements Renderable
     public function __call($method, $arguments)
     {
         if ($className = static::findFieldClass($method)) {
-            $column = array_get($arguments, 0, ''); //[0];
+            $column = Arr::get($arguments, 0, ''); //[0];
 
             $element = new $className($column, array_slice($arguments, 1));
 

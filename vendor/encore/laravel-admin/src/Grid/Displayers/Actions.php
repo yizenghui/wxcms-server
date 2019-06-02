@@ -57,6 +57,16 @@ class Actions extends AbstractDisplayer
     }
 
     /**
+     * Get route key name of current row.
+     *
+     * @return mixed
+     */
+    public function getRouteKey()
+    {
+        return $this->row->{$this->row->getRouteKeyName()};
+    }
+
+    /**
      * Disable view action.
      *
      * @return $this
@@ -157,7 +167,7 @@ class Actions extends AbstractDisplayer
     protected function renderView()
     {
         return <<<EOT
-<a href="{$this->getResource()}/{$this->getKey()}">
+<a href="{$this->getResource()}/{$this->getRouteKey()}">
     <i class="fa fa-eye"></i>
 </a>
 EOT;
@@ -171,7 +181,7 @@ EOT;
     protected function renderEdit()
     {
         return <<<EOT
-<a href="{$this->getResource()}/{$this->getKey()}/edit">
+<a href="{$this->getResource()}/{$this->getRouteKey()}/edit">
     <i class="fa fa-edit"></i>
 </a>
 EOT;
@@ -184,9 +194,22 @@ EOT;
      */
     protected function renderDelete()
     {
-        $deleteConfirm = trans('admin.delete_confirm');
-        $confirm = trans('admin.confirm');
-        $cancel = trans('admin.cancel');
+        $this->setupDeleteScript();
+
+        return <<<EOT
+<a href="javascript:void(0);" data-id="{$this->getKey()}" class="{$this->grid->getGridRowName()}-delete">
+    <i class="fa fa-trash"></i>
+</a>
+EOT;
+    }
+
+    protected function setupDeleteScript()
+    {
+        $trans = [
+            'delete_confirm' => trans('admin.delete_confirm'),
+            'confirm'        => trans('admin.confirm'),
+            'cancel'         => trans('admin.cancel'),
+        ];
 
         $script = <<<SCRIPT
 
@@ -195,13 +218,13 @@ $('.{$this->grid->getGridRowName()}-delete').unbind('click').click(function() {
     var id = $(this).data('id');
 
     swal({
-        title: "$deleteConfirm",
+        title: "{$trans['delete_confirm']}",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "$confirm",
+        confirmButtonText: "{$trans['confirm']}",
         showLoaderOnConfirm: true,
-        cancelButtonText: "$cancel",
+        cancelButtonText: "{$trans['cancel']}",
         preConfirm: function() {
             return new Promise(function(resolve) {
                 $.ajax({
@@ -234,11 +257,5 @@ $('.{$this->grid->getGridRowName()}-delete').unbind('click').click(function() {
 SCRIPT;
 
         Admin::script($script);
-
-        return <<<EOT
-<a href="javascript:void(0);" data-id="{$this->getKey()}" class="{$this->grid->getGridRowName()}-delete">
-    <i class="fa fa-trash"></i>
-</a>
-EOT;
     }
 }

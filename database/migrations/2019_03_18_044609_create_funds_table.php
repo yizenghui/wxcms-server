@@ -15,9 +15,10 @@ class CreateFundsTable extends Migration
     {
         Schema::create('funds', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
             $table->integer('user_id')->comment('关联用户id')->default(0);
-            $table->integer('cash')->comment('正加负减 现金(单位:分)');
-            $table->integer('total')->comment('小计总数 当前剩余总金额');
+            $table->integer('cash')->comment('正加负减 现金(单位:分)')->default(0);
+            $table->integer('total')->comment('小计总数 当前剩余总金额')->default(0);
             $table->dateTime('settlement')->comment('结算时间')->nullable();
             $table->string('intro')->comment('描述')->nullable();
             $table->timestamps();

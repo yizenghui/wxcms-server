@@ -11,7 +11,7 @@ class TopicController extends Controller
 {
     //
     public function index(){
-        $data = Topic::orderBy('order')->simplePaginate(20);
+        $data = Topic::where('tenancy_id', '=', request()->get('appid'))->where('state','=',1)->orderBy('order')->simplePaginate(20);
         $topics = TopicResource::collection($data);
         return response()->json($topics);
     }

@@ -21,75 +21,79 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     // put your router
 // });
 
-Route::get('gettoken','Api\AuthController@token');
+Route::get('/v1/qrcode/jump/{token}','Api\QrcodeController@jump');
 
+Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checktenancy']], function () {
 
-Route::get('/getswipers', function (Request $request) {
-    return [
-        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
-    ];
-});
+    Route::group(['middleware' => ['inittenancyconifg']], function () {
+        Route::get('gettoken','AuthController@token');
+    });
+     
+    Route::get('carousels','CarouselController@index');
 
+    Route::get('ads','AdController@index');
 
-Route::get('/getuserswipers', function (Request $request) {
-    return [
-        ['name'=>'','cover'=>'https://wx1.wechatrank.com/base64img/20190407110520.jpeg','wxto'=>''],
-    ];
-});
+    Route::get('config/userhome','AuthController@userhome');
+    Route::get('config/teamhome','AuthController@teamhome');
+    Route::get('config/home','AuthController@home');
+    Route::get('config/topichome','AuthController@topichome');
+    Route::get('config/topiclist','AuthController@topiclist');
+    Route::get('config/articleinfo','AuthController@articleinfo');
 
-Route::get('config/userhome','Api\AuthController@userhome');
-Route::get('config/teamhome','Api\AuthController@teamhome');
-Route::get('config/home','Api\AuthController@home');
-Route::get('config/topichome','Api\AuthController@topichome');
-Route::get('config/topiclist','Api\AuthController@topiclist');
-Route::get('config/articleinfo','Api\AuthController@articleinfo');
-
-Route::get('gettoken','Api\AuthController@token');
-
-Route::group(['middleware' => ['auth:api']], function () {
     
+    Route::group(['middleware' => ['auth:api', 'inittenancyconifg']], function () {
+        Route::get('/action/task','ActionController@task'); // 用户每日任务
+        Route::get('/action/view','ActionController@view'); // 查看文章行为
+        Route::get('/action/sign','ActionController@sign'); // 用户签到
+        Route::get('/action/reward','ActionController@reward'); // 用户激励
+        Route::get('/action/signandreward','ActionController@signAndReward'); // 用户签到激励
+        Route::get('/action/likearticle','ActionController@likeArticle'); // 喜欢某个文章
+        Route::get('/action/unlikearticle','ActionController@unLikeArticle'); // 取消喜欢某个文章
+    });
 
-    // Route::get('checktoken','Api\AuthController@check');
+    Route::group(['middleware' => ['auth:api']], function () {
+        
 
-    Route::get('/action/task','Api\ActionController@task'); // 用户每日任务
-    Route::get('/action/view','Api\ActionController@view'); // 查看文章行为
-    Route::get('/action/sign','Api\ActionController@sign'); // 查看文章行为(用户签到)
-    Route::get('/action/likearticle','Api\ActionController@likearticle'); // 喜欢某个文章
-    Route::get('/action/unlikearticle','Api\ActionController@unlikearticle'); // 取消喜欢某个文章
-
-
-    Route::get('/articles','Api\ArticleController@index');
-    Route::get('/goodses','Api\GoodsController@index');
-    Route::get('/buygoods','Api\GoodsController@buy');
-    Route::get('/articles/recommend','Api\ArticleController@recommend');
-    Route::get('/articles/{id}','Api\ArticleController@show');
-    Route::get('/articles/{id}/likeusers','Api\ArticleController@likeusers');
-    Route::get('/topics','Api\TopicController@index');
-    Route::get('/topics/{id}','Api\TopicController@show');
-    Route::get('/orders/{id}','Api\OrderController@show');
-    
-    
-    Route::get('/team/create','Api\TeamController@create');
-    Route::get('/team/show','Api\TeamController@show');
-    Route::get('/team/search','Api\TeamController@search');
-    Route::get('/team/join','Api\TeamController@join');
-    Route::get('/team/getme','Api\TeamController@getme');
-
-    Route::post('/asyncuserdata','Api\AuthController@asyncuserdata');
-    Route::get('/user/footprint','Api\FanController@footprint');
-    Route::get('/user/like','Api\FanController@like');
-    Route::get('/user/pointlog','Api\FanController@pointlog');
-    Route::get('/user/tasklogs','Api\FanController@tasklog');
-    Route::get('/getme','Api\FanController@getme');
-    Route::get('/getuserinfo','Api\FanController@getuserinfo');
-    Route::get('/orders','Api\FanController@order');
-    Route::get('/more/recommend','Api\MoreController@recommend'); // 小程序推荐
-    Route::get('/more/effect','Api\MoreController@effect'); // 影响力数据
-    Route::get('/more/operational','Api\MoreController@operational'); // 运营数据
-    Route::get('/more/partner','Api\MoreController@partner'); // 合作伙伴
-});
+        // Route::get('checktoken','Api\AuthController@check');
 
 
-Route::middleware(['auth:api'])->get('/checktoken', function (Request $request) {
-    return $request->user();
+        Route::get('/articles','ArticleController@index');
+        Route::get('/search','ArticleController@search');
+        Route::get('/goodses','GoodsController@index');
+        Route::get('/buygoods','GoodsController@buy');
+        Route::get('/articles/recommend','ArticleController@recommend');
+        Route::get('/articles/{id}','ArticleController@show');
+        Route::get('/articles/{id}/likeusers','ArticleController@likeusers');
+        Route::get('/topics','TopicController@index');
+        Route::get('/topics/{id}','TopicController@show');
+        Route::get('/orders/{id}','OrderController@show');
+        
+        Route::get('/poster/article/{id}','PosterController@article');
+        
+        
+        Route::get('/team/create','TeamController@create');
+        Route::get('/team/show','TeamController@show');
+        Route::get('/team/search','TeamController@search');
+        Route::get('/team/join','TeamController@join');
+        Route::get('/team/getme','TeamController@getme');
+
+        Route::post('/asyncuserdata','AuthController@asyncuserdata');
+        Route::get('/user/footprint','FanController@footprint');
+        Route::get('/user/like','FanController@like');
+        Route::get('/user/pointlog','FanController@pointlog');
+        Route::get('/user/tasklogs','FanController@tasklog');
+        Route::get('/getme','FanController@getme');
+        Route::get('/getuserinfo','FanController@getuserinfo');
+        Route::get('/orders','FanController@order');
+        Route::get('/more/recommend','MoreController@recommend'); // 小程序推荐
+        Route::get('/more/effect','MoreController@effect'); // 影响力数据
+        Route::get('/more/operational','MoreController@operational'); // 运营数据
+        Route::get('/more/partner','MoreController@partner'); // 合作伙伴
+    });
+
+
+    Route::middleware(['auth:api'])->get('/checktoken', function (Request $request) {
+        return $request->user();
+    });
+
 });

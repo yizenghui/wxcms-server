@@ -61,7 +61,7 @@
             'secret_key'=> '',  //SecretKey
             'bucket'    => '',  //Bucket名字
             'notify_url'=> '',  //持久化处理回调地址
-            'access'    => 'public'  //空间访问控制 public 或 private
+            'access'    => 'public',  //空间访问控制 public 或 private
             'hotlink_prevention_key' => 'afc89ff8bd2axxxxxxxxxxxxxxbb', // CDN 时间戳防盗链的 key。 设置为 null 则不启用本功能。
 //            'hotlink_prevention_key' => 'cbab68a279xxxxxxxxxxab509a', // 同上，备用
         ],

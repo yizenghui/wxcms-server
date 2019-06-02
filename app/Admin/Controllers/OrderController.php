@@ -10,6 +10,8 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\MessageBag;
+use Admin;
 
 
 class OrderController extends Controller
@@ -54,6 +56,12 @@ class OrderController extends Controller
      */
     public function edit($id, Content $content)
     {
+        // 检查是否具有修改该数据的权限
+        $data = Order::findOrFail($id);
+        // 不是超级管理员或者不是自己的资源
+        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+            return $content->withError('出错了', '无权查看该资源');
+        }
         return $content
             ->header('Edit')
             ->description('description')
@@ -83,9 +91,13 @@ class OrderController extends Controller
     {
         $grid = new Grid(new Order);
 
+        $grid->user_id('UID');
+        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
         //  $token = Hashids::encode($this->id);
-        $grid->id('ID');
-        $grid->user()->name('名称');
+        $grid->id('ID')->display(function($id) {
+            return  Hashids::encode($id);
+        });
+        // $grid->user()->name('名称');
         $grid->name('名称');
         $grid->num('数量');
         $grid->point_total('积分小计');
@@ -98,21 +110,16 @@ class OrderController extends Controller
         $grid->updated_at('Updated at');
 
         $grid->filter(function($filter){
-
             // 去掉默认的id过滤器
             $filter->disableIdFilter();
-        
             $filter->where(function ($query) {
-                $ids = Hashids::encode($this->input);
+                $ids = Hashids::decode($this->input);
                 if($ids) $query->where('id', '=', $ids[0]);
             }, '密令查询');
             // 在这里添加字段过滤器
             $filter->like('name', '名称');
-            
             $filter->between('delivery_at', '发货时间')->datetime();
             $filter->between('lower_at', '失效时间')->datetime();
-
-        
         });
         return $grid;
     }
@@ -144,10 +151,34 @@ class OrderController extends Controller
         $form = new Form(new Order);
 
         $form->display('id','ID');
-        
+        $form->display('user_id','UID');
+                
+    
+        // 抛出错误信息
+        $form->saving(function ($form) {
 
+            if($form->model()->id){
+                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }else{
+                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }
+        });
+        
+        $form->hidden('tenancy_id')->default(Admin::user()->id);
         $form->datetime('delivery_at','发货时间');
-        $form->simplemde('prove','发货证明');
+        $form->simplemde('prove','发货证明')->help('上传图片到图床<a target="_blank" href="https://sm.ms/">sm.ms</a>复制Markdown语法标签');
 
         $form->display('Created at');
         $form->display('Updated at');

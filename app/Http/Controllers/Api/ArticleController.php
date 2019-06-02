@@ -5,23 +5,36 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Author;
 use App\Http\Resources\ArticleResource;
 use Intervention\Image\ImageManagerStatic as Image;
+use Vinkla\Hashids\Facades\Hashids;
+use Carbon\Carbon;
 
 class ArticleController extends Controller
 {
     //
     public function index(Request $request){
+
+        $authors_ids = Author::where('tenancy_id', '=', $request->get('appid'))->where('state','=',1)->pluck('id');
+        // dd($authors_ids);
         $topic_id = $request->get('topic');
         if( $topic_id ){
-            $data = Article::where('topic_id','=',$topic_id)->orderBy('id','desc')->simplePaginate(10);
+            $data = Article::where('tenancy_id', '=', $request->get('appid'))->where('topic_id','=',$topic_id)->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
         }else{
-            $data = Article::orderBy('id','desc')->simplePaginate(10);
+            $data = Article::where('tenancy_id', '=', $request->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
         }
+        // dd($data);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
 
+    //
+    public function search(Request $request){
+        $data = Article::search($request->get('q'))->where('tenancy_id', $request->get('appid'))->paginate(10);
+        $articles = ArticleResource::collection($data);
+        return response()->json($articles);
+    }
     
     /**
      * Display the specified resource.
@@ -33,7 +46,14 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $article->author;
+        $share = $article->share;
+        $article->video = '';
+        $article->share_title = $share?$share->oneTitle:'';
+        $article->share_cover = $share?$share->oneCover:'';
         $article->userlikearticle = $request->user()->hasLiked($article);
+        // 
+        $encode_qrcode = Hashids::encode( $request->get('appid'), $request->user()->id, $article->id, date("ymdHi") );
+        $article->qrcode = $encode_qrcode;
         return response()->json($article);
     }
 
@@ -41,7 +61,10 @@ class ArticleController extends Controller
      * 获取推荐文章(小程序首页用)
      */
     public function recommend(){
-        $data = Article::orderBy('id','desc')->simplePaginate(10);
+        $authors_ids = Author::where('tenancy_id', '=', request()->get('appid'))->where('state','=',1)->pluck('id')->toArray();
+    //  dd($authors_ids);
+        $data = Article::where('recommend_at','>',Carbon::now())->where('state','=',1)->where('tenancy_id', '=', request()->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10); //toSql();  where('view', '>', 10)->
+        // dd($data);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -60,14 +83,64 @@ class ArticleController extends Controller
         return response()->json($fans);
     }
 
+    public function getposter(Request $request){
+        // dd($request->aid);
+        $article = Article::findOrFail($request->aid);
+        $img = Image::canvas(600, 600, '#ffffff');
+        // $img->text('荐读阅读：',50,30, function($font) {
+        //     $font->file(storage_path('font.ttf'));
+        //     $font->size(36);
+        //     // $font->color('#fdf6e3');
+        //     $font->color('#000000');
+        // //        $font->align('center');
+        //     $font->valign('top');
+        // //        $font->angle(90);
+        // });
+
+        $img->text(str_limit($article->title,44),50,30, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(24);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+        //        $font->align('center');
+            $font->valign('top');
+        //        $font->angle(90);
+        });
+
+        $img2 = Image::make(storage_path('wxcms.png'));
+        $img2->resize(100, 100);
+        $img->insert($img2, 'bottom-right',20,20);
+
+
+        $img->text('长按图片识别小程序二维码',450,520, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(18);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('bottom');
+        //        $font->angle(90);
+        });
+        $img->text('快来跟我一起阅读吧',450,560, function($font) {
+            $font->file(storage_path('font.ttf'));
+            $font->size(18);
+            // $font->color('#fdf6e3');
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('bottom');
+        //        $font->angle(90);
+        });
+
+        return  $img->response();
+    }
 
     public function poster(Request $request){
         
         $img = Image::canvas(600, 600, '#ffffff');
 
-        $data = Article::orderBy('id','desc')->simplePaginate(10);
+        $data = Article::where('tenancy_id', '=', $request->get('appid'))->orderBy('id','desc')->simplePaginate(10);
 
-        $img->text('美文荐读：',50,30, function($font) {
+        $img->text('荐读阅读：',50,30, function($font) {
             $font->file(storage_path('font.ttf'));
             $font->size(36);
             // $font->color('#fdf6e3');

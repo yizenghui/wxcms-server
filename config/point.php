@@ -28,6 +28,16 @@ return [
     'day_sign_num' => env('POINT_DAY_SIGN_NUM', 1),
     
     /*
+     * 签到可以获利积分
+     */
+    'reward_action' => env('POINT_REWARD_ACTION', 10),
+
+    /**
+     * 一天可以获得1次签到签到积分
+     */
+    'day_reward_num' => env('POINT_DAY_REWARD_NUM', 1),
+    
+    /*
      * 阅读可以获得积分
      */
     'read_action' => env('POINT_READ_ACTION', 1),

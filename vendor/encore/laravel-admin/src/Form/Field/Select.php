@@ -140,8 +140,8 @@ EOT;
     /**
      * Load options for other selects on change.
      *
-     * @param string $fields
-     * @param string $sourceUrls
+     * @param array  $fields
+     * @param array  $sourceUrls
      * @param string $idField
      * @param string $textField
      *
@@ -200,7 +200,8 @@ EOT;
      */
     public function model($model, $idField = 'id', $textField = 'name')
     {
-        if (!class_exists($model)
+        if (
+            !class_exists($model)
             || !in_array(Model::class, class_parents($model))
         ) {
             throw new \InvalidArgumentException("[$model] must be a valid model class");
@@ -215,7 +216,7 @@ EOT;
 
             if (is_array($value)) {
                 if (Arr::isAssoc($value)) {
-                    $resources[] = array_get($value, $idField);
+                    $resources[] = Arr::get($value, $idField);
                 } else {
                     $resources = array_column($value, $idField);
                 }
@@ -355,6 +356,34 @@ EOT;
         $this->config[$key] = $val;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function readOnly()
+    {
+        //移除特定字段名称,增加MultipleSelect的修订
+        //没有特定字段名可以使多个readonly的JS代码片段被Admin::script的array_unique精简代码
+        $script = <<<'EOT'
+$("form select").on("select2:opening", function (e) {
+    if($(this).attr('readonly') || $(this).is(':hidden')){
+    e.preventDefault();
+    }
+});
+$(document).ready(function(){
+    $('select').each(function(){
+        if($(this).is('[readonly]')){
+            $(this).closest('.form-group').find('span.select2-selection__choice__remove').first().remove();
+            $(this).closest('.form-group').find('li.select2-search').first().remove();
+            $(this).closest('.form-group').find('span.select2-selection__clear').first().remove();
+        }
+    });
+});
+EOT;
+        Admin::script($script);
+
+        return parent::readOnly();
     }
 
     /**

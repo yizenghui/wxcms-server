@@ -125,7 +125,7 @@ SCRIPT;
 
             if (is_array($value)) {
                 if (Arr::isAssoc($value)) {
-                    $resources[] = array_get($value, $idField);
+                    $resources[] = Arr::get($value, $idField);
                 } else {
                     $resources = array_column($value, $idField);
                 }
@@ -285,7 +285,7 @@ $(document).on('change', ".{$this->getClass($column)}", function () {
             }));
         });
         
-        $(target).trigger('change');
+        $(target).val(null).trigger('change');
     });
 });
 EOT;

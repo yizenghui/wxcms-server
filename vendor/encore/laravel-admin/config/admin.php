@@ -38,6 +38,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Laravel-admin bootstrap setting
+    |--------------------------------------------------------------------------
+    |
+    | This value is the path of laravel-admin bootstrap file.
+    |
+    */
+    'bootstrap' => app_path('Admin/bootstrap.php'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Laravel-admin route settings
     |--------------------------------------------------------------------------
     |
@@ -118,6 +128,15 @@ return [
 
         // Add "remember me" to login form
         'remember' => true,
+
+        // Redirect to the specified URI when user is not authorized.
+        'redirect_to' => 'auth/login',
+
+        // The URIs that should be excluded from authorization.
+        'excepts' => [
+            'auth/login',
+            'auth/logout',
+        ],
     ],
 
     /*
@@ -208,6 +227,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User default avatar
+    |--------------------------------------------------------------------------
+    |
+    | Set a default avatar for newly created users.
+    |
+    */
+    'default_avatar' => '/vendor/laravel-admin/AdminLTE/dist/img/user2-160x160.jpg',
+
+    /*
+    |--------------------------------------------------------------------------
     | Admin map field provider
     |--------------------------------------------------------------------------
     |
@@ -294,6 +323,13 @@ return [
     | Whether enable default breadcrumb for every page content.
     */
     'enable_default_breadcrumb' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable/Disable assets minify
+    |--------------------------------------------------------------------------
+    */
+    'minify_assets' => true,
 
     /*
     |--------------------------------------------------------------------------

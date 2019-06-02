@@ -15,6 +15,7 @@ class CreateFansTable extends Migration
     {
         Schema::create('fans', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
             $table->string('name')->comment('用户昵称')->nullable();
             $table->string('openid')->unique()->comment('开放id');
             $table->integer('gender')->comment('性别')->default(0);
@@ -26,6 +27,8 @@ class CreateFansTable extends Migration
             $table->text('remarks')->comment('管理员备注')->nullable();
             $table->integer('fromid')->comment('推荐人')->default(0);
             $table->integer('point')->comment('剩余积分')->default(0);
+            $table->integer('sign_at')->comment('签到Ymd')->default(0);
+            $table->integer('reward_at')->comment('激励Ymd')->default(0);
             $table->integer('current_point')->comment('当前可用积分')->default(0); // 注：这个参数在发工资时由剩余积分同步过来 (用于限制用户这个月新获取的积分不能在结算前使用)
             $table->integer('total_point')->index()->comment('总积分')->default(0);
             $table->string('session_key')->comment('session_key')->nullable();

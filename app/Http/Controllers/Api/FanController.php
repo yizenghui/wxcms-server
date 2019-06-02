@@ -31,9 +31,8 @@ class FanController extends Controller
         $user = $request->user();
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
-        
+        $user->showlogin = $user->name?false:true;
         $user->name = $user->name?$user->name:'游客'.$user->id;
-        
         return response()->json($user);
     }
 
@@ -48,6 +47,7 @@ class FanController extends Controller
         $user->task = $user->todaytask();
         $user->task->total = intval( $user->task->total );
         
+        $user->showlogin = $user->name?false:true;
         $user->name = $user->name?$user->name:'游客'.$user->id;
         
         return response()->json($user);

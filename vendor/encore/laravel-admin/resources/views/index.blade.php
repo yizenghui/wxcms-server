@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{ Admin::title() }} @if($header) | {{ $header }}@endif</title>
-    <meta name="referrer" content="never">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -36,6 +35,8 @@
     @include('admin::partials.footer')
 
 </div>
+
+<button id="totop" title="Go to top" style="display: none;"><i class="fa fa-angle-double-up"></i></button>
 
 <script>
     function LA() {}

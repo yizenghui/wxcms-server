@@ -2,6 +2,7 @@
 
 namespace Encore\Admin;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +23,7 @@ class AdminServiceProvider extends ServiceProvider
         Console\ResetPasswordCommand::class,
         Console\ExtendCommand::class,
         Console\ExportSeedCommand::class,
+        Console\MinifyCommand::class,
     ];
 
     /**
@@ -50,7 +52,7 @@ class AdminServiceProvider extends ServiceProvider
             'admin.log',
             'admin.bootstrap',
             'admin.permission',
-            'admin.session',
+//            'admin.session',
         ],
     ];
 
@@ -108,7 +110,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected function loadAdminAuthConfig()
     {
-        config(array_dot(config('admin.auth', []), 'auth.'));
+        config(Arr::dot(config('admin.auth', []), 'auth.'));
     }
 
     /**

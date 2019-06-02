@@ -32,11 +32,14 @@ class ColumnSelector extends AbstractTool
      */
     public function render()
     {
+        if (!$this->grid->showColumnSelector()) {
+            return '';
+        }
         $show = array_filter(explode(',', request(static::SELECT_COLUMN_NAME)));
 
         $columns = $this->getGridColumns();
 
-        $this->setupScript($show, $columns);
+        $this->setupScript();
 
         $lists = $columns->map(function ($val, $key) use ($show) {
             if (empty($show)) {
@@ -45,8 +48,19 @@ class ColumnSelector extends AbstractTool
                 $checked = in_array($key, $show) ? 'checked' : '';
             }
 
-            return "<li><a href=\"#\" data-value=\"{$key}\" tabIndex=\"-1\"><input type=\"checkbox\" {$checked}/>&nbsp;&nbsp;&nbsp;{$val}</a></li>";
+            return <<<HTML
+<li class="checkbox icheck" style="margin: 0;">
+    <label style="width: 100%;padding: 3px;">
+        <input type="checkbox" class="column-select-item" value="{$key}" {$checked}/>&nbsp;&nbsp;&nbsp;{$val}
+    </label>
+</li>
+HTML;
         })->implode("\r\n");
+
+        $btns = [
+            'all'    => __('admin.all'),
+            'submit' => __('admin.submit'),
+        ];
 
         return <<<EOT
 
@@ -56,12 +70,16 @@ class ColumnSelector extends AbstractTool
         &nbsp;
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" role="menu">
-        {$lists}
+    <ul class="dropdown-menu" role="menu" style="padding: 10px;">
+        <li>
+            <ul style='padding: 0;'>
+                {$lists}
+            </ul>
+        </li>
         <li class="divider"></li>
-        <li style="padding: 0 15px;">
-            <button class="btn btn-xs btn-instagram column-select-all">全选</button>
-            <button class="btn btn-xs btn-primary column-select-submit" style="float: right">确定</button>
+        <li class="text-right">
+            <button class="btn btn-sm btn-defalut column-select-all">{$btns['all']}</button>&nbsp;&nbsp;
+            <button class="btn btn-sm btn-primary column-select-submit">{$btns['submit']}</button>
         </li>
     </ul>
 </div>
@@ -84,67 +102,41 @@ EOT;
         })->filter()->collapse();
     }
 
-    /**
-     * @param $show
-     * @param $columns
-     */
-    protected function setupScript($show, $columns)
+    protected function setupScript()
     {
-        if (empty($show)) {
-            $show = $columns->keys()->toArray();
-        }
-
-        $show = json_encode($show);
-
-        $script = <<<SCRIPT
-
-var selected_columns = {$show};
-
-$('.column-selector .dropdown-menu a').on('click', function(event) {
-
-   var \$target = $( event.currentTarget ),
-       val = \$target.attr('data-value'),
-       \$inp = \$target.find('input'),
-       idx;
-       
-   if ((idx = selected_columns.indexOf(val)) > -1) {
-      selected_columns.splice(idx, 1);
-      setTimeout(function() {\$inp.prop('checked', false)}, 0);
-   } else {
-      selected_columns.push(val);
-      setTimeout(function() {\$inp.prop('checked', true)}, 0);
-   }
-
-   $(event.target).blur();
-   
-   return false;
-});
+        $script = <<<'SCRIPT'
 
 $('.column-select-submit').on('click', function () {
-    if (selected_columns.length == 0) {
+    
+    var selected = [];
+    
+    $('.column-select-item:checked').each(function () {
+        selected.push($(this).val());
+    });
+
+    if (selected.length == 0) {
         return;
     }
 
     var url = new URL(location);
     
     // select all
-    if ($('.column-selector .dropdown-menu a input').length == selected_columns.length) {
+    if ($('.column-select-item').length == selected.length) {
         url.searchParams.delete('_columns_');
     } else {
-        url.searchParams.set('_columns_', selected_columns.join());
+        url.searchParams.set('_columns_', selected.join());
     }
 
-    $.pjax({container:'#pjax-container', url: url.toString() });
+    $.pjax({container:'#pjax-container', url: url.toString()});
 });
 
 $('.column-select-all').on('click', function () {
-    selected_columns = [];
-    $('.column-selector .dropdown-menu a input').prop('checked', true);
-    $('.column-selector .dropdown-menu a').each(function (_, val) {
-        selected_columns.push($(val).data('value'));
-    });
-    
+    $('.column-select-item').iCheck('check');
     return false;
+});
+
+$('.column-select-item').iCheck({
+    checkboxClass:'icheckbox_minimal-blue'
 });
 
 SCRIPT;

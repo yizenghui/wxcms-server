@@ -15,7 +15,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id','did',
+        'user_id','did','tenancy_id',
     ];
 
 
@@ -29,32 +29,55 @@ class Task extends Model
         return false;
     }
 
+
+    public function todayReward(){
+        if( !$this->todayHasReward() ){
+            $this->reward_at = Carbon::now();
+            $this->total += $this->todayRewardAction();
+            return true;
+        }
+        return false;
+    }
     
-    // 今日阅读加分数（如果有组队双倍得分）
+    // 今日阅读加分数
     public function todayReadAction(){
         if($this->todayHasTeam()) return config('point.read_action') * 2;
         return config('point.read_action');
     }
 
-    // 今日点赞加分数（如果有组队双倍得分）
+    // 今日点赞加分数
     public function todayLikeAction(){
         if($this->todayHasTeam()) return config('point.like_action') * 2;
         return config('point.like_action');
     }
-    // 今日点签到加分数（如果有组队双倍得分）
+
+    // 今日签到积分
     public function todaySignAction(){
         if($this->todayHasTeam()) return config('point.sign_action') * 2;
         return config('point.sign_action');
     }
+    
+    // 今日激励积分
+    public function todayRewardAction(){ // reward_at
+        if($this->todayHasTeam()) return config('point.reward_action') * 2;
+        return config('point.reward_action');
+    }
+    
     // 今日组队成功?
     public function todayHasTeam(){
         if($this->team_id) return true;
         return false;
     }
 
-    // 今日组队成功?
+    // 今日已签到
     public function todayHasSign(){
         if($this->sign_at) return true;
+        return false;
+    }
+
+    // 今日已激励
+    public function todayHasReward(){
+        if($this->reward_at) return true;
         return false;
     }
 
@@ -102,7 +125,7 @@ class Task extends Model
 
     
     
-    // 今日阅读加1,未受限时返回true
+    // 今日邀请加1,未受限时返回true
     public function todayInterviewAdd(){
         $this->join_num ++;
         if( !$this->todayInterviewMax() ){

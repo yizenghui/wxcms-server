@@ -15,6 +15,7 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) { //
             $table->increments('id');
+            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
             $table->integer('did')->comment('日期ID 格式：20190101');
             $table->string('name')->comment('队伍名字')->nullable();
             $table->integer('user_id')->comment('队长id');

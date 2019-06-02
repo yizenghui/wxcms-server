@@ -10,6 +10,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
+use Admin;
 
 class GoodsController extends Controller
 {
@@ -53,6 +55,13 @@ class GoodsController extends Controller
      */
     public function edit($id, Content $content)
     {
+        
+        // 检查是否具有修改该数据的权限
+        $data = Goods::findOrFail($id);
+        // 不是超级管理员或者不是自己的资源
+        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+            return $content->withError('出错了', '无权查看该资源');
+        }
         return $content
             ->header('Edit')
             ->description('description')
@@ -81,7 +90,7 @@ class GoodsController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Goods);
-
+        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
         $grid->id('ID');
         $grid->name('商品名称');
         $grid->cash_value('现金价值(单位分)');
@@ -113,6 +122,12 @@ class GoodsController extends Controller
         $show->out('出货量');
         $show->lower_at('下架时间');
         $show->invalid_at('兑换卷失效时间');
+        $states = [
+            'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '隐藏', 'color' => 'danger'],
+        ];
+        
+        $form->switch('state', '状态')->states($states)->default(1);
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -129,8 +144,30 @@ class GoodsController extends Controller
         $form = new Form(new Goods);
 
         $form->display('ID');
+        // 抛出错误信息
+        $form->saving(function ($form) {
+
+            if($form->model()->id){
+                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }else{
+                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }
+        });
         
-        $form->select('boss_id','服务商')->options(Boss::all()->pluck('name', 'id'))->rules('required')->required();
+        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->select('boss_id','赞助商')->options(Boss::all()->pluck('name', 'id'))->rules('required')->required();
         $form->text('name','商品名称')->rules('required')->required();
         $form->number('cash_value','现金价值(单位分)')->rules('required')->required()->default(0);
         $form->number('point','兑换需要积分')->rules('required')->required()->default(0);

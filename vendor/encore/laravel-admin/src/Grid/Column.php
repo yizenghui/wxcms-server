@@ -7,6 +7,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -51,6 +52,13 @@ class Column
      * @var array
      */
     protected $sort;
+
+    /**
+     * Cast Name.
+     *
+     * @var array
+     */
+    protected $cast;
 
     /**
      * Attributes of column.
@@ -201,7 +209,7 @@ class Column
      */
     public static function getAttributes($name)
     {
-        return array_get(static::$htmlAttributes, $name, '');
+        return Arr::get(static::$htmlAttributes, $name, '');
     }
 
     /**
@@ -301,6 +309,18 @@ class Column
     }
 
     /**
+     * Set cast name for sortable.
+     *
+     * @return Column
+     */
+    public function cast($cast)
+    {
+        $this->cast = $cast;
+
+        return $this;
+    }
+
+    /**
      * Add a display callback.
      *
      * @param Closure $callback
@@ -351,7 +371,7 @@ class Column
                 return $default;
             }
 
-            return array_get($values, $value, $default);
+            return Arr::get($values, $value, $default);
         });
     }
 
@@ -369,6 +389,20 @@ class Column
 
             return view($view, compact('model', 'value'))->render();
         });
+    }
+
+    /**
+     * Add column to total-row.
+     *
+     * @param null $display
+     *
+     * @return $this
+     */
+    public function totalRow($display = null)
+    {
+        $this->grid->addTotalRow($this->name, $display);
+
+        return $this;
     }
 
     /**
@@ -433,11 +467,11 @@ class Column
     public function fill(array $data)
     {
         foreach ($data as $key => &$row) {
-            $this->original = $value = array_get($row, $this->name);
+            $this->original = $value = Arr::get($row, $this->name);
 
             $value = $this->htmlEntityEncode($value);
 
-            array_set($row, $this->name, $value);
+            Arr::set($row, $this->name, $value);
 
             if ($this->isDefinedColumn()) {
                 $this->useDefinedColumn();
@@ -445,7 +479,7 @@ class Column
 
             if ($this->hasDisplayCallbacks()) {
                 $value = $this->callDisplayCallbacks($this->original, $key);
-                array_set($row, $this->name, $value);
+                Arr::set($row, $this->name, $value);
             }
         }
 
@@ -534,8 +568,14 @@ class Column
             $icon .= "-amount-{$this->sort['type']}";
         }
 
+        // set sort value
+        $sort = ['column' => $this->name, 'type' => $type];
+        if (isset($this->cast)) {
+            $sort['cast'] = $this->cast;
+        }
+
         $query = app('request')->all();
-        $query = array_merge($query, [$this->grid->model()->getSortName() => ['column' => $this->name, 'type' => $type]]);
+        $query = array_merge($query, [$this->grid->model()->getSortName() => $sort]);
 
         $url = url()->current().'?'.http_build_query($query);
 

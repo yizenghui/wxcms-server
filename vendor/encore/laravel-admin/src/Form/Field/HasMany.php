@@ -8,6 +8,7 @@ use Encore\Admin\Form\Field;
 use Encore\Admin\Form\NestedForm;
 use Illuminate\Database\Eloquent\Relations\HasMany as Relation;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -102,7 +103,7 @@ class HasMany extends Field
             return false;
         }
 
-        $input = array_only($input, $this->column);
+        $input = Arr::only($input, $this->column);
 
         $form = $this->buildNestedForm($this->column, $this->builder);
 
@@ -132,7 +133,7 @@ class HasMany extends Field
             );
         }
 
-        array_forget($rules, NestedForm::REMOVE_FLAG_NAME);
+        Arr::forget($rules, NestedForm::REMOVE_FLAG_NAME);
 
         if (empty($rules)) {
             return false;
@@ -179,7 +180,7 @@ class HasMany extends Field
             }
         }
 
-        foreach (array_keys(array_dot($input)) as $key) {
+        foreach (array_keys(Arr::dot($input)) as $key) {
             if (is_string($column)) {
                 if (Str::endsWith($key, ".$column")) {
                     $attributes[$key] = $label;
@@ -251,11 +252,11 @@ class HasMany extends Field
                 /*
                  * set new key
                  */
-                array_set($input, "{$this->column}.$index.$newKey", $value);
+                Arr::set($input, "{$this->column}.$index.$newKey", $value);
                 /*
                  * forget the old key and value
                  */
-                array_forget($input, "{$this->column}.$index.$name");
+                Arr::forget($input, "{$this->column}.$index.$name");
             }
         }
     }
@@ -279,13 +280,13 @@ class HasMany extends Field
      *
      * @param string   $column
      * @param \Closure $builder
-     * @param null     $key
+     * @param null     $model
      *
      * @return NestedForm
      */
-    protected function buildNestedForm($column, \Closure $builder, $key = null)
+    protected function buildNestedForm($column, \Closure $builder, $model = null)
     {
-        $form = new Form\NestedForm($column, $key);
+        $form = new Form\NestedForm($column, $model);
 
         $form->setForm($this->form);
 
@@ -384,14 +385,18 @@ class HasMany extends Field
                     continue;
                 }
 
-                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $key)
+                $model = $relation->getRelated()->replicate()->forceFill($data);
+
+                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model)
                     ->fill($data);
             }
         } else {
             foreach ($this->value as $data) {
-                $key = array_get($data, $relation->getRelated()->getKeyName());
+                $key = Arr::get($data, $relation->getRelated()->getKeyName());
 
-                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $key)
+                $model = $relation->getRelated()->replicate()->forceFill($data);
+
+                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model)
                     ->fill($data);
             }
         }

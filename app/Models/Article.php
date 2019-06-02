@@ -8,18 +8,54 @@ use Overtrue\LaravelFollow\Traits\CanBeLiked;
 use Overtrue\LaravelFollow\Traits\CanBeFavorited;
 use Overtrue\LaravelFollow\Traits\CanBeVoted;
 use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
     use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
     use SoftDeletes;
+    use Searchable;
 
     
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title','author_id','topic_id',
+    ];
+
     /**
      * 作家
      */
     public function author()
     {
         return $this->belongsTo(Author::class,'author_id');
+    }
+    /**
+     * 自定义分享
+     */
+    public function share()
+    {
+        return $this->belongsTo(Share::class,'share_id');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'title'=>$this->title,
+            'intro'=>$this->intro,
+        ];
+        $array = $this->toArray();
+
+        // Customize array...
+
+        return $array;
     }
 }

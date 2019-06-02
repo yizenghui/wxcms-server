@@ -15,6 +15,7 @@ class CreateGoodsesTable extends Migration
     {
         Schema::create('goodses', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
             $table->string('name')->comment('商品名称');
             $table->integer('cash_value')->comment('现金价值');
             $table->integer('point')->comment('兑换需要积分');
@@ -28,8 +29,7 @@ class CreateGoodsesTable extends Migration
             $table->integer('boss_id')->comment('商品提供商家id');
             $table->string('intro')->comment('描述')->nullable();
             $table->text('body')->comment('详情页')->nullable();
-            $table->string('tag')->comment('标签')->nullable();
-            $table->string('tag_style')->comment('标签样式')->nullable();
+            $table->boolean('state')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

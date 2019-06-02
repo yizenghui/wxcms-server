@@ -9,6 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
+use Admin;
 
 class BossController extends Controller
 {
@@ -52,6 +54,12 @@ class BossController extends Controller
      */
     public function edit($id, Content $content)
     {
+        // 检查是否具有修改该数据的权限
+        $data = Boss::findOrFail($id);
+        // 不是超级管理员或者不是自己的资源
+        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+            return $content->withError('出错了', '无权查看该资源');
+        }
         return $content
             ->header('Edit')
             ->description('description')
@@ -80,12 +88,12 @@ class BossController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Boss);
-
+        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
         $grid->id('ID');
         $grid->name('商家名');
         $grid->wxid('微信号ID');
-        $grid->linkman('联系人');
-        $grid->mobile('商家电话');
+        // $grid->linkman('联系人');
+        // $grid->mobile('商家电话');
 
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
@@ -118,11 +126,33 @@ class BossController extends Controller
     protected function form()
     {
         $form = new Form(new Boss);
-
         $form->display('ID');
+        // 抛出错误信息
+        $form->saving(function ($form) {
+
+            if($form->model()->id){
+                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }else{
+                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }
+        });
+        
+        $form->hidden('tenancy_id')->default(Admin::user()->id);
         $form->text('name','商家名')->rules('required')->required();
         $form->text('wxid','微信号ID')->rules('required')->required();
-        $form->image('qrcode','微信二维码')->rules('required');
+        $form->cropper('qrcode','微信二维码');
         $form->textarea('bio','商家简介');
         $form->cropper('avatar','商家头像');
         $form->text('linkman','联系人');
@@ -130,6 +160,7 @@ class BossController extends Controller
         $form->text('email','商家邮箱');
         $form->text('slack','slack通知');
         $form->textarea('remarks','后台备注');
+        
         $form->display('Created at');
         $form->display('Updated at');
 

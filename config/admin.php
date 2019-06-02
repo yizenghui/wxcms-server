@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>Wx</b> CMS',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>La</b>',
+    'logo-mini' => '<b>Wx</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => 'Admin',
+    'title' => 'WxCMS',
 
     /*
     |--------------------------------------------------------------------------
@@ -112,7 +112,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => Encore\Admin\Auth\Database\Administrator::class,
+                'model'  => App\Models\Admin::class,
             ],
         ],
 
@@ -131,7 +131,15 @@ return [
     */
     'upload' => [
 
-        // Disk in `config/filesystem.php`.
+        // // Disk in `config/filesystem.php`.
+        // 'disk' => 'admin',
+
+        // // Image and file upload path under the disk above.
+        // 'directory' => [
+        //     'image' => 'images',
+        //     'file'  => 'files',
+        // ],
+        // // Disk in `config/filesystem.php`.
         'disk' => 'qiniu',
         // 'disk' => 'admin',
 
@@ -159,7 +167,7 @@ return [
 
         // User tables and model.
         'users_table' => 'admin_users',
-        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
+        'users_model' => App\Models\Admin::class,
 
         // Role table and model.
         'roles_table' => 'admin_roles',
@@ -233,7 +241,7 @@ return [
     |    "skin-red", "skin-red-light", "skin-black", "skin-black-light".
     |
     */
-    'skin' => 'skin-blue-light',
+    'skin' => 'skin-purple',
 
     /*
     |--------------------------------------------------------------------------
@@ -268,7 +276,7 @@ return [
     | each page
     |
     */
-    'show_version' => true,
+    'show_version' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -318,6 +326,10 @@ return [
     |
     */
     'extensions' => [
+
+        'multitenancy' => [
+            'tenancy' => config_path('tenancy.php'),
+        ],
         'cropper' => [
         
             // 如果要关掉这个扩展，设置为false

@@ -9,6 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
+use Admin;
 
 class AuthorController extends Controller
 {
@@ -52,6 +54,12 @@ class AuthorController extends Controller
      */
     public function edit($id, Content $content)
     {
+        // 检查是否具有修改该数据的权限
+        $data = Author::findOrFail($id);
+        // 不是超级管理员或者不是自己的资源
+        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+            return $content->withError('出错了', '无权查看该资源');
+        }
         return $content
             ->header('Edit')
             ->description('description')
@@ -80,17 +88,21 @@ class AuthorController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Author);
-
+        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
         $grid->id('ID');
-        $grid->name('姓名');
+        $grid->name('作者名');
         // $grid->avatar()->display(function ($url) {
         //     if(!$url) return '';
         //     $image = "<img style='width: 90px;' src='/uploads/{$url}'>";
         //     return $image;
         // });
+        $grid->state('状态')->switch();
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
+        $grid->filter(function($filter){
+            $filter->like('name', '作者名');
+        });
         return $grid;
     }
 
@@ -122,9 +134,32 @@ class AuthorController extends Controller
 
         $form->display('ID');
 
+        // 抛出错误信息
+        $form->saving(function ($form) {
+
+            if($form->model()->id){
+                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }else{
+                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }
+        });
+        
+        $form->hidden('tenancy_id')->default(Admin::user()->id);
         
         $form->text('name','作者名');
-        $form->number('user_id','粉丝ID')->default(0);
+        $form->number('user_id','粉丝ID')->default(0)->help('将积分结算到绑定的粉丝余额上');
         $form->cropper('avatar','头像');
         $form->textarea('intro','描述');
         $form->text('mobile','手机');
@@ -135,6 +170,13 @@ class AuthorController extends Controller
         $form->number('point','剩余积分')->default(0);
         $form->number('current_point','当前可用积分')->default(0);
         $form->number('total_point','总积分')->default(0);
+        
+        $states = [
+            'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '屏蔽', 'color' => 'danger'],
+        ];
+        
+        $form->switch('state', '状态')->states($states)->default(1);
         $form->display('Created at');
         $form->display('Updated at');
 

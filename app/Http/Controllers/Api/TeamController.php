@@ -18,7 +18,7 @@ class TeamController extends Controller
         if($todayteam) return response()->json(['message'=>'已经加入队伍，请先退出队伍！']); 
         $team_name = ($user->name ? $user->name : $user->id).'_'.date('Ymd'); 
         
-        $team = Team::Create(['user_id' => $user->id, 'did' => date('Ymd'), 'name' => $team_name,'total'=>0]);
+        $team = Team::Create(['user_id' => $user->id,'tenancy_id' => $user->tenancy_id, 'did' => date('Ymd'), 'name' => $team_name,'total'=>0]);
         $user->joinTeams()->attach($team->id);
         $team->users;
         $intro = '距离组队成功还差'.( 5-count($team->users)).'人。' ;
@@ -34,6 +34,7 @@ class TeamController extends Controller
         $task = $user->todaytask();       
         if($task->full_at) return response()->json(['message'=>'该队伍已经满员']);
         if($task->team_id) return response()->json(['message'=>'已经完成组队']);
+        if( date('Ymd') != $team->did )return response()->json(['message'=>'队伍已过期，请寻找新队伍']);
         $todayteam = $user->joinTeams()->where('teams.did','=',date('Ymd'))->first();
         if($todayteam && $todayteam->id != $team->id  ) 
         return response()->json(['message'=>'已经加入其它队伍！']); 
@@ -71,6 +72,11 @@ class TeamController extends Controller
         if(count($team->users)>=5){
             $intro = '组队成功。进行阅读、点赞可获得积分*2' ;
         }
+
+        if( date('Ymd') != $team->did ){
+            $intro = "队伍已过期，请寻找新队伍" ;
+        }
+
         $team->intro = $intro;
         $user = $request->user();
         $team->can_join = true;

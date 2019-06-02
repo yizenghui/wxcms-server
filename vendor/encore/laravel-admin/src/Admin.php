@@ -8,6 +8,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Traits\HasAssets;
 use Encore\Admin\Widgets\Navbar;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
@@ -24,12 +25,17 @@ class Admin
      *
      * @var string
      */
-    const VERSION = '1.6.10';
+    const VERSION = '1.6.13';
 
     /**
      * @var Navbar
      */
     protected $navbar;
+
+    /**
+     * @var array
+     */
+    protected $menu = [];
 
     /**
      * @var string
@@ -44,12 +50,12 @@ class Admin
     /**
      * @var []Closure
      */
-    public static $booting;
+    protected static $bootingCallbacks = [];
 
     /**
      * @var []Closure
      */
-    public static $booted;
+    protected static $bootedCallbacks = [];
 
     /**
      * Returns the long version of Laravel-admin.
@@ -151,9 +157,37 @@ class Admin
      */
     public function menu()
     {
+        if (!empty($this->menu)) {
+            return $this->menu;
+        }
+
         $menuModel = config('admin.database.menu_model');
 
-        return (new $menuModel())->toTree();
+        return $this->menu = (new $menuModel())->toTree();
+    }
+
+    /**
+     * @param array $menu
+     *
+     * @return array
+     */
+    public function menuLinks($menu = [])
+    {
+        if (empty($menu)) {
+            $menu = $this->menu();
+        }
+
+        $links = [];
+
+        foreach ($menu as $item) {
+            if (!empty($item['children'])) {
+                $links = array_merge($links, $this->menuLinks($item['children']));
+            } else {
+                $links[] = Arr::only($item, ['title', 'uri', 'icon']);
+            }
+        }
+
+        return $links;
     }
 
     /**
@@ -234,20 +268,20 @@ class Admin
             $router->namespace('Encore\Admin\Controllers')->group(function ($router) {
 
                 /* @var \Illuminate\Routing\Router $router */
-                $router->resource('auth/users', 'UserController');
-                $router->resource('auth/roles', 'RoleController');
-                $router->resource('auth/permissions', 'PermissionController');
-                $router->resource('auth/menu', 'MenuController', ['except' => ['create']]);
-                $router->resource('auth/logs', 'LogController', ['only' => ['index', 'destroy']]);
+                $router->resource('auth/users', 'UserController')->names('admin.auth.users');
+                $router->resource('auth/roles', 'RoleController')->names('admin.auth.roles');
+                $router->resource('auth/permissions', 'PermissionController')->names('admin.auth.permissions');
+                $router->resource('auth/menu', 'MenuController', ['except' => ['create']])->names('admin.auth.menu');
+                $router->resource('auth/logs', 'LogController', ['only' => ['index', 'destroy']])->names('admin.auth.logs');
             });
 
             $authController = config('admin.auth.controller', AuthController::class);
 
             /* @var \Illuminate\Routing\Router $router */
-            $router->get('auth/login', $authController.'@getLogin');
+            $router->get('auth/login', $authController.'@getLogin')->name('admin.login');
             $router->post('auth/login', $authController.'@postLogin');
-            $router->get('auth/logout', $authController.'@getLogout');
-            $router->get('auth/setting', $authController.'@getSetting');
+            $router->get('auth/logout', $authController.'@getLogout')->name('admin.logout');
+            $router->get('auth/setting', $authController.'@getSetting')->name('admin.setting');
             $router->put('auth/setting', $authController.'@putSetting');
         });
     }
@@ -270,7 +304,7 @@ class Admin
      */
     public static function booting(callable $callback)
     {
-        static::$booting[] = $callback;
+        static::$bootingCallbacks[] = $callback;
     }
 
     /**
@@ -278,7 +312,50 @@ class Admin
      */
     public static function booted(callable $callback)
     {
-        static::$booted[] = $callback;
+        static::$bootedCallbacks[] = $callback;
+    }
+
+    /**
+     * Bootstrap the admin application.
+     */
+    public function bootstrap()
+    {
+        $this->fireBootingCallbacks();
+
+        Form::registerBuiltinFields();
+
+        Grid::registerColumnDisplayer();
+
+        Grid\Filter::registerFilters();
+
+        require config('admin.bootstrap', admin_path('bootstrap.php'));
+
+        $assets = Form::collectFieldAssets();
+
+        self::css($assets['css']);
+        self::js($assets['js']);
+
+        $this->fireBootedCallbacks();
+    }
+
+    /**
+     * Call the booting callbacks for the admin application.
+     */
+    protected function fireBootingCallbacks()
+    {
+        foreach (static::$bootingCallbacks as $callable) {
+            call_user_func($callable);
+        }
+    }
+
+    /**
+     * Call the booted callbacks for the admin application.
+     */
+    protected function fireBootedCallbacks()
+    {
+        foreach (static::$bootedCallbacks as $callable) {
+            call_user_func($callable);
+        }
     }
 
     /*
