@@ -15,7 +15,7 @@ class CreateFansTable extends Migration
     {
         Schema::create('fans', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->string('name')->comment('用户昵称')->nullable();
             $table->string('openid')->unique()->comment('开放id');
             $table->integer('gender')->comment('性别')->default(0);

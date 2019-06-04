@@ -15,7 +15,7 @@ class CreateGoodsesTable extends Migration
     {
         Schema::create('goodses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->string('name')->comment('商品名称');
             $table->integer('cash_value')->comment('现金价值');
             $table->integer('point')->comment('兑换需要积分');

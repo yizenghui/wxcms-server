@@ -60,7 +60,7 @@ class ArticleController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Article::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
         return $content
@@ -92,11 +92,11 @@ class ArticleController extends Controller
     {
         $grid = new Grid(new Article);
         $grid->model()->with('author');
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->id('ID')->sortable();
         
-        // dd(Topic::where('tenancy_id', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'));
-        $topic_arr = collect([0=>'无'])->union(Topic::where('tenancy_id', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'))->all();
+        // dd(Topic::where('appid', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'));
+        $topic_arr = collect([0=>'无'])->union(Topic::where('appid', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'))->all();
         $grid->topic_id('专题')->select($topic_arr);
         // $grid->position('ID')->display(function($id) { //editable
         //     return $topic_arr[$k];
@@ -130,7 +130,7 @@ class ArticleController extends Controller
     {
 
         
-        $show = new Show(Article::where('tenancy_id', '=', Admin::user()->id)->findOrFail($id));
+        $show = new Show(Article::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');
@@ -154,7 +154,7 @@ class ArticleController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -162,7 +162,7 @@ class ArticleController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -172,14 +172,14 @@ class ArticleController extends Controller
             }
         });
         
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
 
         $form->tab('内容', function (Form $form) {
             $form->text('title','标题')->rules('required')->required();
             $form->simplemde('body','正文')->rules('required')->required()->help('上传图片到图床<a target="_blank" href="https://sm.ms/">sm.ms</a>复制Markdown语法标签');
-            $topic_arr = collect([0=>'无'])->union(Topic::where('tenancy_id', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+            $topic_arr = collect([0=>'无'])->union(Topic::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('topic_id','所属专题')->options($topic_arr)->default(0);
-            $author_arr = collect([0=>'无'])->union(Author::where('tenancy_id', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+            $author_arr = collect([0=>'无'])->union(Author::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('author_id','作者')->options($author_arr)->default(0);
             
             $states = [
@@ -194,7 +194,7 @@ class ArticleController extends Controller
             $form->textarea('intro','描述(导读)');
             $form->datetime('recommend_at','推荐截止')->default(date('Y-m-d 23:59:59',time()+86400*60));
             
-            $share_arr = collect([0=>'无'])->union(Share::where('tenancy_id', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+            $share_arr = collect([0=>'无'])->union(Share::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('share_id','自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->text('audio','音频地址')->help('请确认链接地址可用');
             $form->text('video','腾讯视频vid')->help('目前仅支持vid参数视频');

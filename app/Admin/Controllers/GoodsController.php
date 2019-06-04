@@ -59,7 +59,7 @@ class GoodsController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Goods::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
         return $content
@@ -90,7 +90,7 @@ class GoodsController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Goods);
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->id('ID');
         $grid->name('商品名称');
         $grid->cash_value('现金价值(单位分)');
@@ -148,7 +148,7 @@ class GoodsController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -156,7 +156,7 @@ class GoodsController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -166,7 +166,7 @@ class GoodsController extends Controller
             }
         });
         
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
         $form->select('boss_id','赞助商')->options(Boss::all()->pluck('name', 'id'))->rules('required')->required();
         $form->text('name','商品名称')->rules('required')->required();
         $form->number('cash_value','现金价值(单位分)')->rules('required')->required()->default(0);

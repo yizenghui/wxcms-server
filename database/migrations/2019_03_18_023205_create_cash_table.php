@@ -16,7 +16,7 @@ class CreateCashTable extends Migration
         Schema::create('cash', function (Blueprint $table) {
             // 现金提现记录表
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->integer('user_id')->comment('粉丝id');
             $table->integer('point')->comment('使用积分sum');
             $table->integer('sum')->comment('提现金额(单位:分)');

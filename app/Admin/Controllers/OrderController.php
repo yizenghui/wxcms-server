@@ -59,7 +59,7 @@ class OrderController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Order::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
         return $content
@@ -92,7 +92,7 @@ class OrderController extends Controller
         $grid = new Grid(new Order);
 
         $grid->user_id('UID');
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         //  $token = Hashids::encode($this->id);
         $grid->id('ID')->display(function($id) {
             return  Hashids::encode($id);
@@ -158,7 +158,7 @@ class OrderController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -166,7 +166,7 @@ class OrderController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -176,7 +176,7 @@ class OrderController extends Controller
             }
         });
         
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
         $form->datetime('delivery_at','发货时间');
         $form->simplemde('prove','发货证明')->help('上传图片到图床<a target="_blank" href="https://sm.ms/">sm.ms</a>复制Markdown语法标签');
 

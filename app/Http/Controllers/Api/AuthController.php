@@ -62,7 +62,7 @@ class AuthController extends Controller
       $newFan->openid      = $openid;
       $newFan->session_key = $session_key;
       $newFan->fromid = $fromid;
-      $newFan->tenancy_id = $appid;
+      $newFan->appid = $appid;
       $newFan->save();
       $fan = $newFan;
 

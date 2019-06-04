@@ -57,7 +57,7 @@ class BossController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Boss::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
         return $content
@@ -88,7 +88,7 @@ class BossController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Boss);
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->id('ID');
         $grid->name('商家名');
         $grid->wxid('微信号ID');
@@ -131,7 +131,7 @@ class BossController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -139,7 +139,7 @@ class BossController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -149,7 +149,7 @@ class BossController extends Controller
             }
         });
         
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
         $form->text('name','商家名')->rules('required')->required();
         $form->text('wxid','微信号ID')->rules('required')->required();
         $form->cropper('qrcode','微信二维码');

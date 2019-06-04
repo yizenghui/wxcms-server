@@ -15,7 +15,7 @@ class CreateTopicsTable extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->string('name');
             $table->string('cover')->nullable();
             $table->string('intro')->nullable();

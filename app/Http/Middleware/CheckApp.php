@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Vinkla\Hashids\Facades\Hashids;
 
-class CheckTenancy
+class CheckApp
 {
     /**
      * Handle an incoming request.

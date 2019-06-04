@@ -15,7 +15,7 @@ class CreateSharesTable extends Migration
     {
         Schema::create('shares', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->default(0);
+            $table->integer('appid')->default(0);
             $table->string('name');
             $table->text('title')->nullable();
             $table->text('cover')->nullable();

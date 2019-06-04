@@ -14,6 +14,7 @@ class CreateAppsTable extends Migration
     public function up()
     {
         Schema::create('apps', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('appid')->default(0); //绑定管理员id
             $table->integer('genre')->comment('应用类型')->default(0);
             $table->string('app_name')->comment('应用名')->nullable();

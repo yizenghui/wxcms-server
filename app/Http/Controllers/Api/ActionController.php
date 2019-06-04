@@ -10,11 +10,6 @@ use App\Models\Task;
 
 class ActionController extends Controller
 {
-
-    public function gettenancy($appid){
-        $config = $this->getconfig($appid);
-        $tenancy = Tenancy::findOrFail($appid);
-    }
     
     public function task(Request $request){
         $data = (new \App\Repositories\ActionRepository())->GetUserTask($request->user());

@@ -58,7 +58,7 @@ class TopicController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Topic::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
 
@@ -90,7 +90,7 @@ class TopicController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Topic);
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->id('ID');
         $grid->name('标题');
         $grid->state('状态')->switch();
@@ -115,7 +115,7 @@ class TopicController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Topic::where('tenancy_id', '=', Admin::user()->id)->findOrFail($id));
+        $show = new Show(Topic::where('appid', '=', Admin::user()->id)->findOrFail($id));
 // dd($show );
         $show->id('ID');
         $show->created_at('Created at');
@@ -138,7 +138,7 @@ class TopicController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -146,7 +146,7 @@ class TopicController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -158,13 +158,13 @@ class TopicController extends Controller
         
 // dd($form->model());
 
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
 
         $form->display('ID');
         $form->text('name','标题');
         $form->cropper('cover','封面图');
         $form->textarea('intro','描述');
-        $share_arr = collect([0=>'无'])->union(Share::where('tenancy_id', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+        $share_arr = collect([0=>'无'])->union(Share::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
         $form->select('share_id','自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
         $form->number('order','排序')->default(0);
         

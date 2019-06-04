@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Vinkla\Hashids\Facades\Hashids;
 
-class InitTenancyConfig
+class InitAppConfig
 {
     /**
      * Handle an incoming request.

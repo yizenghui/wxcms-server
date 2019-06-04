@@ -52,7 +52,7 @@ class AuthController extends BaseAuthController
             $form->text('app.banner_adid', 'banner广告ID')->help('banner广告ID，由浏量主后台获得');
             
             
-            $share_arr = collect([0=>'无'])->union(Share::where('tenancy_id', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+            $share_arr = collect([0=>'无'])->union(Share::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('app.index_share_id','首页自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->select('app.topic_share_id','专题首页自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->text('app.default_search', '搜索默认值'); //->help('关键词一 关键词二(通过空格搜索包含关键词一或者包含关键词二的内容)')

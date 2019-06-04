@@ -15,7 +15,7 @@ class CreateAuthorsTable extends Migration
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->integer('user_id')->comment('粉丝id');
             $table->string('name')->comment('用户昵称');
             $table->string('truename')->comment('真实姓名')->nullable();

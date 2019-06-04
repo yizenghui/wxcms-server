@@ -15,7 +15,7 @@ class CreatePointLogsTable extends Migration
     {
         Schema::create('point_logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->integer('user_id')->index()->comment('粉丝id'); //
             $table->integer('change')->comment('积分变化')->default(0);
             $table->string('intro')->nullable()->comment('描述');

@@ -86,7 +86,7 @@ class Fan extends Authenticatable implements JWTSubject
             if( $this->save() ){
                 $log = new PointLog;
                 $log->user_id = $this->id;
-                $log->tenancy_id = $this->tenancy_id;
+                $log->appid = $this->appid;
                 $log->change = $change;
                 $log->intro = $intro;
                 $log->save();
@@ -134,7 +134,7 @@ class Fan extends Authenticatable implements JWTSubject
      */
     public function todaytask()
     {
-        return Task::firstOrCreate(['user_id' =>$this->id,'tenancy_id' =>$this->tenancy_id,'did'=>date('Ymd')]);
+        return Task::firstOrCreate(['user_id' =>$this->id,'appid' =>$this->appid,'did'=>date('Ymd')]);
     }
     /**
      * 用户所创建的队伍

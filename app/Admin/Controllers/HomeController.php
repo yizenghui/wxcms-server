@@ -23,22 +23,22 @@ class HomeController extends Controller
         $content->description('Description...');
 
         $content->row(function ($row) {
-            $fan_count = Fan::where('tenancy_id', '=', Admin::user()->id)->count();
+            $fan_count = Fan::where('appid', '=', Admin::user()->id)->count();
 
-            $fan_today_add_count = Fan::where('tenancy_id', '=', Admin::user()->id)->where('created_at', '>=', Carbon::now()->today())->count();
-            $order_count = Order::where('tenancy_id', '=', Admin::user()->id)->count();
-            $article_count = Article::where('tenancy_id', '=', Admin::user()->id)->count();
+            $fan_today_add_count = Fan::where('appid', '=', Admin::user()->id)->where('created_at', '>=', Carbon::now()->today())->count();
+            $order_count = Order::where('appid', '=', Admin::user()->id)->count();
+            $article_count = Article::where('appid', '=', Admin::user()->id)->count();
 
-            $point_total = PointLog::where('tenancy_id', '=', Admin::user()->id)->sum('change');
-            $today_point_total = PointLog::where('tenancy_id', '=', Admin::user()->id)->where('created_at', '>=', Carbon::now()->today())->sum('change');
+            $point_total = PointLog::where('appid', '=', Admin::user()->id)->sum('change');
+            $today_point_total = PointLog::where('appid', '=', Admin::user()->id)->where('created_at', '>=', Carbon::now()->today())->sum('change');
             // dd($today_point_total);
             
 
-            $row->column(3, new InfoBox('积分'.' (今天'.$today_point_total.')', 'list', 'red', '/tenancy/order', $point_total));
-            $row->column(3, new InfoBox('粉丝'.' (新增'.$fan_today_add_count.')', 'users', 'aqua', '/tenancy/fan', $fan_count));
-            $row->column(3, new InfoBox('订单', 'shopping-cart', 'green', '/tenancy/order', $order_count));
-            $row->column(3, new InfoBox('文章', 'book', 'yellow', '/tenancy/article', $article_count));
-            // $row->column(3, new InfoBox('API Use Total', 'file', 'red', '/tenancy/api', Admin::user()->total_quota));
+            $row->column(3, new InfoBox('积分'.' (今天'.$today_point_total.')', 'list', 'red', '/admin/order', $point_total));
+            $row->column(3, new InfoBox('粉丝'.' (新增'.$fan_today_add_count.')', 'users', 'aqua', '/admin/fan', $fan_count));
+            $row->column(3, new InfoBox('订单', 'shopping-cart', 'green', '/admin/order', $order_count));
+            $row->column(3, new InfoBox('文章', 'book', 'yellow', '/admin/article', $article_count));
+            // $row->column(3, new InfoBox('API Use Total', 'file', 'red', '/admin/api', Admin::user()->total_quota));
         });
         return $content;
     }

@@ -16,13 +16,13 @@ class ArticleController extends Controller
     //
     public function index(Request $request){
 
-        $authors_ids = Author::where('tenancy_id', '=', $request->get('appid'))->where('state','=',1)->pluck('id');
+        $authors_ids = Author::where('appid', '=', $request->get('appid'))->where('state','=',1)->pluck('id');
         // dd($authors_ids);
         $topic_id = $request->get('topic');
         if( $topic_id ){
-            $data = Article::where('tenancy_id', '=', $request->get('appid'))->where('topic_id','=',$topic_id)->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
+            $data = Article::where('appid', '=', $request->get('appid'))->where('topic_id','=',$topic_id)->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
         }else{
-            $data = Article::where('tenancy_id', '=', $request->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
+            $data = Article::where('appid', '=', $request->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
         }
         // dd($data);
         $articles = ArticleResource::collection($data);
@@ -31,7 +31,7 @@ class ArticleController extends Controller
 
     //
     public function search(Request $request){
-        $data = Article::search($request->get('q'))->where('tenancy_id', $request->get('appid'))->paginate(10);
+        $data = Article::search($request->get('q'))->where('appid', $request->get('appid'))->paginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -61,9 +61,9 @@ class ArticleController extends Controller
      * 获取推荐文章(小程序首页用)
      */
     public function recommend(){
-        $authors_ids = Author::where('tenancy_id', '=', request()->get('appid'))->where('state','=',1)->pluck('id')->toArray();
+        $authors_ids = Author::where('appid', '=', request()->get('appid'))->where('state','=',1)->pluck('id')->toArray();
     //  dd($authors_ids);
-        $data = Article::where('recommend_at','>',Carbon::now())->where('state','=',1)->where('tenancy_id', '=', request()->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10); //toSql();  where('view', '>', 10)->
+        $data = Article::where('recommend_at','>',Carbon::now())->where('state','=',1)->where('appid', '=', request()->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10); //toSql();  where('view', '>', 10)->
         // dd($data);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
@@ -138,7 +138,7 @@ class ArticleController extends Controller
         
         $img = Image::canvas(600, 600, '#ffffff');
 
-        $data = Article::where('tenancy_id', '=', $request->get('appid'))->orderBy('id','desc')->simplePaginate(10);
+        $data = Article::where('appid', '=', $request->get('appid'))->orderBy('id','desc')->simplePaginate(10);
 
         $img->text('荐读阅读：',50,30, function($font) {
             $font->file(storage_path('font.ttf'));

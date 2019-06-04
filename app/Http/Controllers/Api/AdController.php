@@ -12,7 +12,7 @@ class AdController extends Controller
 
 
     public function index(Request $request){
-        $data = Ad::where('tenancy_id','=',$request->get('appid'))->where('state','=',1)
+        $data = Ad::where('appid','=',$request->get('appid'))->where('state','=',1)
         ->orderBy('priority','desc')
         ->simplePaginate(30);
         $articles = AdResource::collection($data);

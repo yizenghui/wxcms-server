@@ -58,8 +58,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'force-json' => \App\Http\Middleware\ForceJson::class,
-        'checktenancy' => \App\Http\Middleware\CheckTenancy::class,
-        'inittenancyconifg' => \App\Http\Middleware\InitTenancyConfig::class,
+        'checkapp' => \App\Http\Middleware\CheckApp::class,
+        'initappconfig' => \App\Http\Middleware\InitAppConfig::class,
 
     ];
 }

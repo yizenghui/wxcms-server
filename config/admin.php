@@ -327,9 +327,6 @@ return [
     */
     'extensions' => [
 
-        'multitenancy' => [
-            'tenancy' => config_path('tenancy.php'),
-        ],
         'cropper' => [
         
             // 如果要关掉这个扩展，设置为false

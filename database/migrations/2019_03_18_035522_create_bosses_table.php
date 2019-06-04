@@ -15,7 +15,7 @@ class CreateBossesTable extends Migration
     {
         Schema::create('bosses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index()->comment('数据所属项目id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->string('name')->comment('商家名');
             $table->string('wxid')->comment('微信号ID');
             $table->string('qrcode')->comment('微信二维码')->nullable();

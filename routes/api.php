@@ -23,9 +23,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/v1/qrcode/jump/{token}','Api\QrcodeController@jump');
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checktenancy']], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp']], function () {
 
-    Route::group(['middleware' => ['inittenancyconifg']], function () {
+    Route::group(['middleware' => ['initappconfig']], function () {
         Route::get('gettoken','AuthController@token');
     });
      
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkten
     Route::get('config/articleinfo','AuthController@articleinfo');
 
     
-    Route::group(['middleware' => ['auth:api', 'inittenancyconifg']], function () {
+    Route::group(['middleware' => ['auth:api', 'initappconfig']], function () {
         Route::get('/action/task','ActionController@task'); // 用户每日任务
         Route::get('/action/view','ActionController@view'); // 查看文章行为
         Route::get('/action/sign','ActionController@sign'); // 用户签到

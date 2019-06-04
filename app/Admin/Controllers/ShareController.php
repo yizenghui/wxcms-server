@@ -57,7 +57,7 @@ class ShareController extends Controller
         // 检查是否具有修改该数据的权限
         $data = Share::findOrFail($id);
         // 不是超级管理员或者不是自己的资源
-        if(!Admin::user()->isAdministrator() && $data->tenancy_id!=Admin::user()->id){
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
             return $content->withError('出错了', '无权查看该资源');
         }
         return $content
@@ -88,7 +88,7 @@ class ShareController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Share);
-        $grid->model()->where('tenancy_id', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id);
 
         $grid->id('ID');
         $grid->name('名称');
@@ -131,7 +131,7 @@ class ShareController extends Controller
         $form->saving(function ($form) {
 
             if($form->model()->id){
-                if( $form->model()->tenancy_id !=Admin::user()->id ){
+                if( $form->model()->appid !=Admin::user()->id ){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -139,7 +139,7 @@ class ShareController extends Controller
                     return back()->with(compact('error'));
                 }
             }else{
-                if(!$form->tenancy_id || $form->tenancy_id!=Admin::user()->id){
+                if(!$form->appid || $form->appid!=Admin::user()->id){
                     $error = new MessageBag([
                         'title'   => '出错了',
                         'message' => '数据异常，请重新编辑！',
@@ -149,7 +149,7 @@ class ShareController extends Controller
             }
         });
         
-        $form->hidden('tenancy_id')->default(Admin::user()->id);
+        $form->hidden('appid')->default(Admin::user()->id);
         $form->text('name','名称'); //->help('如何固定格式(如：A1介绍,T1专题)方便搜索');
         $form->textarea('title','自定义分享标题')->help('随机一个标题，使用回车分隔(机制：除首页，专题首页是单次会话随机外，专题文章列表、文章详情页每次打开随机)');
         $form->multipleImage('cover','自定义分享封面图')->removable()->uniqueName()->help('随机一张图片，建议像素500*400 (机制如上)');

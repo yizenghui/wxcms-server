@@ -15,7 +15,7 @@ class CreateCarouselsTable extends Migration
     {
         Schema::create('carousels', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tenancy_id')->index();
+            $table->integer('appid')->index();
             $table->string('name');
             $table->string('cover');
             $table->tinyInteger('position');

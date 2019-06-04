@@ -15,24 +15,24 @@ class GoodsController extends Controller
     //
     
     public function index(Request $request){
-        $tenancy_id = $request->user()->tenancy_id;
-        $data = Goods::where('lower_at','>',Carbon::now())->where('tenancy_id','=',$tenancy_id)->simplePaginate(10);
+        $appid = $request->user()->appid;
+        $data = Goods::where('lower_at','>',Carbon::now())->where('appid','=',$appid)->simplePaginate(10);
         $goodes = GoodsResource::collection($data);
         return response()->json($goodes);
     }
 
     public function buy(Request $request){
-        $tenancy_id = $request->user()->tenancy_id;
+        $appid = $request->user()->appid;
         $goods_id = $request->get('goods_id');
         $num = $request->get('num');
-        $goods = Goods::where('tenancy_id','=',$tenancy_id)->findOrFail($goods_id);
+        $goods = Goods::where('appid','=',$appid)->findOrFail($goods_id);
         $user = $request->user();
         if($goods->lower_at < date('Y-m-d H:i:s')) return response()->json(['message'=>'商品已过期']);
         if($goods->stock < $num ) return response()->json(['message'=>'库存不足']);
         
         $order = new Order;
         $order->user_id = $user->id;
-        $order->tenancy_id = $tenancy_id;
+        $order->appid = $appid;
         $order->goods_id = $goods->id;
         $order->name = $goods->name;
         $order->num = $num;
@@ -56,7 +56,7 @@ class GoodsController extends Controller
         $log = new PointLog;
         $log->user_id = $user->id;
         $log->change = -$order->point_total;
-        $log->tenancy_id = $tenancy_id;
+        $log->appid = $appid;
         $log->intro = '消耗积分';
         $log->save();
 
