@@ -82,10 +82,12 @@ public function initConfig(){
     }
 
     public function getminiapp(){
+        // Redis缓存使用有问题，暂时还是别搞了
         // serialize() unserialize()
-        $app = unserialize( Redis::get("app:".$this->getappid()) );
+        // $app = unserialize( Redis::get("app:".$this->getappid()) );
         // dd($app);
-        if(!$app) $app = App::where('appid','=',$this->getappid())->firstOrFail();
+        // if(!$app) 
+        $app = App::where('appid','=',$this->getappid())->firstOrFail();
         Redis::set("app:".$this->getappid(), serialize($app));
         return $app;
     }

@@ -11,7 +11,7 @@ class ActionRepository{
         $items = [];
         if(!config('point.enabled')) 
             return [ ['name'=>'暂无活动任务', 'intro'=>'敬请期待', 'wxto'=>'', 'icon'=>'flag', 'iconcolor'=>'red'] ];
-        if(config('point.sign_action'))
+        if(config('point.day_sign_num') && config('point.sign_action'))
             $items[] = ['name'=>'签到 +'.config('point.sign_action'), 'intro'=>$task->sign_at?'已完成':'未完成', 'wxto'=>'/pages/user/index', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
         if(config('point.read_action'))
             $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num').' * '.config('point.read_action'), 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
