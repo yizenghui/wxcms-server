@@ -9,6 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
+use Admin;
 
 class FanController extends Controller
 {
@@ -52,6 +54,12 @@ class FanController extends Controller
      */
     public function edit($id, Content $content)
     {
+        // 检查是否具有修改该数据的权限
+        $data = Fan::findOrFail($id);
+        // 不是超级管理员或者不是自己的资源
+        if(!Admin::user()->isAdministrator() && $data->appid!=Admin::user()->id){
+            return $content->withError('出错了', '无权查看该资源');
+        }
         return $content
             ->header('Edit')
             ->description('description')
@@ -80,11 +88,16 @@ class FanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Fan);
+        // $grid->model()->with('fromuser');
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->id('ID')->sortable();
-        $grid->name('昵称');
-        $grid->fromid('推荐人id')->sortable();
+        // $grid->wxid('微信号')->editable();
+        $grid->name('昵称')->limit(10);
+        // $grid->avatar('头像')->image('',32,32);
+        // $grid->fromuser('推荐人')->name()->limit(10);
         $grid->point('剩余积分')->sortable();
         $grid->total_point('总积分')->sortable();
+        $grid->fromid('fromid')->sortable();
         // $grid->current_point('可用积分')->sortable();
         $grid->created_at('Created at')->sortable();
         $grid->updated_at('Updated at')->sortable();
@@ -130,6 +143,57 @@ class FanController extends Controller
         $show = new Show(Fan::findOrFail($id));
 
         $show->id('ID');
+        $show->openid('OpenID');
+
+
+        $show->readlogs('阅读记录', function ($readlog) {
+            $readlog->id();
+            $readlog->title();
+            $readlog->disableCreateButton();
+            $readlog->disableExport();
+            $readlog->disableRowSelector();
+            $readlog->disableActions();
+        });
+        $show->likelogs('点赞记录', function ($readlog) {
+            $readlog->id();
+            $readlog->title();
+            $readlog->disableCreateButton();
+            $readlog->disableExport();
+            $readlog->disableRowSelector();
+            $readlog->disableActions();
+        });
+        $show->orders('订单记录', function ($order) {
+            $order->id();
+            $order->name('名称');
+            $order->point_total('积分小计');
+            $order->cash_total('现金价值')->display(function ($t) {
+                return ($t/100).'元';
+            });
+            $order->delivery_at('发货时间');
+            $order->lower_at('失效时间');
+            $order->created_at();
+            $order->filter(function ($filter) {
+                $filter->like('intro');
+            });
+            $order->disableCreateButton();
+            $order->disableExport();
+            $order->disableRowSelector();
+            $order->disableActions();
+        });
+
+        $show->pointlogs('积分记录', function ($pointlogs) {
+            $pointlogs->id();
+            $pointlogs->change();
+            $pointlogs->intro()->limit(10);
+            $pointlogs->created_at();
+            $pointlogs->filter(function ($filter) {
+                $filter->like('intro');
+            });
+            $pointlogs->disableCreateButton();
+            $pointlogs->disableExport();
+            $pointlogs->disableRowSelector();
+            $pointlogs->disableActions();
+        });
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -146,7 +210,31 @@ class FanController extends Controller
         $form = new Form(new Fan);
 
         $form->display('ID');
+        // 抛出错误信息
+        $form->saving(function ($form) {
+
+            if($form->model()->id){
+                if( $form->model()->appid !=Admin::user()->id ){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }else{
+                if(!$form->appid || $form->appid!=Admin::user()->id){
+                    $error = new MessageBag([
+                        'title'   => '出错了',
+                        'message' => '数据异常，请重新编辑！',
+                    ]);
+                    return back()->with(compact('error'));
+                }
+            }
+        });
+        
+        $form->hidden('appid')->default(Admin::user()->id);
         $form->text('name','昵称');
+        $form->text('wxid','微信号');
         $form->number('point','剩余积分');
         $form->number('current_point','可用积分');
         $form->number('total_point','总积分');
