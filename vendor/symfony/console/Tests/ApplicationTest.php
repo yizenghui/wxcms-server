@@ -41,21 +41,6 @@ class ApplicationTest extends TestCase
 {
     protected static $fixturesPath;
 
-    private $colSize;
-
-    protected function setUp()
-    {
-        $this->colSize = getenv('COLUMNS');
-    }
-
-    protected function tearDown()
-    {
-        putenv($this->colSize ? 'COLUMNS='.$this->colSize : 'COLUMNS');
-        putenv('SHELL_VERBOSITY');
-        unset($_ENV['SHELL_VERBOSITY']);
-        unset($_SERVER['SHELL_VERBOSITY']);
-    }
-
     public static function setUpBeforeClass()
     {
         self::$fixturesPath = realpath(__DIR__.'/Fixtures/');
@@ -72,8 +57,8 @@ class ApplicationTest extends TestCase
         require_once self::$fixturesPath.'/BarBucCommand.php';
         require_once self::$fixturesPath.'/FooSubnamespaced1Command.php';
         require_once self::$fixturesPath.'/FooSubnamespaced2Command.php';
-        require_once self::$fixturesPath.'/TestAmbiguousCommandRegistering.php';
-        require_once self::$fixturesPath.'/TestAmbiguousCommandRegistering2.php';
+        require_once self::$fixturesPath.'/TestTiti.php';
+        require_once self::$fixturesPath.'/TestToto.php';
     }
 
     protected function normalizeLineBreaks($text)
@@ -162,27 +147,6 @@ class ApplicationTest extends TestCase
         $application = new Application();
         $command = $application->register('foo');
         $this->assertEquals('foo', $command->getName(), '->register() registers a new command');
-    }
-
-    public function testRegisterAmbiguous()
-    {
-        $code = function (InputInterface $input, OutputInterface $output) {
-            $output->writeln('It works!');
-        };
-
-        $application = new Application();
-        $application
-            ->register('test-foo')
-            ->setAliases(['test'])
-            ->setCode($code);
-
-        $application
-            ->register('test-bar')
-            ->setCode($code);
-
-        $tester = new ApplicationTester($application);
-        $tester->run(['test']);
-        $this->assertContains('It works!', $tester->getDisplay(true));
     }
 
     public function testAdd()
@@ -324,9 +288,9 @@ class ApplicationTest extends TestCase
     public function testFindNonAmbiguous()
     {
         $application = new Application();
-        $application->add(new \TestAmbiguousCommandRegistering());
-        $application->add(new \TestAmbiguousCommandRegistering2());
-        $this->assertEquals('test-ambiguous', $application->find('test')->getName());
+        $application->add(new \TestTiti());
+        $application->add(new \TestToto());
+        $this->assertEquals('test-toto', $application->find('test')->getName());
     }
 
     /**
@@ -419,7 +383,6 @@ class ApplicationTest extends TestCase
      */
     public function testFindWithAmbiguousAbbreviations($abbreviation, $expectedExceptionMessage)
     {
-        putenv('COLUMNS=120');
         if (method_exists($this, 'expectException')) {
             $this->expectException('Symfony\Component\Console\Exception\CommandNotFoundException');
             $this->expectExceptionMessage($expectedExceptionMessage);
@@ -505,7 +468,6 @@ class ApplicationTest extends TestCase
 
     public function testFindAlternativeExceptionMessageMultiple()
     {
-        putenv('COLUMNS=120');
         $application = new Application();
         $application->add(new \FooCommand());
         $application->add(new \Foo1Command());
@@ -1726,6 +1688,13 @@ class ApplicationTest extends TestCase
         } catch (\Error $e) {
             $this->assertSame($e->getMessage(), 'Class \'UnknownClass\' not found');
         }
+    }
+
+    protected function tearDown()
+    {
+        putenv('SHELL_VERBOSITY');
+        unset($_ENV['SHELL_VERBOSITY']);
+        unset($_SERVER['SHELL_VERBOSITY']);
     }
 }
 

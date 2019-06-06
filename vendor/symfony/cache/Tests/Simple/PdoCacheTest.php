@@ -16,7 +16,6 @@ use Symfony\Component\Cache\Tests\Traits\PdoPruneableTrait;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class PdoCacheTest extends CacheTestCase
 {

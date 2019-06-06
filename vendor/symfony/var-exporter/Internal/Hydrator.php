@@ -42,12 +42,8 @@ class Hydrator
         foreach ($properties as $class => $vars) {
             (self::$hydrators[$class] ?? self::getHydrator($class))($vars, $objects);
         }
-        foreach ($wakeups as $k => $v) {
-            if (\is_array($v)) {
-                $objects[-$k]->__unserialize($v);
-            } else {
-                $objects[$v]->__wakeup();
-            }
+        foreach ($wakeups as $i) {
+            $objects[$i]->__wakeup();
         }
 
         return $value;

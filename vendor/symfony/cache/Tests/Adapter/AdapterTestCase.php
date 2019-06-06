@@ -59,26 +59,6 @@ abstract class AdapterTestCase extends CachePoolTest
         $this->assertFalse($isHit);
     }
 
-    public function testRecursiveGet()
-    {
-        if (isset($this->skippedTests[__FUNCTION__])) {
-            $this->markTestSkipped($this->skippedTests[__FUNCTION__]);
-        }
-
-        $cache = $this->createCachePool(0, __FUNCTION__);
-
-        $v = $cache->get('k1', function () use (&$counter, $cache) {
-            $v = $cache->get('k2', function () use (&$counter) { return ++$counter; });
-            $v = $cache->get('k2', function () use (&$counter) { return ++$counter; });
-
-            return $v;
-        });
-
-        $this->assertSame(1, $counter);
-        $this->assertSame(1, $v);
-        $this->assertSame(1, $cache->get('k2', function () { return 2; }));
-    }
-
     public function testGetMetadata()
     {
         if (isset($this->skippedTests[__FUNCTION__])) {
@@ -235,9 +215,14 @@ abstract class AdapterTestCase extends CachePoolTest
     }
 }
 
-class NotUnserializable
+class NotUnserializable implements \Serializable
 {
-    public function __wakeup()
+    public function serialize()
+    {
+        return serialize(123);
+    }
+
+    public function unserialize($ser)
     {
         throw new \Exception(__CLASS__);
     }

@@ -15,7 +15,6 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class Psr6CacheWithAdapterTest extends Psr6CacheTest
 {

@@ -90,12 +90,11 @@ class LinkedinProvider extends AbstractProvider implements ProviderInterface
     {
         $fields = implode(',', $this->fields);
 
-        $url = 'https://api.linkedin.com/v2/me?projection=('.$fields.')';
+        $url = 'https://api.linkedin.com/v1/people/~:('.$fields.')';
 
         $response = $this->getHttpClient()->get($url, [
             'headers' => [
-                'Content-Type' => 'application/json',
-                'X-Restli-Protocol-Version' => '2.0.0',
+                'x-li-format' => 'json',
                 'Authorization' => 'Bearer '.$token,
             ],
         ]);

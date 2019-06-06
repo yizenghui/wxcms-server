@@ -13,9 +13,6 @@ namespace Symfony\Component\Cache\Tests\Simple;
 
 use Symfony\Component\Cache\Simple\ApcuCache;
 
-/**
- * @group legacy
- */
 class ApcuCacheTest extends CacheTestCase
 {
     protected $skippedTests = [

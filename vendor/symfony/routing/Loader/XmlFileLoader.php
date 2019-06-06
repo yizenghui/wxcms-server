@@ -208,7 +208,6 @@ class XmlFileLoader extends FileLoader
         $options = [];
         $condition = null;
 
-        /** @var \DOMElement $n */
         foreach ($node->getElementsByTagNameNS(self::NAMESPACE_URI, '*') as $n) {
             if ($node !== $n->parentNode) {
                 continue;
@@ -227,7 +226,7 @@ class XmlFileLoader extends FileLoader
                     $requirements[$n->getAttribute('key')] = trim($n->textContent);
                     break;
                 case 'option':
-                    $options[$n->getAttribute('key')] = XmlUtils::phpize(trim($n->textContent));
+                    $options[$n->getAttribute('key')] = trim($n->textContent);
                     break;
                 case 'condition':
                     $condition = trim($n->textContent);

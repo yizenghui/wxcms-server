@@ -15,7 +15,6 @@ use Symfony\Component\Cache\Tests\Fixtures\ExternalAdapter;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class Psr6CacheWithoutAdapterTest extends Psr6CacheTest
 {

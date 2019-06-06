@@ -15,7 +15,6 @@ use Symfony\Component\Cache\Simple\ArrayCache;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class ArrayCacheTest extends CacheTestCase
 {

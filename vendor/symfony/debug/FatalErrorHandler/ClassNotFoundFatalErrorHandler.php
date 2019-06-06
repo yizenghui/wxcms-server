@@ -185,11 +185,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
             }
         }
 
-        try {
-            require_once $file;
-        } catch (\Throwable $e) {
-            return null;
-        }
+        require_once $file;
 
         foreach ($candidates as $candidate) {
             if ($this->classExists($candidate)) {

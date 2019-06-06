@@ -76,8 +76,9 @@ class IndexService
             return;
         }
 
+        //使用中文分词  增加 with parser ngram  并且my.ini添加设置 ngram_token_size=2   by yizenghui
         DB::connection($this->modelService->connectionName)
-            ->statement("CREATE FULLTEXT INDEX $indexName ON $tableName ($indexFields)");
+            ->statement("CREATE FULLTEXT INDEX $indexName ON $tableName ($indexFields) with parser ngram"); 
 
         event(new Events\ModelIndexCreated($indexName, $indexFields));
     }

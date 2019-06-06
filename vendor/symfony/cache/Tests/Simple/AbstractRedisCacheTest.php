@@ -13,9 +13,6 @@ namespace Symfony\Component\Cache\Tests\Simple;
 
 use Symfony\Component\Cache\Simple\RedisCache;
 
-/**
- * @group legacy
- */
 abstract class AbstractRedisCacheTest extends CacheTestCase
 {
     protected $skippedTests = [

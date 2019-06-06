@@ -20,10 +20,11 @@ class YamlFileDumperTest extends TestCase
     public function testTreeFormatCatalogue()
     {
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add([
-            'foo.bar1' => 'value1',
-            'foo.bar2' => 'value2',
-        ]);
+        $catalogue->add(
+            [
+                'foo.bar1' => 'value1',
+                'foo.bar2' => 'value2',
+            ]);
 
         $dumper = new YamlFileDumper();
 
@@ -33,10 +34,11 @@ class YamlFileDumperTest extends TestCase
     public function testLinearFormatCatalogue()
     {
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add([
-            'foo.bar1' => 'value1',
-            'foo.bar2' => 'value2',
-        ]);
+        $catalogue->add(
+            [
+                'foo.bar1' => 'value1',
+                'foo.bar2' => 'value2',
+            ]);
 
         $dumper = new YamlFileDumper();
 

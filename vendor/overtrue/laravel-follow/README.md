@@ -45,13 +45,13 @@ Overtrue\LaravelFollow\FollowServiceProvider::class
 Publish the migrations file:
 
 ```sh
-$ php artisan vendor:publish --provider="Overtrue\LaravelFollow\FollowServiceProvider" --tag="migrations"
+$ php artisan vendor:publish --provider='Overtrue\LaravelFollow\FollowServiceProvider' --tag="migrations"
 ```
 
 As optional if you want to modify the default configuration, you can publish the configuration file:
  
 ```sh
-$ php artisan vendor:publish --provider="Overtrue\LaravelFollow\FollowServiceProvider" --tag="config"
+$ php artisan vendor:publish --provider='Overtrue\LaravelFollow\FollowServiceProvider' --tag="config"
 ```
 
 And create tables:
@@ -321,12 +321,6 @@ $event->results; // ['attached' => [1, 2, 3], 'detached' => [5, 6]]
 $event->attached; // [1, 2, 3]
 $event->detached; // [5, 6]
 ```
-
-## PHP 扩展包开发
-
-> 想知道如何从零开始构建 PHP 扩展包？
->
-> 请关注我的实战课程，我会在此课程中分享一些扩展开发经验 —— [《PHP 扩展包实战教程 - 从入门到发布》](https://learnku.com/courses/creating-package)
 
 ## License
 

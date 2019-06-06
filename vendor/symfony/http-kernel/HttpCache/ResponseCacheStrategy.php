@@ -215,7 +215,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
         }
 
         if (false !== $this->ageDirectives[$directive]) {
-            $value -= $age;
+            $value = $value - $age;
             $this->ageDirectives[$directive] = null !== $this->ageDirectives[$directive] ? min($this->ageDirectives[$directive], $value) : $value;
         }
     }

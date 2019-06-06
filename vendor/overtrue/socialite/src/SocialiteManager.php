@@ -58,7 +58,6 @@ class SocialiteManager implements FactoryInterface
         'douban' => 'Douban',
         'wework' => 'WeWork',
         'outlook' => 'Outlook',
-        'douyin' => 'DouYin',
     ];
 
     /**

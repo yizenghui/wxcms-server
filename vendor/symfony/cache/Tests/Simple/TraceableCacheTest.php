@@ -16,7 +16,6 @@ use Symfony\Component\Cache\Simple\TraceableCache;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class TraceableCacheTest extends CacheTestCase
 {

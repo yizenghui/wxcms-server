@@ -808,12 +808,6 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
      */
     public function guess($mimeType)
     {
-        if (isset($this->defaultExtensions[$mimeType])) {
-            return $this->defaultExtensions[$mimeType];
-        }
-
-        $lcMimeType = strtolower($mimeType);
-
-        return isset($this->defaultExtensions[$lcMimeType]) ? $this->defaultExtensions[$lcMimeType] : null;
+        return isset($this->defaultExtensions[$mimeType]) ? $this->defaultExtensions[$mimeType] : null;
     }
 }

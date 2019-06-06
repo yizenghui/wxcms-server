@@ -1346,37 +1346,22 @@ class Request
      */
     public function getMethod()
     {
-        if (null !== $this->method) {
-            return $this->method;
+        if (null === $this->method) {
+            $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
+
+            if ('POST' === $this->method) {
+                if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
+                    $this->method = strtoupper($method);
+                } elseif (self::$httpMethodParameterOverride) {
+                    $method = $this->request->get('_method', $this->query->get('_method', 'POST'));
+                    if (\is_string($method)) {
+                        $this->method = strtoupper($method);
+                    }
+                }
+            }
         }
 
-        $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
-
-        if ('POST' !== $this->method) {
-            return $this->method;
-        }
-
-        $method = $this->headers->get('X-HTTP-METHOD-OVERRIDE');
-
-        if (!$method && self::$httpMethodParameterOverride) {
-            $method = $this->request->get('_method', $this->query->get('_method', 'POST'));
-        }
-
-        if (!\is_string($method)) {
-            return $this->method;
-        }
-
-        $method = strtoupper($method);
-
-        if (\in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'PATCH', 'PURGE', 'TRACE'], true)) {
-            return $this->method = $method;
-        }
-
-        if (!preg_match('/^[A-Z]++$/D', $method)) {
-            throw new SuspiciousOperationException(sprintf('Invalid method override "%s".', $method));
-        }
-
-        return $this->method = $method;
+        return $this->method;
     }
 
     /**
@@ -1477,7 +1462,7 @@ class Request
      *
      * @param string|null $default The default format
      *
-     * @return string|null The request format
+     * @return string The request format
      */
     public function getRequestFormat($default = 'html')
     {
@@ -2050,7 +2035,7 @@ class Request
         }
     }
 
-    /**
+    /*
      * Returns the prefix as encoded in the string when the string starts with
      * the given prefix, false otherwise.
      *

@@ -11,9 +11,6 @@
 
 namespace Symfony\Component\Cache\Tests\Simple;
 
-/**
- * @group legacy
- */
 class RedisArrayCacheTest extends AbstractRedisCacheTest
 {
     public static function setupBeforeClass()

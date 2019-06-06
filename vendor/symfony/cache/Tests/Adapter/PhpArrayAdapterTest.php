@@ -23,7 +23,6 @@ class PhpArrayAdapterTest extends AdapterTestCase
 {
     protected $skippedTests = [
         'testGet' => 'PhpArrayAdapter is read-only.',
-        'testRecursiveGet' => 'PhpArrayAdapter is read-only.',
         'testBasicUsage' => 'PhpArrayAdapter is read-only.',
         'testBasicUsageWithLongKey' => 'PhpArrayAdapter is read-only.',
         'testClear' => 'PhpArrayAdapter is read-only.',

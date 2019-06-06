@@ -77,19 +77,18 @@ class Config implements ArrayAccess
         }
 
         $keys = explode('.', $key);
-        $config = &$this->config;
 
         while (count($keys) > 1) {
             $key = array_shift($keys);
-            if (!isset($config[$key]) || !is_array($config[$key])) {
-                $config[$key] = [];
+            if (!isset($this->config[$key]) || !is_array($this->config[$key])) {
+                $this->config[$key] = [];
             }
-            $config = &$config[$key];
+            $this->config = &$this->config[$key];
         }
 
-        $config[array_shift($keys)] = $value;
+        $this->config[array_shift($keys)] = $value;
 
-        return $config;
+        return $this->config;
     }
 
     /**

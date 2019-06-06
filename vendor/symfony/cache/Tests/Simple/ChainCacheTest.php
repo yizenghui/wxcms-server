@@ -19,7 +19,6 @@ use Symfony\Component\Cache\Simple\FilesystemCache;
 
 /**
  * @group time-sensitive
- * @group legacy
  */
 class ChainCacheTest extends CacheTestCase
 {

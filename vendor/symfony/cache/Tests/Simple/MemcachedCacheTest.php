@@ -14,9 +14,6 @@ namespace Symfony\Component\Cache\Tests\Simple;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Simple\MemcachedCache;
 
-/**
- * @group legacy
- */
 class MemcachedCacheTest extends CacheTestCase
 {
     protected $skippedTests = [

@@ -36,8 +36,9 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
      * @var array
      */
     protected $scopes = [
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/plus.login',
+        'https://www.googleapis.com/auth/plus.profile.emails.read',
     ];
 
     /**
@@ -45,7 +46,7 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase('https://accounts.google.com/o/oauth2/v2/auth', $state);
+        return $this->buildAuthUrlFromBase('https://accounts.google.com/o/oauth2/auth', $state);
     }
 
     /**
@@ -53,7 +54,7 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return 'https://www.googleapis.com/oauth2/v4/token';
+        return 'https://accounts.google.com/o/oauth2/token';
     }
 
     /**
@@ -91,7 +92,10 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken(AccessTokenInterface $token)
     {
-        $response = $this->getHttpClient()->get('https://www.googleapis.com/userinfo/v2/me', [
+        $response = $this->getHttpClient()->get('https://www.googleapis.com/plus/v1/people/me?', [
+            'query' => [
+                'prettyPrint' => 'false',
+            ],
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer '.$token->getToken(),
@@ -108,11 +112,11 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
     {
         return new User([
             'id' => $this->arrayItem($user, 'id'),
-            'username' => $this->arrayItem($user, 'email'),
-            'nickname' => $this->arrayItem($user, 'name'),
-            'name' => $this->arrayItem($user, 'name'),
-            'email' => $this->arrayItem($user, 'email'),
-            'avatar' => $this->arrayItem($user, 'picture'),
+            'username' => $this->arrayItem($user, 'emails.0.value'),
+            'nickname' => $this->arrayItem($user, 'nickname'),
+            'name' => $this->arrayItem($user, 'displayName'),
+            'email' => $this->arrayItem($user, 'emails.0.value'),
+            'avatar' => $this->arrayItem($user, 'image.url'),
         ]);
     }
 }

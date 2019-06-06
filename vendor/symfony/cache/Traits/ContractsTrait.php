@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Cache\Traits;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
@@ -32,7 +31,6 @@ trait ContractsTrait
     }
 
     private $callbackWrapper = [LockRegistry::class, 'compute'];
-    private $computing = [];
 
     /**
      * Wraps the callback passed to ->get() in a callable.
@@ -42,7 +40,7 @@ trait ContractsTrait
     public function setCallbackWrapper(?callable $callbackWrapper): callable
     {
         $previousWrapper = $this->callbackWrapper;
-        $this->callbackWrapper = $callbackWrapper ?? function (callable $callback, ItemInterface $item, bool &$save, CacheInterface $pool, \Closure $setMetadata, ?LoggerInterface $logger) {
+        $this->callbackWrapper = $callbackWrapper ?? function (callable $callback, ItemInterface $item, bool &$save, CacheInterface $pool) {
             return $callback($item, $save);
         };
 
@@ -58,40 +56,35 @@ trait ContractsTrait
         static $setMetadata;
 
         $setMetadata = $setMetadata ?? \Closure::bind(
-            function (CacheItem $item, float $startTime, ?array &$metadata) {
+            function (AdapterInterface $pool, ItemInterface $item, float $startTime) {
                 if ($item->expiry > $endTime = microtime(true)) {
-                    $item->newMetadata[CacheItem::METADATA_EXPIRY] = $metadata[CacheItem::METADATA_EXPIRY] = $item->expiry;
-                    $item->newMetadata[CacheItem::METADATA_CTIME] = $metadata[CacheItem::METADATA_CTIME] = 1000 * (int) ($endTime - $startTime);
-                } else {
-                    unset($metadata[CacheItem::METADATA_EXPIRY], $metadata[CacheItem::METADATA_CTIME]);
+                    $item->newMetadata[ItemInterface::METADATA_EXPIRY] = $item->expiry;
+                    $item->newMetadata[ItemInterface::METADATA_CTIME] = 1000 * (int) ($endTime - $startTime);
                 }
             },
             null,
             CacheItem::class
         );
 
-        return $this->contractsGet($pool, $key, function (CacheItem $item, bool &$save) use ($pool, $callback, $setMetadata, &$metadata, $key) {
+        return $this->contractsGet($pool, $key, function (CacheItem $item, bool &$save) use ($pool, $callback, $setMetadata) {
             // don't wrap nor save recursive calls
-            if (isset($this->computing[$key])) {
+            if (null === $callbackWrapper = $this->callbackWrapper) {
                 $value = $callback($item, $save);
                 $save = false;
 
                 return $value;
             }
-
-            $this->computing[$key] = $key;
+            $this->callbackWrapper = null;
             $startTime = microtime(true);
 
             try {
-                $value = ($this->callbackWrapper)($callback, $item, $save, $pool, function (CacheItem $item) use ($setMetadata, $startTime, &$metadata) {
-                    $setMetadata($item, $startTime, $metadata);
-                }, $this->logger ?? null);
-                $setMetadata($item, $startTime, $metadata);
+                $value = $callbackWrapper($callback, $item, $save, $pool);
+                $setMetadata($pool, $item, $startTime);
 
                 return $value;
             } finally {
-                unset($this->computing[$key]);
+                $this->callbackWrapper = $callbackWrapper;
             }
-        }, $beta, $metadata, $this->logger ?? null);
+        }, $beta, $metadata);
     }
 }

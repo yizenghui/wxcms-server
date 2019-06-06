@@ -11,24 +11,23 @@
 
 namespace Symfony\Component\Cache\Simple;
 
-use Psr\SimpleCache\CacheInterface as Psr16CacheInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\Cache\ResettableInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "%s" and type-hint for "%s" instead.', TraceableCache::class, TraceableAdapter::class, CacheInterface::class), E_USER_DEPRECATED);
-
 /**
- * @deprecated since Symfony 4.3, use TraceableAdapter and type-hint for CacheInterface instead.
+ * An adapter that collects data about all cache calls.
+ *
+ * @author Nicolas Grekas <p@tchwork.com>
  */
-class TraceableCache implements Psr16CacheInterface, PruneableInterface, ResettableInterface
+class TraceableCache implements CacheInterface, PruneableInterface, ResettableInterface
 {
     private $pool;
     private $miss;
     private $calls = [];
 
-    public function __construct(Psr16CacheInterface $pool)
+    public function __construct(CacheInterface $pool)
     {
         $this->pool = $pool;
         $this->miss = new \stdClass();

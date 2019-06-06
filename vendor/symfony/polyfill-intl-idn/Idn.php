@@ -43,9 +43,6 @@ namespace Symfony\Polyfill\Intl\Idn;
  */
 final class Idn
 {
-    const INTL_IDNA_VARIANT_2003 = 0;
-    const INTL_IDNA_VARIANT_UTS46 = 1;
-
     private static $encodeTable = array(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
         'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
@@ -63,18 +60,18 @@ final class Idn
 
     public static function idn_to_ascii($domain, $options, $variant, &$idna_info = array())
     {
-        if (\PHP_VERSION_ID >= 70200 && self::INTL_IDNA_VARIANT_2003 === $variant) {
+        if (\PHP_VERSION_ID >= 70200 && INTL_IDNA_VARIANT_2003 === $variant) {
             @trigger_error('idn_to_ascii(): INTL_IDNA_VARIANT_2003 is deprecated', E_USER_DEPRECATED);
         }
 
-        if (self::INTL_IDNA_VARIANT_UTS46 === $variant) {
+        if (INTL_IDNA_VARIANT_UTS46 === $variant) {
             $domain = mb_strtolower($domain, 'utf-8');
         }
 
         $parts = explode('.', $domain);
 
-        foreach ($parts as $i => &$part) {
-            if ('' === $part && \count($parts) > 1 + $i) {
+        foreach ($parts as &$part) {
+            if ('' === $part) {
                 return false;
             }
             if (false === $part = self::encodePart($part)) {
@@ -95,7 +92,7 @@ final class Idn
 
     public static function idn_to_utf8($domain, $options, $variant, &$idna_info = array())
     {
-        if (\PHP_VERSION_ID >= 70200 && self::INTL_IDNA_VARIANT_2003 === $variant) {
+        if (\PHP_VERSION_ID >= 70200 && INTL_IDNA_VARIANT_2003 === $variant) {
             @trigger_error('idn_to_utf8(): INTL_IDNA_VARIANT_2003 is deprecated', E_USER_DEPRECATED);
         }
 

@@ -21,11 +21,7 @@
         "symfony/polyfill-mbstring": "~1.0"
     },
     "require-dev": {
-        "symfony/css-selector": "~3.4|~4.0",
-        "masterminds/html5": "^2.6"
-    },
-    "conflict": {
-        "masterminds/html5": "<2.6"
+        "symfony/css-selector": "~3.4|~4.0"
     },
     "suggest": {
         "symfony/css-selector": ""
@@ -39,7 +35,7 @@
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "4.3-dev"
+            "dev-master": "4.2-dev"
         }
     }
 }

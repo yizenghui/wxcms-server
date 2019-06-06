@@ -51,6 +51,7 @@ class TagAwareAdapter implements TagAwareAdapterInterface, TagAwareCacheInterfac
                 $item->value = $value;
                 $item->defaultLifetime = $protoItem->defaultLifetime;
                 $item->expiry = $protoItem->expiry;
+                $item->innerItem = $protoItem->innerItem;
                 $item->poolHash = $protoItem->poolHash;
 
                 return $item;
