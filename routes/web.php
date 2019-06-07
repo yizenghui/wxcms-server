@@ -21,3 +21,5 @@ Route::get('/poster','Api\ArticleController@poster');
 Route::get('/qrcode/article/{token}','Api\QrcodeController@article');
 
 Route::get('/poster','Api\ArticleController@poster');
+
+Route::get('/articles','Api\ArticleController@index');

@@ -30,8 +30,7 @@
         "spatie/laravel-tags": "^2.1",
         "tymon/jwt-auth": "dev-develop",
         "vinkla/hashids": "3.3",
-        "yab/laravel-scout-mysql-driver": "^2.3",
-        "zgldh/qiniu-laravel-storage": "^0.10.0"
+        "yab/laravel-scout-mysql-driver": "^2.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
