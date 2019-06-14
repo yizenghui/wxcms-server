@@ -14,10 +14,12 @@ use Overtrue\LaravelFollow\Traits\CanSubscribe;
 use Overtrue\LaravelFollow\Traits\CanVote;
 use Overtrue\LaravelFollow\Traits\CanBookmark;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Actuallymab\LaravelComment\CanComment;
+// use Actuallymab\LaravelComment\Contracts\Commentable;
 
-class Fan extends Authenticatable implements JWTSubject
+class Fan extends Authenticatable implements JWTSubject//, Commentable
 {
-    use Notifiable, SoftDeletes, LogsActivity, CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
+    use CanComment, Notifiable, SoftDeletes, LogsActivity, CanFollow, CanBookmark, CanLike, CanFavorite, CanSubscribe, CanVote;
 
     /**
      * The attributes that are mass assignable.
@@ -161,5 +163,11 @@ class Fan extends Authenticatable implements JWTSubject
     public function fromuser()
     {
         return $this->belongsTo(Fan::class,'fromid');
+    }
+
+    // 用户可以评论
+    public function canCommentWithoutApprove(): bool
+    {
+        return true;
     }
 }

@@ -6,6 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Actuallymab\\LaravelComment\\CanComment' => $vendorDir . '/actuallymab/laravel-comment/src/CanComment.php',
+    'Actuallymab\\LaravelComment\\Contracts\\Commentable' => $vendorDir . '/actuallymab/laravel-comment/src/Contracts/Commentable.php',
+    'Actuallymab\\LaravelComment\\HasComments' => $vendorDir . '/actuallymab/laravel-comment/src/HasComments.php',
+    'Actuallymab\\LaravelComment\\LaravelCommentServiceProvider' => $vendorDir . '/actuallymab/laravel-comment/src/LaravelCommentServiceProvider.php',
+    'Actuallymab\\LaravelComment\\Models\\Comment' => $vendorDir . '/actuallymab/laravel-comment/src/Models/Comment.php',
     'App\\Admin\\Controllers\\AdController' => $baseDir . '/app/Admin/Controllers/AdController.php',
     'App\\Admin\\Controllers\\ArticleController' => $baseDir . '/app/Admin/Controllers/ArticleController.php',
     'App\\Admin\\Controllers\\AuthController' => $baseDir . '/app/Admin/Controllers/AuthController.php',

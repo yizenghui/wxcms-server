@@ -203,6 +203,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'A' => 
         array (
             'App\\' => 4,
+            'Actuallymab\\LaravelComment\\' => 27,
         ),
     );
 
@@ -598,6 +599,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+        'Actuallymab\\LaravelComment\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/actuallymab/laravel-comment/src',
+        ),
     );
 
     public static $fallbackDirsPsr4 = array (
@@ -644,6 +649,11 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
     );
 
     public static $classMap = array (
+        'Actuallymab\\LaravelComment\\CanComment' => __DIR__ . '/..' . '/actuallymab/laravel-comment/src/CanComment.php',
+        'Actuallymab\\LaravelComment\\Contracts\\Commentable' => __DIR__ . '/..' . '/actuallymab/laravel-comment/src/Contracts/Commentable.php',
+        'Actuallymab\\LaravelComment\\HasComments' => __DIR__ . '/..' . '/actuallymab/laravel-comment/src/HasComments.php',
+        'Actuallymab\\LaravelComment\\LaravelCommentServiceProvider' => __DIR__ . '/..' . '/actuallymab/laravel-comment/src/LaravelCommentServiceProvider.php',
+        'Actuallymab\\LaravelComment\\Models\\Comment' => __DIR__ . '/..' . '/actuallymab/laravel-comment/src/Models/Comment.php',
         'App\\Admin\\Controllers\\AdController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AdController.php',
         'App\\Admin\\Controllers\\ArticleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ArticleController.php',
         'App\\Admin\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AuthController.php',

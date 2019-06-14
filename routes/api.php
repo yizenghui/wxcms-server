@@ -58,6 +58,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
 
 
         Route::get('/articles','ArticleController@index');
+        Route::get('/article/{id}/comments','CommentController@articleComments');
+        Route::post('/article/{id}/comment','CommentController@newArticleComment');
         Route::get('/search','ArticleController@search');
         Route::get('/goodses','GoodsController@index');
         Route::get('/buygoods','GoodsController@buy');

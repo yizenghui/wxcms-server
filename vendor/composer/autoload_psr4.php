@@ -103,5 +103,6 @@ return array(
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Cron\\' => array($vendorDir . '/mtdowling/cron-expression/src/Cron'),
     'App\\' => array($baseDir . '/app'),
+    'Actuallymab\\LaravelComment\\' => array($vendorDir . '/actuallymab/laravel-comment/src'),
     '' => array($vendorDir . '/nesbot/carbon/src'),
 );

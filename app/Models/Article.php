@@ -9,12 +9,14 @@ use Overtrue\LaravelFollow\Traits\CanBeFavorited;
 use Overtrue\LaravelFollow\Traits\CanBeVoted;
 use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
 use Laravel\Scout\Searchable;
+use Actuallymab\LaravelComment\Contracts\Commentable;
+use Actuallymab\LaravelComment\HasComments;
 
-class Article extends Model
+class Article extends Model implements Commentable
 {
     use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
     use SoftDeletes;
-    use Searchable;
+    use Searchable, HasComments;
 
     
     /**
@@ -58,4 +60,10 @@ class Article extends Model
 
         return $array;
     }
+
+    
+    // public function canBeRated(): bool
+    // {
+    //     return true; // default false
+    // }
 }

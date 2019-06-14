@@ -82,12 +82,17 @@
                     WxCMS
                 </div>
                 <div class="links m-b-md">
-                    <a href="#" onclick="alert('投稿邮箱：121258121@qq.com');">投稿</a>
-                    <a href="#" onclick="alert('合作联系微信：yize1992');">合作</a>
+                    <a href="https://github.com/yizenghui/wxcms/issues/3">案例</a>
+                    <a href="https://github.com/yizenghui/wxcms/archive/master.zip">下载</a>
+                    <a href="https://github.com/yizenghui/wxcms/issues/4">安装</a>
+                    <!-- <a href="https://github.com/yizenghui/wxcms/issues/5">开发</a> -->
                     <a href="/admin">后台</a>
-                    <a href="https://github.com/yizenghui/wxcms">GitHub</a>
                 </div>
-                <div><strong>WxCMS</strong>是一款适合微信自媒体内容运营的小程序，小程序基于Wepy+ColorUI打造。</div>
+                <div>
+                <strong>WxCMS</strong>是一款适合微信自媒体内容运营的小程序，小程序基于Wepy+ColorUI打造。
+                <br>用户可以使用平台接口完成<a href="/admin">数据内容管理服务</a>(限免)。
+                <br>
+                <a href="https://github.com/yizenghui/wxcms">小程序在Github开源</a>(后端在开源的路上)</div>
             </div>
         </div>
     </body>
