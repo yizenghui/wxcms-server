@@ -170,7 +170,8 @@ class AuthorController extends Controller
         $form->number('point','剩余积分')->default(0);
         $form->number('current_point','当前可用积分')->default(0);
         $form->number('total_point','总积分')->default(0);
-        
+        $form->text('reward_adid', '激励式视频广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
+        $form->text('banner_adid', 'banner广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
         $states = [
             'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => '屏蔽', 'color' => 'danger'],

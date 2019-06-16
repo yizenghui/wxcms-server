@@ -26,6 +26,8 @@ class CreateAuthorsTable extends Migration
             $table->string('wxid')->comment('微信号')->nullable();
             $table->string('wxappid')->comment('微信公众号')->nullable();
             $table->timestamp('sign_at')->comment('签约时间')->nullable();
+            $table->string('reward_adid')->comment('激励式视频id')->nullable(); // 不同作者用不同广告ID， 分成可依据流量主后台统计
+            $table->string('banner_adid')->comment('banner广告id')->nullable();
             $table->integer('point')->comment('剩余积分')->default(0);
             $table->integer('current_point')->comment('当前可用积分')->default(0); // 注：这个参数在发工资时由剩余积分同步过来 (用于限制用户这个月新获取的积分不能在结算前使用)
             $table->integer('total_point')->index()->comment('总积分')->default(0);
