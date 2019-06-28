@@ -12,9 +12,10 @@ use Intervention\Image\ImageManagerStatic as Image;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/','HomeController@index');
 
 Route::get('/poster','Api\ArticleController@poster');
 
