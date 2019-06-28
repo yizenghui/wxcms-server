@@ -46,6 +46,9 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $article->author;
+        // $article->author_reward_adid = $article->author->reward_adid;
+        // $article->author_banner_adid = $article->author->banner_adid;
+
         $share = $article->share;
         $article->video = '';
         $article->share_title = $share?$share->oneTitle:'';

@@ -19,8 +19,8 @@ class Task extends Model
     ];
 
 
+    // 今日签到
     public function todaySign(){
-        
         if( !$this->todayHasSign() ){
             $this->sign_at = Carbon::now();
             $this->total += $this->todaySignAction();
@@ -29,7 +29,7 @@ class Task extends Model
         return false;
     }
 
-
+    // 今日激励(签到激励)
     public function todayReward(){
         if( !$this->todayHasReward() ){
             $this->reward_at = Carbon::now();
@@ -51,15 +51,23 @@ class Task extends Model
         return config('point.like_action');
     }
 
+    // 用户今日激励文章加分数
+    public function todayRewardArticleAction(){ //激励文章
+        return config('point.reward_article_action');
+    }
+
+    // 作者文章被激励加分数
+    public function todayAuthorArticleRewardAction(){ //激励作者(不设上限,在用户激励行为奖励中并行)
+        return config('point.author_article_reward_action');
+    }
+
     // 今日签到积分
     public function todaySignAction(){
-        if($this->todayHasTeam()) return config('point.sign_action') * 2;
         return config('point.sign_action');
     }
     
     // 今日激励积分
     public function todayRewardAction(){ // reward_at
-        if($this->todayHasTeam()) return config('point.reward_action') * 2;
         return config('point.reward_action');
     }
     
@@ -75,7 +83,7 @@ class Task extends Model
         return false;
     }
 
-    // 今日已激励
+    // 今日签到已激励
     public function todayHasReward(){
         if($this->reward_at) return true;
         return false;
@@ -101,6 +109,16 @@ class Task extends Model
         return false;
     }
 
+    // 今日文章激励加1,未受限时返回true
+    public function todayRewardArticleAdd(){ // 激励数加1
+        $this->reward_num ++;
+        if( !$this->todayRewardArticleMax() ){
+            $this->total += $this->todayRewardArticleAction();
+            return true;
+        }
+        return false;
+    }
+
     // 今日阅读任务数(最大显示每日可完成最大次数)
     public function todayRead(){
         if( $this->todayReadMax() ) return config('point.day_read_num');
@@ -120,6 +138,19 @@ class Task extends Model
 
     public function todayLikeMax(){
         if( $this->like_num>config('point.day_like_num') ) return true;
+        return false;
+    }
+
+    
+    // 今日文章激励任务数(最大显示每日可完成最大次数)
+    public function todayRewardArticle(){
+        if( $this->todayRewardArticleMax() ) return config('point.day_reward_article_num');
+        return intval($this->reward_num);
+    }
+
+    // 今日文章激励任务完成?
+    public function todayRewardArticleMax(){
+        if( $this->reward_num>config('point.day_reward_article_num') ) return true;
         return false;
     }
 

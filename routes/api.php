@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
     Route::group(['middleware' => ['auth:api', 'initappconfig']], function () {
         Route::get('/action/task','ActionController@task'); // 用户每日任务
         Route::get('/action/view','ActionController@view'); // 查看文章行为
+        Route::get('/action/rewardarticle','ActionController@rewardArticle'); // 激励文章行为
         Route::get('/action/sign','ActionController@sign'); // 用户签到
         Route::get('/action/reward','ActionController@reward'); // 用户激励
         Route::get('/action/signandreward','ActionController@signAndReward'); // 用户签到激励

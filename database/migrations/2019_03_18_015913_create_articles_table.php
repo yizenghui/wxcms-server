@@ -28,6 +28,7 @@ class CreateArticlesTable extends Migration
             $table->integer('view')->comment('页面展示数')->default(0);
             $table->integer('commented')->comment('评论数')->default(0);
             $table->integer('liked')->comment('喜欢人数')->default(0);
+            $table->integer('rewarded')->comment('激励人次')->default(0);
             $table->boolean('state')->default(1);
             $table->dateTime('commented_at')->comment('最后评论时间戳')->nullable();
             $table->dateTime('recommend_at')->comment('推荐结束时间戳')->nullable();

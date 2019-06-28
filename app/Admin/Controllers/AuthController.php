@@ -65,15 +65,22 @@ class AuthController extends BaseAuthController
             $form->switch('app.point_day_sign_num', '用户签到')->states($states)->default(1);
             $form->number('app.point_sign_action', '签到积分')->default(0);
             $form->switch('app.point_day_reward_num', '签到激励')->states($states)->default(0);
-            $form->number('app.point_reward_action', '激励积分')->default(0);
+            $form->number('app.point_reward_action', '签到激励积分')->default(0);
             $form->number('app.point_interview_action', '邀请积分')->default(0);
             $form->number('app.point_day_interview_num', '邀请人数')->default(0);
             $form->number('app.point_day_fansign_action', '受邀人签到')->default(0);
             $form->number('app.point_day_fansign_num', '受邀人签到奖励次数')->default(0);
+            $form->number('app.point_author_article_reward_action', '作者文章被激励积分')->default(0)->help('需要给作者绑定激励式视频广告id');
             
+            $form->divide();
+            $form->switch('app.point_repeated_incentives', '重复激励文章奖励')->states($states)->default(0);
+            $form->number('app.point_reward_article_action', '激励文章积分')->default(0);
+            $form->number('app.point_day_reward_article_num', '激励文章次数')->default(0);
+
             // $form->divide();
             // $form->switch('point_day_team_double_enabled', '组队双倍积分')->states($states)->help('粉丝组成5人队伍后，可获得双倍任务(分隔线下)奖励');
-            $form->divide();
+            // $form->divide();
+            $form->switch('app.point_rereading_reward', '重复阅读奖励')->states($states)->default(0);
             $form->number('app.point_read_action', '阅读积分')->default(0);
             $form->number('app.point_day_read_num', '阅读次数')->default(0);
             $form->number('app.point_like_action', '点赞积分')->default(0);

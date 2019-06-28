@@ -22,6 +22,7 @@ class CreateAppsTable extends Migration
             $table->string('app_secret')->comment('AppSecret')->nullable();
             $table->string('reward_adid')->comment('激励式视频id')->nullable();
             $table->string('banner_adid')->comment('banner广告id')->nullable();
+            $table->string('screen_adid')->comment('插屏广告id')->nullable();
             $table->string('default_search')->comment('默认搜索值')->nullable();
             $table->integer('index_share_id')->comment('首页分享策略')->default(0);
             $table->integer('topic_share_id')->comment('专题首页分享策略')->default(0);
@@ -44,6 +45,11 @@ class CreateAppsTable extends Migration
             $table->integer('point_day_fansign_action')->comment('受邀用户签到')->default(2);
             $table->integer('point_day_fansign_num')->comment('一天可以获得300次邀请新人签到积分')->default(300);
             $table->boolean('point_day_team_double_enabled')->comment('组队双倍积分功能是否开启')->default(0);
+            $table->integer('point_reward_article_action')->comment('文章激励可以获得积分')->default(5);
+            $table->integer('point_day_reward_article_num')->comment('一天可以获得5次文章激励积分')->default(5);
+            $table->boolean('point_rereading_reward')->comment('重复阅读同一篇文章给予奖励')->default(0);
+            $table->boolean('point_repeated_incentives')->comment('重复激励同一篇文章给予奖励')->default(0);
+            $table->integer('point_author_article_reward_action')->comment('作者文章被激励(加分给作者次数不设上限)')->default(5);
             $table->timestamps();
         });
     }

@@ -34,6 +34,14 @@ class ActionController extends Controller
         return response()->json($data);
     }
     
+    /**
+     * 激励文章
+     */
+    public function rewardArticle(Request $request){
+        $article = Article::findOrFail($request->get('article_id'));
+        $data = (new \App\Repositories\ActionRepository())->UserRewardArticle($request->user(),$article);
+        return response()->json($data);
+    }
     
     /**
      * 签到

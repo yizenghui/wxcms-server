@@ -31,17 +31,18 @@ class ActionRepository{
         // changePoint
         $article->view ++;
         $article->save();
-        if( !$user->hasBookmarked($article) ){
-            $user->bookmark($article);
+        $hasBookmarked = $user->hasBookmarked($article);
+        if( !$hasBookmarked || config('point.rereading_reward')){ // 通过配置可以设置重复阅读奖励
+            if( !$hasBookmarked ) $user->bookmark($article); // 如果未标记阅读，标记一下
             $task = $user->todaytask();
-            if($task->todayReadAdd()){
-                $user->changePoint($task->todayReadAction(),'阅读');
-                if($task->team_id){
+            if($task->todayReadAdd()){ // 今天还有阅读奖励
+                $user->changePoint($task->todayReadAction(),'阅读'); //获得积分奖励
+                if( $task->team_id ){ // 有组队id 加入队伍成绩
                     $team = $task->team;
                     $team->total += $task->todayReadAction();
                     $team->save();
                 }
-                if( $article->author_id){
+                if( $article->author_id ){ // 有作者id，增加作者点数
                     $author = $article->author;
                     $author->point ++;
                     $author->total_point ++;
@@ -79,6 +80,35 @@ class ActionRepository{
             return ['message'=>'点赞+1'];
         }
         return ['message'=>'点赞成功'];
+    }
+
+    /**
+     * 用户激励文章(作者)行为
+     */
+    public function UserRewardArticle(Fan $user,Article $article){
+        $article->rewarded ++;
+        $article->save();
+        $hasSubscribe = $user->hasSubscribe($article);
+        if( !$hasSubscribe || config('point.repeated_incentives')){ // 设置允许重复激励单个文章 
+            if(!$hasSubscribe) $user->subscribe($article);
+            if( $task->todayRewardArticleAdd() ){
+                $user->changePoint($task->todayRewardArticleAction(),'激励文章');
+                if( $article->author_id ){ // 有作者id，增加作者点数
+                    $author = $article->author;
+                    $author->point += $task->todayAuthorArticleRewardAction();
+                    $author->total_point += $task->todayAuthorArticleRewardAction();
+                    $author->save();
+                }
+                if( $task->team_id ){
+                    $team = $task->team;
+                    $team->total += $task->todayRewardArticleAction();
+                    $team->save();
+                }
+                $task->save();
+                return ['message'=>'积分+'.$task->todayRewardArticleAction()];
+            }
+        }
+        return ['message'=>'感谢您的激励！'];
     }
 
     public function UserUnLikeArticle(Fan $user,Article $article){

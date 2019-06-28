@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 注意，这里的参数会被用户设置参数覆盖。  .evn命名与apps表字段相同(注意大小差异)
+ */
 return [
 
     /*
@@ -7,15 +9,33 @@ return [
      */
     'enabled' => env('POINT_ENABLED', true),
 
+    /*
+     * 默认pid 如果用户pid为0，默认为此值。
+     */
+    'default_fromid' => env('POINT_DEFAULT_FROMID', 0),
+    
+    /*
+     * 重复阅读同一篇文章给予奖励
+     */
+    'rereading_reward' => env('POINT_REREADING_REWARD', 1),
+     
+    /*
+     * 重复激励同一篇文章给予奖励
+     */
+    'repeated_incentives' => env('POINT_REPEATED_INCENTIVES', 1),
+     
+
+    /**
+     * 作者文章被激励(加分给作者不设上限)
+     */
+    'author_article_reward_action' => env('POINT_AUTHOR_ARTICLE_REWARD_ACTION', 5),
+
+
     /**
      * 周期性结算 true 时当前可用积分需要周期结算，false 是余额为可用积分
      */
     'cycle_clearing' => env('POINT_CYCLE_CLEARING', false),
     
-    /*
-     * 默认pid 如果用户pid为0，默认为此值。
-     */
-    'default_fromid' => env('POINT_DEFAULT_FROMID', 0),
 
     /*
      * 签到可以获利积分
@@ -47,8 +67,6 @@ return [
      */
     'day_read_num' => env('POINT_DAY_READ_NUM', 10),
 
-    
-
     /*
      * 点赞可以获得积分
      */
@@ -60,6 +78,16 @@ return [
     'day_like_num' => env('POINT_DAY_LiKE_NUM', 5),
 
     
+    /*
+     * 激励文章可以获得积分
+     */
+    'reward_article_action' => env('POINT_REWARD_ARTICLE_ACTION', 5),
+
+    /*
+     * 一天最多可以获得5次激励文章积分
+     */
+    'day_reward_article_num' => env('POINT_DAY_REWARD_ARTICLE_NUM', 5),
+
     /*
      * 邀请新人访问可以获得积分
      */
