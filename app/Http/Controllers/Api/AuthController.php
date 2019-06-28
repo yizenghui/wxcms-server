@@ -26,7 +26,10 @@ class AuthController extends Controller
     return $config;
   }
 
-
+  // 检查token
+  public function checkToken(Request $request){
+    return $request->user();
+  }
   public function gettoken($js_code,$app_id,$secret){
     $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$app_id}&secret={$secret}&js_code={$js_code}";
     return json_decode( file_get_contents($url), true );

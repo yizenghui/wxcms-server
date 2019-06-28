@@ -25,10 +25,6 @@ Route::get('/v1/qrcode/jump/{token}','Api\QrcodeController@jump');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp']], function () {
 
-    Route::group(['middleware' => ['initappconfig']], function () {
-        Route::get('gettoken','AuthController@token');
-    });
-     
     Route::get('carousels','CarouselController@index');
 
     Route::get('ads','AdController@index');
@@ -40,6 +36,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
     Route::get('config/topiclist','AuthController@topiclist');
     Route::get('config/articleinfo','AuthController@articleinfo');
 
+    Route::group(['middleware' => ['initappconfig']], function () {
+        Route::get('gettoken','AuthController@token');
+    });
+     
+    Route::get('checktoken','AuthController@checkToken');
     
     Route::group(['middleware' => ['auth:api', 'initappconfig']], function () {
         Route::get('/action/task','ActionController@task'); // 用户每日任务
@@ -93,8 +94,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
     });
 
 
-    Route::middleware(['auth:api'])->get('/checktoken', function (Request $request) {
-        return $request->user();
-    });
 
 });
