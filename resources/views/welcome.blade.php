@@ -88,6 +88,15 @@
                     <a href="https://github.com/yizenghui/wxcms">GitHub</a>
                 </div>
                 <div><strong>WxCMS</strong>是一款适合微信自媒体内容运营的小程序，小程序基于Wepy+ColorUI打造。</div>
+                <div>
+                    开发这套小程序系统主要是为了帮助自媒体朋友实现<strong>流量变现和粉丝沉淀+裂变</strong>。
+                </div> 
+                <div>
+                    为了降低用户使用成本，我们免费提供数据管理后台和每月10万次的接口调用服务。
+                </div>
+                <div>
+                    当月的接口调用次数超出10万次后按万次/1元的标准收费。
+                </div>
             </div>
         </div>
     </body>

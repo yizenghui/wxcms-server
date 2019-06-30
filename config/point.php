@@ -9,6 +9,16 @@ return [
      */
     'enabled' => env('POINT_ENABLED', true),
 
+    /**
+     * 积分类型(小程序展示积分标题)
+     */
+    'score_type' => env('POINT_SCORE_TYPE', '积分'),
+
+     /**
+      * 积分比值(小程序展示积分实值比)
+      */
+    'score_ratio' => env('POINT_SCORE_RATIO', 1), // 1 1:1  100 100:1 
+
     /*
      * 默认pid 如果用户pid为0，默认为此值。
      */

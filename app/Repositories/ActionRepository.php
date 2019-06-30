@@ -12,16 +12,16 @@ class ActionRepository{
         if(!config('point.enabled')) 
             return [ ['name'=>'暂无活动任务', 'intro'=>'敬请期待', 'wxto'=>'', 'icon'=>'flag', 'iconcolor'=>'red'] ];
         if(config('point.day_sign_num') && config('point.sign_action'))
-            $items[] = ['name'=>'签到 +'.config('point.sign_action'), 'intro'=>$task->sign_at?'已完成':'未完成', 'wxto'=>'/pages/user/index', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
+            $items[] = ['name'=>'签到 +'.config('point.sign_action')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->sign_at?'已完成':'未完成', 'wxto'=>'/pages/user/index', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
         if(config('point.read_action'))
-            $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num').' * '.config('point.read_action'), 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
+            $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num')/*.' * '.config('point.read_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
         if(config('point.like_action'))
-            $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num').' * '.config('point.like_action'), 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
+            $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
         
         if(config('point.interview_action'))
-            $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num').' * '.config('point.interview_action'), 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
+            $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num')/*.' * '.config('point.interview_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
         if(config('point.fansign_action'))
-            $items[] = ['name'=>'受邀用户签到 +'.config('point.fansign_action') * config('point.day_fansign_num'), 'intro'=>$task->todayFansign().' / '.config('point.day_fansign_num').' * '.config('point.fansign_action'), 'wxto'=>'', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
+            $items[] = ['name'=>'受邀用户签到 +'.config('point.fansign_action') * config('point.day_fansign_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayFansign().' / '.config('point.day_fansign_num')/*.' * '.config('point.fansign_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
         // $items[] = ['name'=>'组队','intro'=>'组队成功后阅读、点赞得双倍积分','wxto'=>'/pages/user/team','icon'=>'group','iconcolor'=>'green'];
         return $items;
     }
@@ -49,7 +49,7 @@ class ActionRepository{
                     $author->save();
                 }
                 $task->save();
-                return ['message'=>'积分+'.$task->todayReadAction()];
+                return ['message'=>'+'.$task->todayReadAction()*config('point.score_ratio').config('point.score_type')];
             }
             $task->save();
         }
@@ -73,7 +73,7 @@ class ActionRepository{
                         $team->save();
                     }
                     $task->save();
-                    return ['message'=>'积分+'.$task->todayLikeAction()];
+                    return ['message'=>'+'.$task->todayLikeAction()*config('point.score_ratio').config('point.score_type')];
                 }
                 $task->save();
             }
@@ -88,9 +88,10 @@ class ActionRepository{
     public function UserRewardArticle(Fan $user,Article $article){
         $article->rewarded ++;
         $article->save();
-        $hasSubscribe = $user->hasSubscribe($article);
+        $hasSubscribe = $user->hasSubscribed($article);
         if( !$hasSubscribe || config('point.repeated_incentives')){ // 设置允许重复激励单个文章 
             if(!$hasSubscribe) $user->subscribe($article);
+            $task = $user->todaytask();
             if( $task->todayRewardArticleAdd() ){
                 $user->changePoint($task->todayRewardArticleAction(),'激励文章');
                 if( $article->author_id ){ // 有作者id，增加作者点数
@@ -105,7 +106,7 @@ class ActionRepository{
                     $team->save();
                 }
                 $task->save();
-                return ['message'=>'积分+'.$task->todayRewardArticleAction()];
+                return ['message'=>'+'.$task->todayRewardArticleAction()*config('point.score_ratio').config('point.score_type')];
             }
         }
         return ['message'=>'感谢您的激励！'];
