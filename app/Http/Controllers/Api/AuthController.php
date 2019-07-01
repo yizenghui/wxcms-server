@@ -39,11 +39,36 @@ class AuthController extends Controller
     $appid = intval($request->get('appid'));
     $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
 
-    $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
-    if( !$ret ){
-      $app = Factory::miniProgram($config);
+    // $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
+    // if( !$ret ){
+      $appconfig = [
+          'app_id' => $config['app_id'],
+          'secret' => $config['secret'],
+      
+          // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+          'response_type' => 'array',
+      
+          'log' => [
+            'default' => 'dev', // 默认使用的 channel，生产环境可以改为下面的 prod
+            'channels' => [
+                // 测试环境
+                'dev' => [
+                    'driver' => 'single',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'debug',
+                ],
+                // 生产环境
+                'prod' => [
+                    'driver' => 'daily',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'info',
+                ],
+            ],
+        ],
+      ];
+      $app = Factory::miniProgram($appconfig);
       $ret = $app->auth->session($request->get('code'));
-    }
+    // }
 
 
     $fromid = intval($request->server('HTTP_FROMID'));
