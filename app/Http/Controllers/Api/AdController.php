@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Http\Resources\AdResource;
+use Carbon\Carbon;
 
 class AdController extends Controller
 {
