@@ -46,7 +46,7 @@ class PosterController extends Controller
       'views'=>[
 		[
           'type'=> 'rect',
-          'background'=> '#666',
+          'background'=> '#fff7f9',
           'top'=> 0,
           'width'=> 460,
           'height'=> 500,
