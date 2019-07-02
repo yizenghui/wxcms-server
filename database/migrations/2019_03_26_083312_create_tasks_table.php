@@ -24,6 +24,8 @@ class CreateTasksTable extends Migration
             $table->integer('read_num')->comment('阅读量')->default(0);
             $table->integer('like_num')->comment('点赞数')->default(0);
             $table->integer('comment_num')->comment('评论数')->default(0);
+            $table->integer('share_num')->comment('分享访问数')->default(0);
+            $table->integer('reward_num')->comment('激励文章次数')->default(0);
             $table->integer('join_num')->comment('吸引新人')->default(0);
             $table->integer('sign_num')->comment('粉丝签到数')->default(0);
             $table->integer('total')->comment('今日获行总积分')->default(0);

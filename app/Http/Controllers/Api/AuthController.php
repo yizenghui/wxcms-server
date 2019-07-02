@@ -109,15 +109,25 @@ class AuthController extends Controller
           }
         }
       }
-    }else{
-      // 
-      
+    }elseif( config('point.share_action') ){ // 分享(老用户)访问奖励
+      $check_vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
+      if( !$check_vistor->id ){ // 今天没有记录这个访客已经访问
+        if( $fromid && $fan->id != $fromid ){
+          $fromuser = Fan::find($fromid);
+          if( $fromuser->id && !$fromuser->lock_at ){
+            $_task = $fromuser->todaytask();
+            if($_task->todayShareAdd()){
+              $fromuser->changePoint($_task->todayShareAction(),'分享访问');
+              $_task->save();
+            }
+          }
+        }
+      }
     }
     if( $fan->session_key !== $session_key ){
       $fan->session_key = $session_key;
       $fan->save();
     }
-
     $vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
     if( $vistor->id ){ // 如果今天已经记录了，创建一个新的 负数did的
       Visitor::firstOrCreate([ 'user_id'=>$fan->id, 'appid'=>$appid, 'did'=>-1*date('Ymd'), 'fromid'=>$fromid, 'scene'=>$scene ]);
@@ -126,7 +136,6 @@ class AuthController extends Controller
       $vistor->scene = $scene;
       $vistor->save();
     }
-
     $token = JWTAuth::fromUser($fan);
     
     $success['token'] =  $token;

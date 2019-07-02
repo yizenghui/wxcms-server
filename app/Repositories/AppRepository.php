@@ -51,6 +51,8 @@ public function initConfig(){
         'point.day_like_num' => $app->point_day_like_num,
         'point.day_read_num' => $app->point_day_read_num,
         'point.read_action' => $app->point_read_action,
+        'point.day_share_num' => $app->point_day_share_num,
+        'point.share_action' => $app->point_share_action,
         'point.reward_article_action' => $app->point_reward_article_action, // 激励文章行为
         'point.day_reward_article_num' => $app->point_day_reward_article_num, // 一天最多可以激励多少次(获得奖励)
         'point.rereading_reward' => $app->point_rereading_reward, // 重复阅读同一篇文章给予奖励
