@@ -89,7 +89,17 @@ class VisitorController extends Controller
         $grid->scene('scene');
         $grid->fromid('FromID');
         $grid->created_at('Created at');
-
+        
+        $grid->disableCreateButton();
+        $grid->disableRowSelector();
+        $grid->disableActions();
+        $grid->filter( function($filter){
+            $filter->disableIdFilter();
+            $filter->equal('user_id', 'UID');
+            $filter->equal('fromid', 'FromID');
+            $filter->equal('scene', 'scene');
+            $filter->between('did', 'DID');
+        } );
         return $grid;
     }
 
