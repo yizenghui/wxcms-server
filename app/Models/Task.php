@@ -201,11 +201,11 @@ class Task extends Model
     // 今日分享访问人数(最大显示每日可完成最大次数)
     public function todayShare(){
         if( $this->todayShareMax() ) return config('point.day_share_num');
-        return intval($this->read_num);
+        return intval($this->share_num);
     }
 
     public function todayShareMax(){
-        if( $this->share_num>config('point.day_share_num') ) return true;
+        if( $this->share_num > config('point.day_share_num') ) return true;
         return false;
     }
     
