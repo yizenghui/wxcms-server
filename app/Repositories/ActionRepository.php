@@ -17,6 +17,8 @@ class ActionRepository{
             $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num')/*.' * '.config('point.read_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
         if(config('point.like_action'))
             $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
+        if(config('point.share_action'))
+            $items[] = ['name'=>'分享访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
         
         if(config('point.interview_action'))
             $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num')/*.' * '.config('point.interview_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
