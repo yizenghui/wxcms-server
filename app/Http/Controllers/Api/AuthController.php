@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Fan;
+use App\Models\Visitor;
 use App\Models\App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,7 +37,9 @@ class AuthController extends Controller
   }
   //
   public function token(Request $request){
+    
     $appid = intval($request->get('appid'));
+    $scene = intval($request->get('scene'));
     $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
 
     // $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
@@ -84,7 +87,7 @@ class AuthController extends Controller
     // return response()->json($ret);
     $fan = Fan::where( 'openid', '=', $openid )
         ->first();
-    if ($fan == null) {
+    if ($fan == null) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
       $newFan = new Fan();
       $newFan->openid      = $openid;
@@ -106,11 +109,24 @@ class AuthController extends Controller
           }
         }
       }
+    }else{
+      // 
+      
     }
     if( $fan->session_key !== $session_key ){
       $fan->session_key = $session_key;
       $fan->save();
     }
+
+    $vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
+    if( $vistor->id ){ // 如果今天已经记录了，创建一个新的 负数did的
+      Visitor::firstOrCreate([ 'user_id'=>$fan->id, 'appid'=>$appid, 'did'=>-1*date('Ymd'), 'fromid'=>$fromid, 'scene'=>$scene ]);
+    }else{
+      $vistor->fromid = $fromid;
+      $vistor->scene = $scene;
+      $vistor->save();
+    }
+
     $token = JWTAuth::fromUser($fan);
     
     $success['token'] =  $token;
