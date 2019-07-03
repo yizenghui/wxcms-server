@@ -97,7 +97,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         // $fans = $article->subscribers()->simplePaginate(10);
-        $fans = $article->likers()->get();
+        $fans = $article->subscribers()->get();
         return response()->json(FanResource::collection($fans));
     }
 
