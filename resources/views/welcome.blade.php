@@ -16,6 +16,12 @@
 			<h3 class="title">WxCMS</h3>
 			<p class="description">适合微信自媒体内容运营的小程序，基于Wepy+ColorUI打造。</p>
 			
+			<a class="button" href="/admin" title="WxCMS管理后台">进入后台</a>
+
+
+			<p>
+				<strong>Q&A</strong>
+			</p> 
 			<p>
 				<strong>这套小程序能做什么？</strong>
 			</p> 
