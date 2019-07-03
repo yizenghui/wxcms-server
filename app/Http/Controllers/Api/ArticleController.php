@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Author;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\FanResource;
 use Intervention\Image\ImageManagerStatic as Image;
 use Vinkla\Hashids\Facades\Hashids;
 use Carbon\Carbon;
@@ -84,6 +85,20 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
         $fans = $article->likers()->get();
         return response()->json($fans);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function rewardusers($id,Request $request)
+    {
+        $article = Article::findOrFail($id);
+        // $fans = $article->subscribers()->simplePaginate(10);
+        $fans = $article->likers()->get();
+        return response()->json(FanResource::collection($fans));
     }
 
     public function getposter(Request $request){

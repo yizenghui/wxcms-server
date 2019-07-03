@@ -66,6 +66,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
         Route::get('/articles/recommend','ArticleController@recommend');
         Route::get('/articles/{id}','ArticleController@show');
         Route::get('/articles/{id}/likeusers','ArticleController@likeusers');
+        Route::get('/articles/{id}/rewardusers','ArticleController@rewardusers');
         Route::get('/topics','TopicController@index');
         Route::get('/topics/{id}','TopicController@show');
         Route::get('/orders/{id}','OrderController@show');
