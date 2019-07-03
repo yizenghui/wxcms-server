@@ -134,8 +134,8 @@ class AuthController extends Controller
     
     $success['token'] =  $token;
     $success['uid'] =  $fan->id;
-    $success['showlogin'] = $fan->name?false:true; // todo 尽快移除
-    $success['show_login'] = $fan->name?false:true; // 提醒今日未激励
+    $success['showlogin'] = $fan->name && $fan->avatar?false:true; // todo 尽快移除
+    $success['show_login'] = $fan->name && $fan->avatar?false:true; // 提醒今日未激励
     $success['show_sign'] =  $fan->sign_at == date('Ymd')?true:false;  // 提醒今天未签到
     $success['show_rewarded'] =  $fan->rewarded_at == date('Ymd')?true:false; // 提醒今天未激励
     $success['index_share_title'] =  $config['index_share_title'];

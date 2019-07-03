@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
 
         Route::post('/asyncuserdata','AuthController@asyncuserdata');
         Route::get('/user/footprint','FanController@footprint');
+        Route::get('/user/rank','FanController@rank');
         Route::get('/user/like','FanController@like');
         Route::get('/user/pointlog','FanController@pointlog');
         Route::get('/user/tasklogs','FanController@tasklog');

@@ -8,6 +8,8 @@ use App\Http\Resources\ArticleResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\PointLogResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\FanResource;
+use App\Models\Fan;
 
 class FanController extends Controller
 {
@@ -57,6 +59,11 @@ class FanController extends Controller
         $user = $request->user();
         $pointlogs = $user->pointlogs()->orderBy('id','desc')->simplePaginate(20);
         return response()->json(PointLogResource::collection($pointlogs));
+    }
+
+    public function rank(Request $request){
+        $fans = Fan::where('appid', '=', $request->get('appid'))->where('sign_at', '=', date('Ymd'))->orderBy('total_point','desc')->simplePaginate(20);
+        return response()->json(FanResource::collection($fans));
     }
 
     public function tasklog(Request $request){

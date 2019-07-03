@@ -15,11 +15,9 @@ class FanResource extends Resource
     public function toArray($request)
     {
         
-        
-
         return [
             'id'   => (string)$this->id,
-            'name' => $this->name,
+            'name' =>  $this->name?$this->name:'游客'.$this->id,
             'gender' => $this->gender,
             'city' => $this->city,
             'avatar' => $this->avatar,
