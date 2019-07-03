@@ -87,9 +87,9 @@ class AuthController extends Controller
     $fan = Fan::firstOrNew(['openid'=>$openid, 'appid'=>$appid]);
     if ( !$fan->id ) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
-      $newFan = new Fan();
       $fan->session_key = $session_key;
       $fan->fromid = $fromid;
+      $fan->save();
       //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
       $fromid = $fromid ? $fromid : intval($config['default_fromid']); // config('point.default_fromid'); 
       if($fromid){
