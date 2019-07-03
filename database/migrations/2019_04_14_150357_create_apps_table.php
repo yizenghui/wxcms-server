@@ -38,6 +38,8 @@ class CreateAppsTable extends Migration
             $table->integer('point_reward_action')->comment('激励可以获得积分')->default(10);
             $table->integer('point_read_action')->comment('阅读可以获得积分')->default(1);
             $table->integer('point_day_read_num')->comment('一天可以获得10次阅读积分')->default(10);
+            $table->integer('point_share_action')->comment('分享访问获得多少积分')->default(1);
+            $table->integer('point_day_share_num')->comment('一天可以获得多少次分享访问积分')->default(10);
             $table->integer('point_like_action')->comment('点赞可以获得积分')->default(2);
             $table->integer('point_day_like_num')->comment('一天可以获得5次点赞积分')->default(5);
             $table->integer('point_interview_action')->comment('邀请新人访问可以获得积分')->default(10);

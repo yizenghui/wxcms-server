@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Fan;
+use App\Models\Visitor;
 use App\Models\App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,14 +37,41 @@ class AuthController extends Controller
   }
   //
   public function token(Request $request){
+    
     $appid = intval($request->get('appid'));
+    $scene = intval($request->get('scene'));
     $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
 
-    $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
-    if( !$ret ){
-      $app = Factory::miniProgram($config);
+    // $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
+    // if( !$ret ){
+      $appconfig = [
+          'app_id' => $config['app_id'],
+          'secret' => $config['secret'],
+      
+          // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+          'response_type' => 'array',
+      
+          'log' => [
+            'default' => 'dev', // 默认使用的 channel，生产环境可以改为下面的 prod
+            'channels' => [
+                // 测试环境
+                'dev' => [
+                    'driver' => 'single',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'debug',
+                ],
+                // 生产环境
+                'prod' => [
+                    'driver' => 'daily',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'info',
+                ],
+            ],
+        ],
+      ];
+      $app = Factory::miniProgram($appconfig);
       $ret = $app->auth->session($request->get('code'));
-    }
+    // }
 
 
     $fromid = intval($request->server('HTTP_FROMID'));
@@ -56,19 +84,12 @@ class AuthController extends Controller
     $openid = array_get($ret,'openid');
     $session_key = array_get($ret,'session_key');
 
-    // return response()->json($ret);
-    $fan = Fan::where( 'openid', '=', $openid )
-        ->first();
-    if ($fan == null) {
+    $fan = Fan::firstOrNew(['openid'=>$openid, 'appid'=>$appid]);
+    if ( !$fan->id ) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
       $newFan = new Fan();
-      $newFan->openid      = $openid;
-      $newFan->session_key = $session_key;
-      $newFan->fromid = $fromid;
-      $newFan->appid = $appid;
-      $newFan->save();
-      $fan = $newFan;
-
+      $fan->session_key = $session_key;
+      $fan->fromid = $fromid;
       //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
       $fromid = $fromid ? $fromid : intval($config['default_fromid']); // config('point.default_fromid'); 
       if($fromid){
@@ -81,10 +102,33 @@ class AuthController extends Controller
           }
         }
       }
+    }elseif( $fan->id && config('point.share_action') ){ // 分享(老用户)访问奖励
+      $check_vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
+      if( !$check_vistor->id ){ // 今天没有记录这个访客已经访问
+        if( $fromid && $fan->id != $fromid ){
+          $fromuser = Fan::find($fromid);
+          if( $fromuser->id && !$fromuser->lock_at ){
+            $_task = $fromuser->todaytask();
+            if($_task->todayShareAdd()){
+              $fromuser->changePoint($_task->todayShareAction(),'分享访问');
+              $_task->save();
+            }
+          }
+        }
+      }
     }
+    
     if( $fan->session_key !== $session_key ){
       $fan->session_key = $session_key;
       $fan->save();
+    }
+    $vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
+    if( $vistor->id ){ // 如果今天已经记录了，创建一个新的 负数did的
+      Visitor::firstOrCreate([ 'user_id'=>$fan->id, 'appid'=>$appid, 'did'=>-1*date('Ymd'), 'fromid'=>$fromid, 'scene'=>$scene ]);
+    }else{
+      $vistor->fromid = $fromid;
+      $vistor->scene = $scene;
+      $vistor->save();
     }
     $token = JWTAuth::fromUser($fan);
     

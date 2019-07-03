@@ -182,6 +182,34 @@ class Task extends Model
         return false;
     }
     
+    
+    // 今日分享访问加1,未受限时返回true
+    public function todayShareAdd(){
+        $this->share_num ++;
+        if( !$this->todayShareMax() ){
+            $this->total += $this->todayShareAction();
+            return true;
+        }
+        return false;
+    }
+
+    // 今日分享访问加分数(不享受组队加成)
+    public function todayShareAction(){
+        return config('point.share_action');
+    }
+
+    // 今日分享访问人数(最大显示每日可完成最大次数)
+    public function todayShare(){
+        if( $this->todayShareMax() ) return config('point.day_share_num');
+        return intval($this->share_num);
+    }
+
+    public function todayShareMax(){
+        if( $this->share_num > config('point.day_share_num') ) return true;
+        return false;
+    }
+    
+
     // 今日粉丝签到加1,未受限时返回true
     public function todayFansignAdd(){
         $this->sign_num ++;

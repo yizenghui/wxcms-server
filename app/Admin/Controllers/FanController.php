@@ -103,6 +103,7 @@ class FanController extends Controller
         $grid->updated_at('Updated at')->sortable();
 
 
+        $grid->disableCreateButton();
         
         $grid->filter(function($filter){
 

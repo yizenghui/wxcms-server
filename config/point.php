@@ -77,6 +77,16 @@ return [
      */
     'day_read_num' => env('POINT_DAY_READ_NUM', 10),
 
+    /**
+     * 分享(老用户)访问奖励积分
+     */
+    'share_action' => env('POINT_SHARE_ACTION', 1),
+
+    /**
+     * 分享(老用户)访问奖励次数(一人一天一次)
+     */
+    'day_share_num' => env('POINT_DAY_SHARE_NUM', 100),
+
     /*
      * 点赞可以获得积分
      */
