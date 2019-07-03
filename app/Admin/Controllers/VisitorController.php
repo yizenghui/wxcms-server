@@ -84,11 +84,11 @@ class VisitorController extends Controller
         $grid->model()->where('appid', '=', Admin::user()->id);
 
         // $grid->id('ID');
-        $grid->user_id('UID');
-        $grid->did('DID');
+        $grid->user_id('UID')->sortable();
+        $grid->did('DID')->sortable();
         $grid->scene('scene');
-        $grid->fromid('FromID');
-        $grid->created_at('Created at');
+        $grid->fromid('FromID')->sortable();
+        $grid->created_at('Created at')->sortable();
         
         $grid->disableCreateButton();
         $grid->disableRowSelector();
