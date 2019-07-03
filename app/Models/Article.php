@@ -8,11 +8,12 @@ use Overtrue\LaravelFollow\Traits\CanBeLiked;
 use Overtrue\LaravelFollow\Traits\CanBeFavorited;
 use Overtrue\LaravelFollow\Traits\CanBeVoted;
 use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
+use Overtrue\LaravelFollow\Traits\CanBeSubscribed;
 use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked;
+    use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked, CanBeSubscribed;
     use SoftDeletes;
     use Searchable;
 
