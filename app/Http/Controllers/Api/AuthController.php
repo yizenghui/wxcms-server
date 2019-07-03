@@ -84,19 +84,12 @@ class AuthController extends Controller
     $openid = array_get($ret,'openid');
     $session_key = array_get($ret,'session_key');
 
-    // return response()->json($ret);
-    $fan = Fan::where( 'openid', '=', $openid )
-        ->first();
-    if ($fan == null) { // 新访客
+    $fan = Fan::firstOrNew(['openid'=>$openid, 'appid'=>$appid]);
+    if ( !$fan->id ) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
       $newFan = new Fan();
-      $newFan->openid      = $openid;
-      $newFan->session_key = $session_key;
-      $newFan->fromid = $fromid;
-      $newFan->appid = $appid;
-      $newFan->save();
-      $fan = $newFan;
-
+      $fan->session_key = $session_key;
+      $fan->fromid = $fromid;
       //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
       $fromid = $fromid ? $fromid : intval($config['default_fromid']); // config('point.default_fromid'); 
       if($fromid){
@@ -109,7 +102,7 @@ class AuthController extends Controller
           }
         }
       }
-    }elseif( config('point.share_action') ){ // 分享(老用户)访问奖励
+    }elseif( $fan->id && config('point.share_action') ){ // 分享(老用户)访问奖励
       $check_vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
       if( !$check_vistor->id ){ // 今天没有记录这个访客已经访问
         if( $fromid && $fan->id != $fromid ){
@@ -124,6 +117,7 @@ class AuthController extends Controller
         }
       }
     }
+    
     if( $fan->session_key !== $session_key ){
       $fan->session_key = $session_key;
       $fan->save();
