@@ -78,6 +78,11 @@ return [
     'day_read_num' => env('POINT_DAY_READ_NUM', 10),
 
     /**
+     * 渠道奖励功能开启状态
+     */
+    'channel_status' => env('POINT_CHANNEL_STATUS', 1),
+
+    /**
      * 分享(老用户)访问奖励积分
      */
     'share_action' => env('POINT_SHARE_ACTION', 1),
@@ -125,9 +130,19 @@ return [
     'fansign_action' => env('POINT_FANSIGN_ACTION', 2),
 
     /*
-     * 一天可以获得300次邀请新人签到积分
+     * 一天可以获得300次受邀用户签到积分
      */
     'day_fansign_num' => env('POINT_DAY_FANSIGN_NUM', 300),
+
+    /*
+     * 受邀用户激励
+     */
+    'fanreward_action' => env('POINT_FANREWARD_ACTION', 2),
+
+    /*
+     * 一天可以获得1000次受邀用户激励积分
+     */
+    'day_fanreward_num' => env('POINT_DAY_FANREWARD_NUM', 1000),
 
 
     /*

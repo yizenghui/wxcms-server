@@ -240,6 +240,11 @@ class FanController extends Controller
         $form->number('current_point','可用积分');
         $form->number('total_point','总积分');
         $form->datetime('lock_at','锁定用户');
+        $states = [
+            'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => '隐藏', 'color' => 'danger'],
+        ];
+        $form->switch('channel_status', '渠道奖励')->states($states)->default(1)->help('在积分攻略展示渠道信息');
         $form->display('Created at');
         $form->display('Updated at');
 

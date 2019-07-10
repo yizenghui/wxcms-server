@@ -38,20 +38,22 @@ class CreateAppsTable extends Migration
             $table->integer('point_reward_action')->comment('激励可以获得积分')->default(10);
             $table->integer('point_read_action')->comment('阅读可以获得积分')->default(1);
             $table->integer('point_day_read_num')->comment('一天可以获得10次阅读积分')->default(10);
-            $table->integer('point_share_action')->comment('分享访问获得多少积分')->default(1);
-            $table->integer('point_day_share_num')->comment('一天可以获得多少次分享访问积分')->default(10);
             $table->integer('point_like_action')->comment('点赞可以获得积分')->default(2);
             $table->integer('point_day_like_num')->comment('一天可以获得5次点赞积分')->default(5);
-            $table->integer('point_interview_action')->comment('邀请新人访问可以获得积分')->default(10);
-            $table->integer('point_day_interview_num')->comment('邀请新人访问可以获得积分')->default(100);
-            $table->integer('point_day_fansign_action')->comment('受邀用户签到')->default(2);
-            $table->integer('point_day_fansign_num')->comment('一天可以获得300次邀请新人签到积分')->default(300);
-            $table->boolean('point_day_team_double_enabled')->comment('组队双倍积分功能是否开启')->default(0);
             $table->integer('point_reward_article_action')->comment('文章激励可以获得积分')->default(5);
             $table->integer('point_day_reward_article_num')->comment('一天可以获得5次文章激励积分')->default(5);
             $table->boolean('point_rereading_reward')->comment('重复阅读同一篇文章给予奖励')->default(0);
             $table->boolean('point_repeated_incentives')->comment('重复激励同一篇文章给予奖励')->default(0);
             $table->integer('point_author_article_reward_action')->comment('作者文章被激励(加分给作者次数不设上限)')->default(5);
+            
+            $table->boolean('point_channel_status')->comment('渠道功能开启')->default(0);
+            $table->integer('point_interview_action')->comment('邀请新人访问可以获得积分')->default(10);
+            $table->integer('point_day_interview_num')->comment('一天可以获得多少次邀请新人奖励')->default(100);
+            $table->integer('point_share_action')->comment('分享访问获得多少积分')->default(1);
+            $table->integer('point_day_share_num')->comment('一天可以获得多少次分享访问积分')->default(10);
+            $table->integer('point_day_fansign_action')->comment('受邀用户签到')->default(2);
+            $table->integer('point_day_fansign_num')->comment('一天可以获得300次邀请新人签到积分')->default(300);
+            $table->boolean('point_day_team_double_enabled')->comment('组队双倍积分功能是否开启')->default(0);
             $table->timestamps();
         });
     }

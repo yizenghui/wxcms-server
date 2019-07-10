@@ -66,14 +66,8 @@ class AuthController extends BaseAuthController
             $form->number('app.point_sign_action', '签到积分')->default(0);
             $form->switch('app.point_day_reward_num', '签到激励')->states($states)->default(0);
             $form->number('app.point_reward_action', '签到激励积分')->default(0);
-            $form->number('app.point_interview_action', '邀请积分')->default(0);
-            $form->number('app.point_day_interview_num', '邀请人数')->default(0);
-            $form->number('app.point_day_fansign_action', '受邀人签到')->default(0);
-            $form->number('app.point_day_fansign_num', '受邀人签到奖励次数')->default(0);
             $form->number('app.point_author_article_reward_action', '作者文章被激励积分')->default(0)->help('需要给作者绑定激励式视频广告id');
-            $form->number('app.point_share_action', '分享访问')->default(0);
-            $form->number('app.point_day_share_num', '分享访问人数')->default(0);
-
+     
             $form->divide();
             $form->switch('app.point_repeated_incentives', '重复激励文章奖励')->states($states)->default(0);
             $form->number('app.point_reward_article_action', '激励文章积分')->default(0);
@@ -89,6 +83,21 @@ class AuthController extends BaseAuthController
             $form->number('app.point_day_like_num', '点赞次数')->default(0);
             
             $form->display('help', '备注')->default('上述活动和任务，粉丝每天都可以做。');
+        })->tab('渠道版块', function (Form $form) {
+            $states = [
+                'on'  => ['value' => 1, 'text' => '启用', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => '暂停', 'color' => 'danger'],
+            ];
+            $form->switch('app.point_channel_status', '渠道奖励')->states($states)->default(1);
+            $form->number('app.point_interview_action', '邀请积分')->default(0);
+            $form->number('app.point_day_interview_num', '邀请人数')->default(0);
+            $form->number('app.point_day_fansign_action', '受邀人签到')->default(0);
+            $form->number('app.point_day_fansign_num', '受邀人签到奖励次数')->default(0);
+            $form->number('app.point_fanreward_action', '受邀人激励')->default(0);
+            $form->number('app.point_day_fanreward_num', '受邀人激励奖励次数')->default(0);
+            $form->number('app.point_share_action', '渠道访问')->default(0);
+            $form->number('app.point_day_share_num', '渠道访问人数')->default(0);
+            $form->display('help', '备注')->default('开启渠道功能后，粉丝分享小程序作为渠道源。');
         });
 
         

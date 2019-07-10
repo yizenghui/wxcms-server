@@ -17,13 +17,16 @@ class ActionRepository{
             $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num')/*.' * '.config('point.read_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
         if(config('point.like_action'))
             $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
-        if(config('point.share_action'))
-            $items[] = ['name'=>'渠道访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'share', 'iconcolor'=>'green'];
-        if(config('point.interview_action'))
-            $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num')/*.' * '.config('point.interview_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
-        if(config('point.fansign_action'))
-            $items[] = ['name'=>'受邀用户签到 +'.config('point.fansign_action') * config('point.day_fansign_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayFansign().' / '.config('point.day_fansign_num')/*.' * '.config('point.fansign_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
-        // $items[] = ['name'=>'组队','intro'=>'组队成功后阅读、点赞得双倍积分','wxto'=>'/pages/user/team','icon'=>'group','iconcolor'=>'green'];
+        if($user->channel_status){
+            if(config('point.share_action'))
+                $items[] = ['name'=>'渠道访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'share', 'iconcolor'=>'green'];
+            if(config('point.interview_action'))
+                $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num')/*.' * '.config('point.interview_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
+            if(config('point.fansign_action'))
+                $items[] = ['name'=>'受邀用户签到 +'.config('point.fansign_action') * config('point.day_fansign_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayFansign().' / '.config('point.day_fansign_num')/*.' * '.config('point.fansign_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'squarecheck', 'iconcolor'=>'green']; 
+            if(config('point.fanreward_action'))
+                $items[] = ['name'=>'受邀用户激励 +'.config('point.fanreward_action') * config('point.day_fanreward_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayFanreward().' / '.config('point.day_fanreward_num')/*.' * '.config('point.fansign_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'video', 'iconcolor'=>'green'];
+        } // $items[] = ['name'=>'组队','intro'=>'组队成功后阅读、点赞得双倍积分','wxto'=>'/pages/user/team','icon'=>'group','iconcolor'=>'green'];
         return $items;
     }
   
@@ -108,6 +111,17 @@ class ActionRepository{
                     $team->total += $task->todayRewardArticleAction();
                     $team->save();
                 }
+                $formid = $user->formid?$user->formid:config('point.default_fromid');
+                if( $formid && $formid != $user->id && config('point.channel_status')){
+                    $fromuser = Fan::find($formid);
+                    if( $fromuser->id && !$fromuser->lock_at ){
+                        $_task = $fromuser->todaytask();
+                        if($_task->todayFanrewardAdd()){
+                            $fromuser->changePoint($_task->todayFanrewardAction(),'受邀用户激励');
+                            $_task->save();
+                        }
+                    }
+                }
                 $task->save();
                 return ['message'=>'+'.$task->todayRewardArticleAction()*config('point.score_ratio').config('point.score_type')];
             }
@@ -133,7 +147,7 @@ class ActionRepository{
             $user->changePoint($task->todaySignAction(),'签到');
             $task->save();
             $formid = $user->formid?$user->formid:config('point.default_fromid');
-            if( $formid ){
+            if( $formid && $formid != $user->id && config('point.channel_status') ){
                 $fromuser = Fan::find($formid);
                 if( $fromuser->id && !$fromuser->lock_at ){
                     $_task = $fromuser->todaytask();
@@ -156,6 +170,17 @@ class ActionRepository{
             $user->reward_at = date('Ymd');
             $user->changePoint($task->todayRewardAction(),'激励');
             $task->save();
+            $formid = $user->formid?$user->formid:config('point.default_fromid');
+            if( $formid && $formid != $user->id && config('point.channel_status')){
+                $fromuser = Fan::find($formid);
+                if( $fromuser->id && !$fromuser->lock_at ){
+                    $_task = $fromuser->todaytask();
+                    if($_task->todayFanrewardAdd()){
+                        $fromuser->changePoint($_task->todayFanrewardAction(),'受邀用户激励');
+                        $_task->save();
+                    }
+                }
+            }
         }
         $user->task = $task;
         return $user;
@@ -172,12 +197,16 @@ class ActionRepository{
             $user->changePoint(intval($task->todayRewardAction()) + intval($task->todaySignAction()),'激励签到');
             $task->save();
             $formid = $user->formid?$user->formid:config('point.default_fromid');
-            if( $formid ){
+            if( $formid && $formid != $user->id && config('point.channel_status')){
                 $fromuser = Fan::find($formid);
                 if( $fromuser->id && !$fromuser->lock_at ){
                     $_task = $fromuser->todaytask();
                     if($_task->todayFansignAdd()){
                         $fromuser->changePoint($_task->todayFansignAction(),'受邀用户签到');
+                        $_task->save();
+                    }
+                    if($_task->todayFanrewardAdd()){
+                        $fromuser->changePoint($_task->todayFanrewardAction(),'受邀用户激励');
                         $_task->save();
                     }
                 }

@@ -32,6 +32,7 @@ class CreateFansTable extends Migration
             $table->integer('current_point')->comment('当前可用积分')->default(0); // 注：这个参数在发工资时由剩余积分同步过来 (用于限制用户这个月新获取的积分不能在结算前使用)
             $table->integer('total_point')->index()->comment('总积分')->default(0);
             $table->string('session_key')->comment('session_key')->nullable();
+            $table->boolean('channel_status')->comment('渠道状态')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

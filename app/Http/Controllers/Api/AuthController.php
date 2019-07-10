@@ -92,7 +92,7 @@ class AuthController extends Controller
       $fan->save();
       //  如果没有fromid 使用默认 fromid  (自然流量提供给指定id用户)
       $fromid = $fromid ? $fromid : intval($config['default_fromid']); // config('point.default_fromid'); 
-      if($fromid){
+      if( $fromid && config('point.channel_status') ){
         $fromuser = Fan::find($fromid);
         if($fromuser->id && !$fromuser->lock_at ){
           $_task = $fromuser->todaytask();
@@ -105,7 +105,7 @@ class AuthController extends Controller
     }elseif( $fan->id && config('point.share_action') ){ // 分享(老用户)访问奖励
       $check_vistor = Visitor::firstOrNew(['user_id'=>$fan->id, 'appid'=>$appid, 'did'=>date('Ymd')]);
       if( !$check_vistor->id ){ // 今天没有记录这个访客已经访问
-        if( $fromid && $fan->id != $fromid ){
+        if( $fromid && $fan->id != $fromid && config('point.channel_status')  ){
           $fromuser = Fan::find($fromid);
           if( $fromuser->id && !$fromuser->lock_at ){
             $_task = $fromuser->todaytask();

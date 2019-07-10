@@ -235,6 +235,31 @@ class Task extends Model
         return false;
     }
 
+    // 今日粉丝激励加1,未受限时返回true
+    public function todayFanrewardAdd(){
+        $this->fan_reward_num ++;
+        if( !$this->todayFanrewardMax() ){
+            $this->total += $this->todayFanrewardAction();
+            return true;
+        }
+        return false;
+    }
+
+    // 今日粉丝激励加分数(不享受组队加成)
+    public function todayFanrewardAction(){
+        return config('point.fanreward_action');
+    }
+    // 今日受邀人激励分成
+    public function todayFanreward(){
+        if( $this->todayFanrewardMax() ) return config('point.day_fanreward_num');
+        return intval($this->fan_reward_num);
+    }
+
+    public function todayFanrewardMax(){
+        if( $this->fan_reward_num>config('point.day_fanreward_num') ) return true;
+        return false;
+    }
+
     
     /**
      * 有队伍的人了

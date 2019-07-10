@@ -40,11 +40,13 @@ public function initConfig(){
         'point.default_fromid' => $app->point_default_fromid,
         'point.sign_action' => $app->point_sign_action,
         'point.reward_action' => $app->point_reward_action,
-        'point.fansign_action' => $app->point_day_fansign_action,
+        'point.day_fansign_action' => $app->point_day_fansign_action,
+        'point.fanreward_action' => $app->point_fanreward_action, 
         'point.team_double_enabled' => $app->point_day_team_double_enabled,
         'point.day_sign_num' => $app->point_day_sign_num,
         'point.day_reward_num' => $app->point_day_reward_num,
         'point.day_fansign_num' => $app->point_day_fansign_num,
+        'point.day_fanreward_num' => $app->point_day_fanreward_num,
         'point.day_interview_num' => $app->point_day_interview_num,
         'point.interview_action' => $app->point_interview_action,
         'point.like_action' => $app->point_like_action,
@@ -53,6 +55,7 @@ public function initConfig(){
         'point.read_action' => $app->point_read_action,
         'point.day_share_num' => $app->point_day_share_num,
         'point.share_action' => $app->point_share_action,
+        'point.channel_status' => $app->point_channel_status,
         'point.reward_article_action' => $app->point_reward_article_action, // 激励文章行为
         'point.day_reward_article_num' => $app->point_day_reward_article_num, // 一天最多可以激励多少次(获得奖励)
         'point.rereading_reward' => $app->point_rereading_reward, // 重复阅读同一篇文章给予奖励
