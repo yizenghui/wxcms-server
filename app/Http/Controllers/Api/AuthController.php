@@ -110,7 +110,7 @@ class AuthController extends Controller
           if( $fromuser->id && !$fromuser->lock_at ){
             $_task = $fromuser->todaytask();
             if($_task->todayShareAdd()){
-              $fromuser->changePoint($_task->todayShareAction(),'分享访问');
+              $fromuser->changePoint($_task->todayShareAction(),'渠道访问');
               $_task->save();
             }
           }

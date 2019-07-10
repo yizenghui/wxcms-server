@@ -18,7 +18,7 @@ class ActionRepository{
         if(config('point.like_action'))
             $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
         if(config('point.share_action'))
-            $items[] = ['name'=>'分享访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'share', 'iconcolor'=>'green'];
+            $items[] = ['name'=>'渠道访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'share', 'iconcolor'=>'green'];
         if(config('point.interview_action'))
             $items[] = ['name'=>'邀请新用户 +'.config('point.interview_action') * config('point.day_interview_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayInterview().' / '.config('point.day_interview_num')/*.' * '.config('point.interview_action')*config('point.score_ratio')*/, 'wxto'=>'', 'icon'=>'friendadd', 'iconcolor'=>'green'];
         if(config('point.fansign_action'))
@@ -35,24 +35,26 @@ class ActionRepository{
         $hasBookmarked = $user->hasBookmarked($article);
         if( !$hasBookmarked || config('point.rereading_reward')){ // 通过配置可以设置重复阅读奖励
             if( !$hasBookmarked ) $user->bookmark($article); // 如果未标记阅读，标记一下
-            $task = $user->todaytask();
-            if($task->todayReadAdd()){ // 今天还有阅读奖励
-                $user->changePoint($task->todayReadAction(),'阅读'); //获得积分奖励
-                if( $task->team_id ){ // 有组队id 加入队伍成绩
-                    $team = $task->team;
-                    $team->total += $task->todayReadAction();
-                    $team->save();
-                }
-                if( $article->author_id ){ // 有作者id，增加作者点数
-                    $author = $article->author;
-                    $author->point ++;
-                    $author->total_point ++;
-                    $author->save();
+            if(config('point.read_action')){ 
+                $task = $user->todaytask();
+                if($task->todayReadAdd()){ // 今天还有阅读奖励
+                    $user->changePoint($task->todayReadAction(),'阅读'); //获得积分奖励
+                    if( $task->team_id ){ // 有组队id 加入队伍成绩
+                        $team = $task->team;
+                        $team->total += $task->todayReadAction();
+                        $team->save();
+                    }
+                    if( $article->author_id ){ // 有作者id，增加作者点数
+                        $author = $article->author;
+                        $author->point ++;
+                        $author->total_point ++;
+                        $author->save();
+                    }
+                    $task->save();
+                    return ['message'=>'+'.$task->todayReadAction()*config('point.score_ratio').config('point.score_type')];
                 }
                 $task->save();
-                return ['message'=>'+'.$task->todayReadAction()*config('point.score_ratio').config('point.score_type')];
             }
-            $task->save();
         }
         return ['message'=>'阅读量+1'];
     }
@@ -63,7 +65,7 @@ class ActionRepository{
         $article->save();
         if( !$user->hasLiked($article) ){
             $user->like($article);
-            if( !$user->hasFavorited($article) ){
+            if( config('point.like_action') && !$user->hasFavorited($article) ){
                 $user->favorite($article);
                 $task = $user->todaytask();
                 if($task->todayLikeAdd()){
