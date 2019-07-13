@@ -14,5 +14,5 @@
 
     </div>
     <!-- Default to the left -->
-    <strong>技术支持：121258121@qq.com</strong>
+    <strong> {{config('admin.footer_service_contact')}} </strong>
 </footer>

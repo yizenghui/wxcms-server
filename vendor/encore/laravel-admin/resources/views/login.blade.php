@@ -73,7 +73,7 @@
         <!-- /.col -->
       </div>
     </form>
-    <p>帐号服务: 121258121@qq.com</p>
+    <p>{{config('admin.footer_service_contact')}}</p>
   </div>
   <!-- /.login-box-body -->
 </div>

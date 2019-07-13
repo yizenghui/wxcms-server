@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'WxCMS-admin',
+    'name' => 'WeContro-admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Wx</b> CMS',
+    'logo' => '<b>We</b> Contro',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>Wx</b>',
+    'logo-mini' => '<b>We</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => 'WxCMS',
+    'title' => 'WeContr',
 
     /*
     |--------------------------------------------------------------------------
@@ -269,6 +269,7 @@ return [
     */
     'show_version' => false,
 
+    'footer_service_contact' => env('FOOTER_SERVICE_CONTACT','售后微信：wecontr'),
     /*
     |--------------------------------------------------------------------------
     | Show environment at footer
