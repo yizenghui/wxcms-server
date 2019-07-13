@@ -25,7 +25,7 @@ class Fan extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'openid',
+        'openid','appid',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Fan extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'openid',
+        'openid', 'appid',
     ];
     
     protected static $logUnguarded = true;

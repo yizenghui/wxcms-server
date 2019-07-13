@@ -14,14 +14,17 @@ class AppRepository {
    
         $this->appid =  $appid;
 
+        // InitAppConfig
+        // $app = $this->getwxapp($this->getappid());
+        // $this->log($app);
     }
 
     // 记录调用了一次
     public function log($wxapp){
-        $wxapp->current_quota ++;
-        $wxapp->total_quota ++;
-        Redis::set("app:".$wxapp->id, $wxapp);
-        Log::useFiles( storage_path('logs/'.$wxapp->app_id.'.log') );
+        // $wxapp->current_quota ++;
+        // $wxapp->total_quota ++;
+        // Redis::set("app:".$wxapp->id, $wxapp);
+        Log::useFiles( storage_path('logs/'.$wxapp->appid.'.log') );
         $openid = request()->user()->openid;
         $method = request()->method();
         $path = request()->path();
@@ -93,13 +96,14 @@ public function initConfig(){
     }
 
     public function getminiapp(){
+        if($this->wxapp) return $this->wxapp;
         // Redis缓存使用有问题，暂时还是别搞了
         // serialize() unserialize()
         // $app = unserialize( Redis::get("app:".$this->getappid()) );
         // dd($app);
         // if(!$app) 
-        $app = App::where('appid','=',$this->getappid())->firstOrFail();
+        $this->wxapp = App::where('appid','=',$this->getappid())->firstOrFail();
         // Redis::set("app:".$this->getappid(), serialize($app));
-        return $app;
+        return $this->wxapp;
     }
 }

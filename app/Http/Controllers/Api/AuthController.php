@@ -11,6 +11,7 @@ use EasyWeChat;
 use Auth;
 use JWTAuth;
 use EasyWeChat\Factory;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AuthController extends Controller
 {
@@ -35,10 +36,19 @@ class AuthController extends Controller
     $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$app_id}&secret={$secret}&js_code={$js_code}";
     return json_decode( file_get_contents($url), true );
   }
+
+  private function getappid(){
+    $api_token = request()->server('HTTP_API_TOKEN');//api_token
+    $ids = Hashids::decode($api_token);
+    //todo 检查参数的合法性
+    $appid = intval($ids[0]);
+    return $appid;
+  }
+
   //
   public function token(Request $request){
     
-    $appid = intval($request->get('appid'));
+    $appid = $this->getappid();
     $scene = intval($request->get('scene'));
     $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
 
@@ -84,6 +94,7 @@ class AuthController extends Controller
     $openid = array_get($ret,'openid');
     $session_key = array_get($ret,'session_key');
 
+    // dd(['openid'=>$openid, 'appid'=>$appid]);
     $fan = Fan::firstOrNew(['openid'=>$openid, 'appid'=>$appid]);
     if ( !$fan->id ) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
@@ -156,7 +167,8 @@ class AuthController extends Controller
   }
   
   public function asyncuserdata(Request $request){
-    $appid = intval($request->get('appid'));
+    // $appid = intval($request->get('appid'));
+    $appid = $this->getappid();
     $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
     $appconfig = [
       'app_id' => $config['app_id'],
