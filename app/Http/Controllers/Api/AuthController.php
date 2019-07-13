@@ -64,7 +64,7 @@ class AuthController extends Controller
                 'prod' => [
                     'driver' => 'daily',
                     'path' => '/tmp/easywechat.log',
-                    'level' => 'info',
+                    'level' => 'debug',
                 ],
             ],
         ],
@@ -178,7 +178,7 @@ class AuthController extends Controller
             'prod' => [
                 'driver' => 'daily',
                 'path' => '/tmp/easywechat.log',
-                'level' => 'info',
+                'level' => 'debug',
             ],
         ],
       ],
