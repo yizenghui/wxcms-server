@@ -99,7 +99,7 @@ public function initConfig(){
         // dd($app);
         // if(!$app) 
         $app = App::where('appid','=',$this->getappid())->firstOrFail();
-        Redis::set("app:".$this->getappid(), serialize($app));
+        // Redis::set("app:".$this->getappid(), serialize($app));
         return $app;
     }
 }
