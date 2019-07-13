@@ -6,18 +6,23 @@ use App\Models\Fan;
 class ActionRepository{
 
     
-    public function GetUserTask($user){
+    public function GetUserTask(Fan $user){
         $task = $user->todaytask();
         $items = [];
-        if(!config('point.enabled')) 
+        if( !config('point.enabled') ) 
             return [ ['name'=>'暂无活动任务', 'intro'=>'敬请期待', 'wxto'=>'', 'icon'=>'flag', 'iconcolor'=>'red'] ];
-        if(config('point.day_sign_num') && config('point.sign_action'))
+        if( config('point.day_sign_num') && config('point.sign_action') )
             $items[] = ['name'=>'签到 +'.config('point.sign_action')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->sign_at?'已完成':'未完成', 'wxto'=>'/pages/user/index', 'icon'=>'squarecheck', 'iconcolor'=>'green'];
-        if(config('point.read_action'))
-            $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num')/*.' * '.config('point.read_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
-        if(config('point.like_action'))
-            $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];
-        if($user->channel_status){
+        if(config('point.show_task')){ // 防止叼民想害皇上
+            if( config('point.read_action') )
+                $items[] = ['name'=>'阅读 +'.config('point.read_action') * config('point.day_read_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRead().' / '.config('point.day_read_num')/*.' * '.config('point.read_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'attention', 'iconcolor'=>'red'];
+            if( config('point.like_action') )
+                $items[] = ['name'=>'点赞 +'.config('point.like_action') * config('point.day_like_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayLike().' / '.config('point.day_like_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'appreciate', 'iconcolor'=>'red'];      
+            if( config('point.reward_article_action') )
+                $items[] = ['name'=>'激励 +'.config('point.reward_article_action') * config('point.day_reward_article_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayRewardArticle().' / '.config('point.day_reward_article_num')/*.' * '.config('point.like_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'like', 'iconcolor'=>'red'];
+        }
+        
+        if( $user->channel_status ){ // 皇上只能给特定用户看渠道状态
             if(config('point.share_action'))
                 $items[] = ['name'=>'渠道访问 +'.config('point.share_action') * config('point.day_share_num')*config('point.score_ratio').config('point.score_type'), 'intro'=>$task->todayShare().' / '.config('point.day_share_num')/*.' * '.config('point.share_action')*config('point.score_ratio')*/, 'wxto'=>'/pages/index/index', 'icon'=>'share', 'iconcolor'=>'green'];
             if(config('point.interview_action'))

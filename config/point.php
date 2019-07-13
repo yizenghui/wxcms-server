@@ -83,6 +83,11 @@ return [
     'channel_status' => env('POINT_CHANNEL_STATUS', 1),
 
     /**
+     * 展示任务版块
+     */
+    'show_task' => env('POINT_SHOW_TASK', 1),
+
+    /**
      * 分享(老用户)访问奖励积分
      */
     'share_action' => env('POINT_SHARE_ACTION', 1),

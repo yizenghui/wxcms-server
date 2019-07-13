@@ -81,6 +81,7 @@ class AuthController extends BaseAuthController
             $form->number('app.point_day_read_num', '阅读次数')->default(0);
             $form->number('app.point_like_action', '点赞积分')->default(0);
             $form->number('app.point_day_like_num', '点赞次数')->default(0);
+            $form->switch('app.point_show_task', '显示任务')->states($states)->default(0);
             
             $form->display('help', '备注')->default('上述活动和任务，粉丝每天都可以做。');
         })->tab('渠道版块', function (Form $form) {

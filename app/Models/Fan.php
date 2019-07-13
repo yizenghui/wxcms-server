@@ -131,6 +131,7 @@ class Fan extends Authenticatable implements JWTSubject
     
     /**
      * 用户今日任务
+     * return Task
      */
     public function todaytask()
     {
