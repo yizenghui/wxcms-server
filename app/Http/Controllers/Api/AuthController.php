@@ -95,7 +95,9 @@ class AuthController extends Controller
     $session_key = array_get($ret,'session_key');
 
     // dd(['openid'=>$openid, 'appid'=>$appid]);
-    $fan = Fan::firstOrNew(['openid'=>$openid, 'appid'=>$appid]);
+    $fan = Fan::firstOrNew(['openid'=>$openid]); // , 'appid'=>$appid
+    // 这里面尝试看看能不能修正旧数据appid
+    $fan->appid = $appid;
     if ( !$fan->id ) { // 新访客
       // 如果该用户不存在则将其保存到 users 表
       $fan->session_key = $session_key;
