@@ -21,9 +21,9 @@ class AuthController extends Controller
     $this->middleware('auth:api', ['except' => ['token']]);
   }
 
-  public function getconfig($appid){
+  public function getconfig(){
     
-    $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
+    $config = ( new \App\Repositories\AppRepository() )->getconfig();
 
     return $config;
   }
@@ -171,7 +171,7 @@ class AuthController extends Controller
   public function asyncuserdata(Request $request){
     // $appid = intval($request->get('appid'));
     $appid = $this->getappid();
-    $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
+    $config = ( new \App\Repositories\AppRepository() )->getconfig();
     $appconfig = [
       'app_id' => $config['app_id'],
       'secret' => $config['secret'],
