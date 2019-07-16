@@ -60,6 +60,6 @@ class Kernel extends HttpKernel
         'force-json' => \App\Http\Middleware\ForceJson::class,
         'checkapp' => \App\Http\Middleware\CheckApp::class,
         'initappconfig' => \App\Http\Middleware\InitAppConfig::class,
-
+        'writeapplog' => \App\Http\Middleware\WriteAppLog::class,
     ];
 }

@@ -30,6 +30,10 @@ class CreateAppsTable extends Migration
             $table->integer('current_quota')->comment('当前周期使用额度')->default(0); // 注：这个参数在发工资时由剩余积分同步过来 (用于限制用户这个月新获取的积分不能在结算前使用)
             $table->integer('total_quota')->comment('总使用额度')->default(0);
             $table->integer('attach_quota')->comment('附加额度数')->default(0);
+            $table->boolean('rank_status')->comment('开放排行榜')->default(0);
+            $table->boolean('shopping_status')->comment('开放积分商城')->default(0);
+            $table->boolean('point_logs_status')->comment('开放积分记录')->default(0);
+            $table->boolean('reward_status')->comment('开放激励记录')->default(0);
             $table->boolean('point_enabled')->comment('积分系统是否启动?')->default(1);
             $table->boolean('point_day_sign_num')->comment('开启签到得积分功能')->default(1);
             $table->boolean('point_day_reward_num')->comment('开启激励得积分功能')->default(1);

@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 
 Route::get('/v1/qrcode/jump/{token}','Api\QrcodeController@jump');
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp']], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp','writeapplog']], function () {
 
     Route::get('carousels','CarouselController@index');
 
@@ -84,6 +84,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
         Route::get('/user/footprint','FanController@footprint');
         Route::get('/user/rank','FanController@rank');
         Route::get('/user/like','FanController@like');
+        Route::get('/user/reward','FanController@reward');
         Route::get('/user/pointlog','FanController@pointlog');
         Route::get('/user/tasklogs','FanController@tasklog');
         Route::get('/getme','FanController@getme');

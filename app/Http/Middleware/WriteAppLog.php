@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Vinkla\Hashids\Facades\Hashids;
 
-class InitAppConfig
+class WriteAppLog
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,7 @@ class InitAppConfig
      */
     public function handle($request, Closure $next)
     {
-        // intval(request()->get('appid')))
-        ( new \App\Repositories\AppRepository )->initConfig();
-
+        ( new \App\Repositories\AppRepository )->log();
         return $next($request);
     }
 }

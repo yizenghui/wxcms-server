@@ -21,6 +21,13 @@ class FanController extends Controller
         return response()->json($articles);
     }
 
+    public function reward(Request $request){
+        $user = $request->user();
+        $data = $user->subscriptions(\App\Models\Article::class)->simplePaginate(20);
+        $articles = ArticleResource::collection($data);
+        return response()->json($articles);
+    }
+
     public function like(Request $request){
         $user = $request->user();
         $data = $user->likes(\App\Models\Article::class)->simplePaginate(20);

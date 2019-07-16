@@ -50,7 +50,7 @@ class AuthController extends Controller
     
     $appid = $this->getappid();
     $scene = intval($request->get('scene'));
-    $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
+    $config = ( new \App\Repositories\AppRepository() )->getconfig();
 
     // $ret = $this->gettoken( $request->get('code'), $config['app_id'], $config['secret'] );
     // if( !$ret ){
@@ -159,8 +159,10 @@ class AuthController extends Controller
     $success['banner_adid'] =  $config['banner_adid'];
     $success['sign_action'] = $config['point_sign_action'];
     $success['reward_action'] = $config['point_reward_action'];
-    // todo 获取分享页数据
-
+    $success['reward_status'] = $config['reward_status'];
+    $success['rank_status'] = $config['rank_status'];
+    $success['shopping_status'] = $config['shopping_status'];
+    $success['point_logs_status'] = $config['point_logs_status'];
     return response()->json($success);
   }
 

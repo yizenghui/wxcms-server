@@ -11,23 +11,18 @@ class AppRepository {
 
     private $wxapp;
     
-    public function __construct($appid){
+    public function __construct($appid = 0){
    
         $this->appid =  $appid;
-
-        // InitAppConfig
-        // $app = $this->getwxapp($this->getappid());
-        // $this->log($app);
     }
 
     // 记录调用了一次
     public function log(){
-        // $wxapp->current_quota ++;
-        // $wxapp->total_quota ++;
-        // Redis::set("app:".$wxapp->id, $wxapp);
         $wxapp = $this->getminiapp();
-        Log::useFiles( storage_path('logs/'.$wxapp->appid.'.log') );
-        $openid = request()->user()->openid;
+        Log::useFiles( storage_path('logs/'.date('Ym').'/'.$wxapp->id.'/'.date('dH').'.log') );
+        $openid = '';
+        $user = request()->user();
+        if($user) $openid = $user ->openid;
         $method = request()->method();
         $path = request()->path();
         Log::info($method.' openid:'.$openid.' path:'.$path);
@@ -77,6 +72,10 @@ class AppRepository {
         'secret' => $app->app_secret,
         'reward_adid' => $app->reward_adid,
         'banner_adid' => $app->banner_adid,
+        'rank_status' => $app->rank_status,
+        'shopping_status' => $app->shopping_status,
+        'point_logs_status' => $app->point_logs_status,
+        'reward_status' => $app->reward_status,
         'point_sign_action' => $app->point_day_sign_num?$app->point_sign_action:0,
         'point_reward_action' => $app->point_day_reward_num?$app->point_reward_action:0,
         'default_fromid' =>$app->point_enabled ? $app->point_default_fromid : 0,
@@ -90,9 +89,11 @@ class AppRepository {
     }
 
     public function getappid(){
+        if($this->appid) return $this->appid;
         $ids = Hashids::decode( request()->server('HTTP_API_TOKEN') );//api_token
         if($ids[1]>20190101){
-            return intval($ids[0]);
+            $this->appid = intval($ids[0]);
+            return $this->appid;
         }
         return 0;
     }
