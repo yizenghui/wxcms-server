@@ -17,7 +17,7 @@ class FanResource extends Resource
         
         return [
             'id'   => (string)$this->id,
-            'name' =>  $this->name?$this->name:'??'.$this->id,
+            'name' =>  $this->name?$this->name:'游客'.$this->id,
             'gender' => $this->gender,
             'city' => $this->city,
             'avatar' => $this->avatar,
