@@ -163,6 +163,11 @@ class AuthController extends Controller
     $success['rank_status'] = $config['rank_status'];
     $success['shopping_status'] = $config['shopping_status'];
     $success['point_logs_status'] = $config['point_logs_status'];
+    $success['score_type'] = $config['score_type'];
+    $success['score_ratio'] = $config['score_ratio'];
+    $success['template_topic'] = $config['template_topic'];
+    $success['follow_status'] = $config['follow_status'];
+    $success['app_id'] = $config['app_id']; // 传app_id下去
     return response()->json($success);
   }
 

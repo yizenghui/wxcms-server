@@ -57,6 +57,8 @@ class AppRepository {
             'point.share_action' => $app->point_share_action,
             'point.channel_status' => $app->point_channel_status,
             'point.show_task' => $app->point_show_task,
+            'point.score_type' => $app->point_score_type, // 积分类型标题
+            'point.score_ratio' => $app->point_score_ratio, // 积分前后台比值
             'point.reward_article_action' => $app->point_reward_article_action, // 激励文章行为
             'point.day_reward_article_num' => $app->point_day_reward_article_num, // 一天最多可以激励多少次(获得奖励)
             'point.rereading_reward' => $app->point_rereading_reward, // 重复阅读同一篇文章给予奖励
@@ -70,8 +72,10 @@ class AppRepository {
         $config = [
         'app_id' => $app->app_id,
         'secret' => $app->app_secret,
+        'follow_status' => $app->follow_status, // 关注组件状态
         'reward_adid' => $app->reward_adid,
         'banner_adid' => $app->banner_adid,
+        'screen_adid' => $app->screen_adid,
         'rank_status' => $app->rank_status,
         'shopping_status' => $app->shopping_status,
         'point_logs_status' => $app->point_logs_status,
@@ -84,6 +88,9 @@ class AppRepository {
         'index_share_cover'=>$app->indexshare?$app->indexshare->OneCover:'',
         'topic_share_title'=>$app->topicshare?$app->topicshare->OneTitle:'',
         'topic_share_cover'=>$app->topicshare?$app->topicshare->OneCover:'',
+        'score_type' => $app->point_score_type, // 积分类型标题
+        'score_ratio' => $app->point_score_ratio, // 积分前后台比值
+        'template_topic'=>$app->template_topic?$app->template_topic:'green', // 默认绿色主题
         ];
         return $config;
     }

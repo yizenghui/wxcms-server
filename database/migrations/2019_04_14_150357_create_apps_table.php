@@ -20,9 +20,13 @@ class CreateAppsTable extends Migration
             $table->string('app_name')->comment('应用名')->nullable();
             $table->string('app_id')->comment('AppID')->nullable();
             $table->string('app_secret')->comment('AppSecret')->nullable();
+            $table->boolean('follow_status')->comment('公众号关注组件')->default(0);
             $table->string('reward_adid')->comment('激励式视频id')->nullable();
             $table->string('banner_adid')->comment('banner广告id')->nullable();
             $table->string('screen_adid')->comment('插屏广告id')->nullable();
+            $table->string('template_topic')->comment('模板主题')->nullable(); // 红 蓝 绿 等不同主题
+            $table->float('point_score_ratio')->comment('积分比值(小程序展示积分实值比)')->nullable();
+            $table->string('point_score_type')->comment('积分类型(小程序展示积分标题)')->nullable();
             $table->string('default_search')->comment('默认搜索值')->nullable();
             $table->integer('index_share_id')->comment('首页分享策略')->default(0);
             $table->integer('topic_share_id')->comment('专题首页分享策略')->default(0);
