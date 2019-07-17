@@ -81,6 +81,7 @@ class AppRepository {
         'point_logs_status' => $app->point_logs_status,
         'reward_status' => $app->reward_status,
         'point_sign_action' => $app->point_day_sign_num?$app->point_sign_action:0,
+        'point_reward_article_action' => $app->point_reward_article_action?$app->point_reward_article_action:0,
         'point_reward_action' => $app->point_day_reward_num?$app->point_reward_action:0,
         'default_fromid' =>$app->point_enabled ? $app->point_default_fromid : 0,
         'default_search' =>$app->default_search ? $app->default_search:'标题搜索',

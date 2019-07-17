@@ -146,7 +146,7 @@ class AuthController extends Controller
     $token = JWTAuth::fromUser($fan);
     
     $success['token'] =  $token;
-    $success['uid'] =  $fan->id;
+    $success['uid'] =  $fan->id; // 粉丝uid
     $success['show_login'] = $fan->name && $fan->avatar?false:true; // 提醒登录
     $success['show_sign'] =  $fan->sign_at == date('Ymd')?true:false;  // 提醒今天未签到
     $success['show_rewarded'] =  $fan->rewarded_at == date('Ymd')?true:false; // 提醒今天未激励
@@ -154,19 +154,20 @@ class AuthController extends Controller
     $success['index_share_cover'] =  $config['index_share_cover'];
     $success['topic_share_title'] =  $config['topic_share_title'];
     $success['topic_share_cover'] =  $config['topic_share_cover'];
-    $success['default_search'] =  $config['default_search'];
+    $success['default_search'] =  $config['default_search']; // 首页默认搜索关键字
     $success['reward_adid'] =  $config['reward_adid'];
-    $success['banner_adid'] =  $config['banner_adid'];
-    $success['sign_action'] = $config['point_sign_action'];
-    $success['reward_action'] = $config['point_reward_action'];
-    $success['reward_status'] = $config['reward_status'];
-    $success['rank_status'] = $config['rank_status'];
-    $success['shopping_status'] = $config['shopping_status'];
-    $success['point_logs_status'] = $config['point_logs_status'];
-    $success['score_type'] = $config['score_type'];
-    $success['score_ratio'] = $config['score_ratio'];
-    $success['template_topic'] = $config['template_topic'];
-    $success['follow_status'] = $config['follow_status'];
+    $success['banner_adid'] =  $config['banner_adid']; //
+    $success['sign_action'] = $config['point_sign_action']; // 签到得分
+    $success['reward_action'] = $config['point_reward_action']; // 签到激励得分
+    $success['reward_article_action'] = $config['point_reward_article_action']; //激励文章得分
+    $success['reward_status'] = $config['reward_status']; // 控制前端后台显示激励记录入口 
+    $success['rank_status'] = $config['rank_status']; // 控制前端后台显示今日签到排行榜入口
+    $success['shopping_status'] = $config['shopping_status'];  // 控制前端后台显示积分商城和兑换入口
+    $success['point_logs_status'] = $config['point_logs_status']; // 控制前端后台显示查看积分记录入口
+    $success['score_type'] = $config['score_type']; // 积分类型标题
+    $success['score_ratio'] = $config['score_ratio']; // 积分类型实值展示比值
+    $success['template_topic'] = $config['template_topic']; // 模板主题
+    $success['follow_status'] = $config['follow_status']; // 小程序首页、文章详情页显示公众号关注组件
     $success['app_id'] = $config['app_id']; // 传app_id下去
     return response()->json($success);
   }

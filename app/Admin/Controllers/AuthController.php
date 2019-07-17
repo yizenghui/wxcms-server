@@ -60,11 +60,12 @@ class AuthController extends BaseAuthController
             $form->select('app.topic_share_id','专题首页自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->text('app.default_search', '搜索默认值'); //->help('关键词一 关键词二(通过空格搜索包含关键词一或者包含关键词二的内容)')
             
-            $form->switch('app.follow_status', '展示关注组件')->states($states)->default(0)->help('在小程序内展示对同一主体公众号有效的关注组件 <a href="https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html">文档</a>');
             $form->switch('app.reward_status', '激励记录')->states($states)->default(0);
             $form->switch('app.rank_status', '排行榜')->states($states)->default(0);
             $form->switch('app.shopping_status', '积分商城')->states($states)->default(0);
             $form->switch('app.point_logs_status', '积分记录')->states($states)->default(0);
+            $form->switch('app.follow_status', '展示关注组件')->states($states)->default(0)->help('在小程序内展示对同一主体公众号有效的关注组件 <a href="https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html">文档</a>');
+           
         })->tab('运营管理', function (Form $form) {
             $form->number('app.point_default_fromid', '默认奖励id')->default(0)->help('如果是自然来路用户，可以设置其作为奖励对象为当前运营者粉丝id。');
             $states = [
