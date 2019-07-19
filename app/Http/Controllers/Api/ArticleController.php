@@ -55,7 +55,7 @@ class ArticleController extends Controller
         $article->share_title = $share?$share->oneTitle:'';
         $article->share_cover = $share?$share->oneCover:'';
         $article->userlikearticle = $request->user()->hasLiked($article);
-        // 
+        $article->userrewardarticle = $request->user()->hasSubscribed($article);  // 用户已经激励该文章
         $encode_qrcode = Hashids::encode( $request->get('appid'), $request->user()->id, $article->id, date("ymdHi") );
         $article->qrcode = $encode_qrcode;
         return response()->json($article);
