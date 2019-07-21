@@ -177,6 +177,16 @@ class ArticleController extends Controller
         $form->tab('内容', function (Form $form) {
             $form->text('title','标题')->rules('required')->required();
             $form->simplemde('body','正文')->rules('required')->required()->help('上传图片到图床<a target="_blank" href="https://sm.ms/">sm.ms</a>复制Markdown语法标签');
+            
+                
+            $states = [
+                'on'  => ['value' => 0, 'text' => '关闭', 'color' => 'success'],
+                'off' => ['value' => 1, 'text' => '开启', 'color' => 'danger'],
+            ];
+            
+            
+            $form->switch('need_reward', '限制阅读')->states($states)->default(1)->help('用户需激励后方可阅读全文(文章内容高度需大于1000像素且已设置该作者激励id)');
+
             $topic_arr = collect([0=>'无'])->union(Topic::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('topic_id','所属专题')->options($topic_arr)->default(0);
             $author_arr = collect([0=>'无'])->union(Author::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
