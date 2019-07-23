@@ -57,7 +57,10 @@ class AuthController extends BaseAuthController
             ];
             $share_arr = collect([0=>'无'])->union(Share::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
 
-            $form->select('app.template_topic','小程序主题风格')->options(['green'=>'Green','pink'=>'Pink','blue'=>'Blue'])->default('green')->help('需预设上传风格图标');
+            $topic_arr = [
+                'red'=>'Red', 'orange'=>'Orange', 'green'=>'Green', 'purple'=>'Purple', 'pink'=>'Pink', 'blue'=>'Blue',
+            ];
+            $form->select('app.template_topic','小程序主题风格')->options($topic_arr)->default('green')->help('需预设上传风格图标，设置后删除最近使用小程序重新打开生效。');
             $form->select('app.index_share_id','首页自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->select('app.topic_share_id','专题首页自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->text('app.default_search', '搜索默认值'); //->help('关键词一 关键词二(通过空格搜索包含关键词一或者包含关键词二的内容)')
