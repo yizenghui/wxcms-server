@@ -22,8 +22,10 @@ class CheckApp
         $ids = Hashids::decode($api_token);
         // todo 检查参数的合法性
 
-        $appid = intval($ids[0]);
+        // $appid = intval($ids[0]);
+        $appid = $ids[0];
 
+        // dd( $ids);
         // todo 默认值
         if(!$appid) $appid = 1; 
 
