@@ -185,7 +185,7 @@ class ArticleController extends Controller
             ];
             
             
-            $form->switch('need_reward', '限制阅读')->states($states)->default(0)->help('用户需激励后方可阅读全文(文章内容高度需大于1000像素且已设置该作者激励id)');
+            $form->switch('need_reward', '限制阅读')->states($states)->default(0)->help('用户需激励后方可阅读全文(需要设置作者激励id)');
 
             $topic_arr = collect([0=>'无'])->union(Topic::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
             $form->select('topic_id','所属专题')->options($topic_arr)->default(0);
