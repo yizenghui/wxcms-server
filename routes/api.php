@@ -27,11 +27,16 @@ Route::post('wxcallback', function () { // 关闭 CSRF
     return $openPlatform->server->serve(); // Done!
 });
 
-Route::get('/wxcallback/{appid}', function (Request $request) {
+Route::post('/wxcallback/{appid}', function (Request $request) {
     $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
     return $openPlatform->server->serve();
 });
 
+
+Route::get('/wxcallback/{appid}', function (Request $request) {
+    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
+    return $openPlatform->server->serve();
+});
 // Route::group(['middleware' => ['force-json', 'auth:api']], function () {
 //     // put your router
 // });
