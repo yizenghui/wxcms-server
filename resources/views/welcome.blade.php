@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>自媒体内容管理系统 - WxCMS</title>
+        <title>WeContr自媒体内容管理系统 - WxCMS</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
@@ -12,13 +12,22 @@
         
     </head>
     <body>
-		<section class="container" >
-			<h3 class="title">WxCMS</h3>
-			<p class="description">适合微信自媒体内容运营的小程序，基于Wepy+ColorUI打造。</p>
+		<section class="container" style="padding-top:50px;" >
+			<h3 class="title">WeContr</h3>
+			<p class="description">让优质内容更有价值！</p>
 			
-			<a class="button" href="/admin" title="WxCMS管理后台">进入后台</a>
+			<a class="button" href="/admin" title="WeContr管理后台">进入后台</a>
 
+			<p>
+				请联系客服索取帐号密码
+			</p>
+			<p>客服QQ：121258121(在线时间9:00~23:00)</p>
 
+			<p> 演示小程序 <br> <img style="width:180px;" src="https://github.com/yizenghui/wxcms/raw/master/screenshot/case1.png" /> </p>
+			<p> 测试小程序 <br> <img style="width:180px;" src="https://github.com/yizenghui/wxcms/raw/master/screenshot/wxcmsdemo.jpg" /> </p>
+
+			
+<!-- 
 			<p>
 				<strong>Q&A</strong>
 			</p> 
@@ -50,6 +59,7 @@
 			<p>
 				2. 联系客服QQ：121258121(在线时间9:00~23:00) 免费获取 <a href="/admin">后台</a> 帐号密码
 			</p>
+			-->
 		</section>
     </body>
 </html>
