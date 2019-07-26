@@ -80,14 +80,14 @@ return [
     /*
      * 开放平台第三方平台
      */
-    // 'open_platform' => [
-    //     'default' => [
-    //         'app_id'  => env('WECHAT_OPEN_PLATFORM_APPID', ''),
-    //         'secret'  => env('WECHAT_OPEN_PLATFORM_SECRET', ''),
-    //         'token'   => env('WECHAT_OPEN_PLATFORM_TOKEN', ''),
-    //         'aes_key' => env('WECHAT_OPEN_PLATFORM_AES_KEY', ''),
-    //     ],
-    // ],
+    'open_platform' => [
+        'default' => [
+            'app_id'  => env('WECHAT_OPEN_PLATFORM_APPID', 'wxda5bf6e57c2a2f7d'),
+            'secret'  => env('WECHAT_OPEN_PLATFORM_SECRET', 'c4ef013252a4253acfd6b2744c7c435e'),
+            'token'   => env('WECHAT_OPEN_PLATFORM_TOKEN', 'xiyitongxietoken'),
+            'aes_key' => env('WECHAT_OPEN_PLATFORM_AES_KEY', 'xiyitongxiedev1992XIYITONGXIEDEV19921234567'),
+        ],
+    ],
 
 
     /*

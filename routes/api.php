@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use EasyWeChat\Factory;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,12 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+Route::get('/wxcallback/{appid}', function (Request $request) {
+    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
+    return $openPlatform->server->serve();
+});
 
 // Route::group(['middleware' => ['force-json', 'auth:api']], function () {
 //     // put your router

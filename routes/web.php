@@ -1,6 +1,7 @@
 <?php
 
 use Intervention\Image\ImageManagerStatic as Image;
+use EasyWeChat\Factory;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +13,22 @@ use Intervention\Image\ImageManagerStatic as Image;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/wxoauth', function () {
+    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
+    return $openPlatform->getPreAuthorizationUrl('https://readfollow.com/oauth/wxopen');
+});
+
+Route::get('/oauth/wxopen', function () {
+    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
+    return $openPlatform->handleAuthorize();
+});
+
+
+Route::get('/x', function () {
+    dd(config('wechat.open_platform'));
+    return view('welcome');
+});
+
 Route::get('/','HomeController@index');
 
 Route::get('/poster','Api\ArticleController@poster');
