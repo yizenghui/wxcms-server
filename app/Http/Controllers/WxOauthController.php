@@ -52,6 +52,7 @@ class WxOauthController extends Controller
         $code =  $miniProgram->code; // 代码管理
         return view('code',[
             'app'=>$app,
+            'qrcode'=> '/wxoauth/getQrCode?appid='.$appid,
             'release_version'=>$app->release_version, //发布版本
             'current_version'=>$app->current_version, //用户提供体验版本
             'master_version' =>config('point.mini_program_version'), //当前主版本
