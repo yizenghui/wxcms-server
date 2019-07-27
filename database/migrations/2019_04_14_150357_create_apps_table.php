@@ -19,7 +19,8 @@ class CreateAppsTable extends Migration
             $table->integer('genre')->comment('应用类型')->default(0);
             $table->string('app_name')->comment('应用名')->nullable();
             $table->string('app_id')->comment('AppID')->nullable();
-            $table->string('app_secret')->comment('AppSecret')->nullable();
+            $table->string('app_secret')->comment('AppSecret')->nullable(); // 单机这样用还可以，做平台的话不够安全
+            $table->string('refresh_token')->comment('授权方的refresh_token')->nullable(); // 通过第三方授权获取的权限(更安全)
             $table->boolean('follow_status')->comment('公众号关注组件')->default(0);
             $table->string('reward_adid')->comment('激励式视频id')->nullable();
             $table->string('banner_adid')->comment('banner广告id')->nullable();
