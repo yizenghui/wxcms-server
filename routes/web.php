@@ -13,18 +13,18 @@ use EasyWeChat\Factory;
 |
 */
 
-Route::get('/wxoauth', function () {
+Route::get('wxoauth', function () {
     $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
-    return $openPlatform->getPreAuthorizationUrl('https://readfollow.com/oauth/wxopen');
+    return $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
 });
 
-Route::get('/wxoauth/callback', function () {
+Route::get('wxoauth/callback', function () {
     $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
     dd($openPlatform->handleAuthorize());
     return $openPlatform->handleAuthorize();
 });
 
-Route::post('/oauth/wxopen', function () { // 授权事件接收url  https://readfollow.com/oauth/wxopen
+Route::post('oauth/wxopen', function () { // 授权事件接收url  https://readfollow.com/oauth/wxopen
     $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
     return $openPlatform->server->serve();
 });
