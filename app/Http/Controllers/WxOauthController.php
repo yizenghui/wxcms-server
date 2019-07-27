@@ -70,7 +70,7 @@ class WxOauthController extends Controller
             $app->save();
         }
         // return $ret;
-        $qrcode = 'wxoauth/getQrCode?appid='.$appid;
+        $qrcode = '/wxoauth/getQrCode?appid='.$appid;
         // 跳转去获取体验版二维码
         return view('commit',compact('qrcode'));
     }
