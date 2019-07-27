@@ -18,7 +18,7 @@
 			
 
 
-			<p> 体验小程序 <br> <img style="width:180px;" src="{{qrcode}}" /> </p>
+			<p> 体验小程序 <br> <img style="width:180px;" src="{{$qrcode}}" /> </p>
 
 			
 			<a class="button" href="/admin" >提交审核</a>
