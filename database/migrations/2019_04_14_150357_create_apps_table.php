@@ -21,6 +21,8 @@ class CreateAppsTable extends Migration
             $table->string('app_id')->comment('AppID')->nullable();
             $table->string('app_secret')->comment('AppSecret')->nullable(); // 单机这样用还可以，做平台的话不够安全
             $table->string('refresh_token')->comment('授权方的refresh_token')->nullable(); // 通过第三方授权获取的权限(更安全)
+            $table->string('current_version')->comment('当前版本')->nullable(); // 当前版本
+            $table->boolean('allow_synchronized_version')->comment('允许系统同步版本')->default(0); //用户允许系统同步版时，管理员可以批量静默升级用户的代码到最新版本()
             $table->boolean('follow_status')->comment('公众号关注组件')->default(0);
             $table->string('reward_adid')->comment('激励式视频id')->nullable();
             $table->string('banner_adid')->comment('banner广告id')->nullable();
