@@ -18,11 +18,11 @@
 			
 
 			<p>
-				WeContr 小程序版本 v{{master_version}}
+				WeContr 小程序版本 v{{$master_version}}
 			</p>
 
 			<p>
-				您当前小程序版本 v{{current_version}} (<a href="/wxoauth/commitCode?appid={{$app->id}}">提交WeContr v{{master_version}}</a>) <br>
+				您当前小程序版本 v{{$current_version}} (当前发布版本 v{{$release_version?$release_version:'未发布'}}</a>) <br>
 				<img style="width:180px;" src="{{$qrcode}}" />  <br>
 				扫码体验(邀请非管理员体验请在微信小程序官方后台添加用户及权限)
 			</p>
