@@ -41,11 +41,21 @@ class WxOauthController extends Controller
         }
     }
 
-    public function getTemplateList(Request $request){
+    public function code(Request $request){
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
-        
-        dd($miniProgram->code);
-        return view('welcome');
+        $appid = $request->get('appid');
+        $app = App::find(intval($appid));
+        $app_id = $app->app_id;//$request->get('app_id');
+        $refresh_token = $app->refresh_token; //$request->get('refresh_token');
+        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
+        $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
+        $code =  $miniProgram->code; // 代码管理
+        return view('code',[
+            'app'=>$app,
+            'release_version'=>$app->release_version, //发布版本
+            'current_version'=>$app->current_version, //用户提供体验版本
+            'master_version' =>config('point.mini_program_version'), //当前主版本
+        ]);
     }
 
 
@@ -72,7 +82,9 @@ class WxOauthController extends Controller
         // return $ret;
         $qrcode = '/wxoauth/getQrCode?appid='.$appid;
         // 跳转去获取体验版二维码
-        return view('commit',compact('qrcode'));
+        $cate = $miniProgram->code->getCategory();
+        $categories = $cate["category_list"];
+        return view('commit',compact('qrcode','categories'));
     }
 
 
@@ -87,13 +99,86 @@ class WxOauthController extends Controller
         return $miniProgram->code->getQrCode("/pages/index/index");
     }
 
-    public function postCode2(Request $request){
-        $app_id = $request->get('app_id');
-        $refresh_token = $request->get('refresh_token');
+    public function submitAudit(Request $request){
+        // $first_id = $request->get("first_id");
+        // $second_id = $request->get("second_id");
+
+        $appid = $request->get('appid');
+        $app = App::find(intval($appid));
+        $app_id = $app->app_id;//$request->get('app_id');
+        $refresh_token = $app->refresh_token; //$request->get('refresh_token');
+        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
 
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token); //小程序
-        dd($miniProgram->code);
+        $cate = $miniProgram->code->getCategory();
+        $category_list = $cate["category_list"];
+
+        $first_id = 8;
+        $second_id = 578;
+        // 首次选择 (企业小程序)
+        foreach ($category_list as $key => $value) {
+            if($value["first_id"] == 8 && $value["second_id"] == 578){
+                $first_id = 8;
+                $second_id = 578;
+                break;
+            }
+        }
+        
+        if(!$first_id && !$second_id){
+            // 次选 (个人小程序)
+            foreach ($category_list as $key => $value) {
+                if($value["first_id"] == 8 && $value["second_id"] == 578){
+                    $first_id = 8;
+                    $second_id = 578;
+                    break;
+                }
+            }
+            //8 578 
+        }
+
+        $itemList = `{
+            "item_list": [
+            {
+                "address":"pages/index/index",
+                "tag":"文章 阅读",
+                "first_class": "教育",
+                "second_class": "教育信息服务",
+                "first_id":8,
+                "second_id":578,
+                "title": "首页"
+            }
+            {
+                "address":"page/jump/index",
+                "tag":"跳转 wecontr",
+                "first_class": "教育",
+                "second_class": "教育信息服务",
+                "first_id":8,
+                "second_id":578,
+                "title": "中转页"
+            }
+            ]
+        }`;
+
+
+        // dd($miniProgram->code->submitAudit($itemList));
+        return view('welcome');
+    }
+
+    public function releaseCode(Request $request){
+        // $first_id = $request->get("first_id");
+        // $second_id = $request->get("second_id");
+
+        $appid = $request->get('appid');
+        $app = App::find(intval($appid));
+        $app_id = $app->app_id;//$request->get('app_id');
+        $refresh_token = $app->refresh_token; //$request->get('refresh_token');
+        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
+        $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+
+        $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token); //小程序
+        
+        // dd($miniProgram->code->release());
         return view('welcome');
     }
 }
