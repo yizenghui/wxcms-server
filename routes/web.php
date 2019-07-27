@@ -17,6 +17,7 @@ Route::get('wxoauth','WxOauthController@authorization');
 Route::get('wxoauth/callback', 'WxOauthController@callback');
 Route::get('wxoauth/commitCode', 'WxOauthController@commitCode');
 Route::get('wxoauth/getQrCode', 'WxOauthController@getQrCode');
+Route::get('wxoauth/code', 'WxOauthController@code');
 
 
 
