@@ -27,8 +27,8 @@ class WxOauthController extends Controller
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $data = $openPlatform->handleAuthorize();
         dump($data);
-        dump($data->authorization_info);
-        dd($data->authorization_info->authorizer_appid);
+        dump($data['authorization_info']);
+        dd($data['authorization_info']['authorizer_appid']);
         //记录token到数据库
         return $openPlatform->handleAuthorize();
 
