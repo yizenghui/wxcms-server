@@ -54,7 +54,7 @@ class WxOauthController extends Controller
         $app = App::find(intval($appid));
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
-        if(!$app_id || $refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
+        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@NlYaCEWLcSwu5VpBCEf6b9b_Y57sbo7lL2Qm1x1T79M";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $c = $openPlatform->code_template; // 模板
@@ -81,7 +81,7 @@ class WxOauthController extends Controller
         $app = App::find(intval($appid));
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
-        if(!$app_id || $refresh_token) return 'falt'; //没有app_id或refresh_token
+        if(!$app_id || !$refresh_token) return 'falt'; //没有app_id或refresh_token
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
         return $miniProgram->code->getQrCode("/pages/index/index");
