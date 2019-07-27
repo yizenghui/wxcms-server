@@ -19,24 +19,12 @@ use EasyWeChat\Factory;
 //     return $request->user();
 // });
 
-
-// 假设你的开放平台第三方平台设置的授权事件接收 URL 为: https://easywechat.com/open-platform （其他事件推送同样会推送到这个 URL）
-Route::post('wxcallback', function () { // 关闭 CSRF
-    // $openPlatform 为你实例化的开放平台对象，此处省略实例化步骤
-    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
-    return $openPlatform->server->serve(); // Done!
-});
-
+// 消息与事件接收URLhttps://readfollow.com/api/wxcallback/$APPID$
 Route::post('/wxcallback/{appid}', function (Request $request) {
     $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
     return $openPlatform->server->serve();
 });
 
-
-Route::get('/wxcallback/{appid}', function (Request $request) {
-    $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
-    return $openPlatform->server->serve();
-});
 // Route::group(['middleware' => ['force-json', 'auth:api']], function () {
 //     // put your router
 // });
