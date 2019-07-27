@@ -44,14 +44,14 @@ return [
         /*
          * 开放平台第三方平台路由配置
          */
-        // 'open_platform' => [
-        //     'uri' => 'serve',
-        //     'action' => Overtrue\LaravelWeChat\Controllers\OpenPlatformController::class,
-        //     'attributes' => [
-        //         'prefix' => 'open-platform',
-        //         'middleware' => null,
-        //     ],
-        // ],
+        'open_platform' => [
+            'uri' => 'wxopen',
+            'action' => Overtrue\LaravelWeChat\Controllers\OpenPlatformController::class,
+            'attributes' => [
+                'prefix' => 'oauth',
+                'middleware' => null,
+            ],
+        ],
     ],
 
     /*
