@@ -49,7 +49,7 @@ class WxOauthController extends Controller
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
-        $code =  $miniProgram->code; // 代码管理
+        // $code =  $miniProgram->code; // 代码管理
         return view('code',[
             'app'=>$app,
             'qrcode'=> '/wxoauth/getQrCode?appid='.$appid,
@@ -83,7 +83,7 @@ class WxOauthController extends Controller
         // return $ret;
         $qrcode = '/wxoauth/getQrCode?appid='.$appid;
         // 跳转去获取体验版二维码
-        $cate = $miniProgram->code->getCategory();
+        $cate = $miniProgram->code->categories();
         $categories = $cate["category_list"];
         return view('commit',compact('qrcode','categories'));
     }
