@@ -15,7 +15,10 @@ use Intervention\Image\ImageManagerStatic as Image;
 Route::get('wxoauth', function () {
     $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
     // $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
-    return $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
+
+    $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
+
+    return "<a href='$url'>前往授权</a>";
 });
 
 Route::get('wxoauth/callback', function () {
