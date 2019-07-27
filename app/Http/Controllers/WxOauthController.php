@@ -18,9 +18,9 @@ class WxOauthController extends Controller
 
         $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
 
-        return redirect($url);
+        // return redirect($url);
         // authorization
-        // return "<a href='$url'>前往微信公众号平台授权</a>";
+        return "操作流程提醒+<a href='$url'>前往微信公众号平台授权</a>";
     }
 
     public function callback(){ // 前往微信公众号平台授权跳回来这里了
