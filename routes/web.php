@@ -12,17 +12,15 @@ use Intervention\Image\ImageManagerStatic as Image;
 |
 */
 
-Route::get('wxoauth','WxOauthController@authorization');
-
-Route::get('wxoauth/callback', 'WxOauthController@callback');
-Route::get('wxoauth/commitCode', 'WxOauthController@commitCode');
-Route::get('wxoauth/getQrCode', 'WxOauthController@getQrCode');
-Route::get('wxoauth/code', 'WxOauthController@code');
-
+Route::get('wxoauth','WxOauthController@authorization'); //前往获取授权
+Route::get('wxoauth/callback', 'WxOauthController@callback'); //授权回调接口
+Route::get('wxoauth/commitCode', 'WxOauthController@commitCode'); //提交代码
+Route::get('wxoauth/submitAudit', 'WxOauthController@submitAudit'); //提交审核
+Route::get('wxoauth/getQrCode', 'WxOauthController@getQrCode'); //获取体验码
+Route::get('wxoauth/code', 'WxOauthController@code'); // 代码管理
 
 
 Route::get('/x', function () {
-    dd(config('wechat.open_platform'));
     return view('welcome');
 });
 

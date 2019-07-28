@@ -66,7 +66,7 @@ class WxOauthController extends Controller
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
-        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@NlYaCEWLcSwu5VpBCEf6b9b_Y57sbo7lL2Qm1x1T79M";
+        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@CMuaHhGhW0T0cKjmFLGvRyrGknttrKA4mXWlnD-45Jk";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $c = $openPlatform->code_template; // 模板
         $l = $c->list(); // 模板列表
@@ -88,8 +88,24 @@ class WxOauthController extends Controller
         return view('commit',compact('qrcode','categories'));
     }
 
+    // 为客户设置分类(暂不支持)
+    public function settingCategory(Request $request){ // 设置分类
+        $appid = $request->get('appid');
+        $app = App::find(intval($appid));
+        $app_id = $app->app_id;//$request->get('app_id');
+        $refresh_token = $app->refresh_token; //$request->get('refresh_token');
+        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
+        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@CMuaHhGhW0T0cKjmFLGvRyrGknttrKA4mXWlnD-45Jk";
+        $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+        $all_categories = $miniProgram->setting->getAllCategories();
+        // todo 检查用户类型及设置相应分类 "errcode":41033 非第三方快速创建的小程序，获取、设置用户帐号私密信息都容易出这个错，暂时无解，以后再尝试解决
+        $cate = $miniProgram->code->categories();
+        $categories = $cate["category_list"];
+        return view('commit',compact('qrcode','categories'));
+    }
 
-    public function getQrCode(Request $request){ // 提交代码
+    // 获取体验二维码
+    public function getQrCode(Request $request){
         $appid = $request->get('appid');
         $app = App::find(intval($appid));
         $app_id = $app->app_id;//$request->get('app_id');
@@ -100,6 +116,7 @@ class WxOauthController extends Controller
         return $miniProgram->code->getQrCode("/pages/index/index");
     }
 
+    // 提交审核
     public function submitAudit(Request $request){
         // $first_id = $request->get("first_id");
         // $second_id = $request->get("second_id");
@@ -115,11 +132,11 @@ class WxOauthController extends Controller
         $cate = $miniProgram->code->getCategory();
         $category_list = $cate["category_list"];
 
-        $first_id = 8;
-        $second_id = 578;
-        // 首次选择 (企业小程序)
+        $first_id = 0;
+        $second_id = 0;
+        // 首次选择 (企业小程序) todo 有空去问问有企业资质的人，这个参数是多少
         foreach ($category_list as $key => $value) {
-            if($value["first_id"] == 8 && $value["second_id"] == 578){
+            if($value["first_id"] == 8 && $value["second_id"] == 578){ // 17 + ?
                 $first_id = 8;
                 $second_id = 578;
                 break;
@@ -138,29 +155,36 @@ class WxOauthController extends Controller
             //8 578 
         }
 
-        $itemList = `{
-            "item_list": [
-            {
-                "address":"pages/index/index",
-                "tag":"文章 阅读",
-                "first_class": "教育",
-                "second_class": "教育信息服务",
-                "first_id":8,
-                "second_id":578,
-                "title": "首页"
-            }
-            {
-                "address":"page/jump/index",
-                "tag":"跳转 wecontr",
-                "first_class": "教育",
-                "second_class": "教育信息服务",
-                "first_id":8,
-                "second_id":578,
-                "title": "中转页"
-            }
-            ]
-        }`;
+        if(!$first_id && !$second_id){
+            // 补底默认选择第一个
+            $first_id = $category_list[0]["first_id"];
+            $second_id = $category_list[0]["second_id"];
+        }
 
+
+        // https://developers.weixin.qq.com/miniprogram/product/ 提交审核前提醒必须了解相关运营要求，以免产生不必要的损失又来找我们
+        $itemList = ["item_list"=>[
+            [
+                "address"=>"pages/index/index",
+                "tag"=>"文章 阅读",
+                "first_class"=> "教育",
+                "second_class"=> "教育信息服务",
+                "first_id"=>$first_id,
+                "second_id"=>$second_id,
+                "title"=> "首页"
+            ],
+            [
+                "address"=>"pages/jump/index",
+                "tag"=>"跳转 wecontr",
+                "first_class"=> "教育",
+                "second_class"=> "教育信息服务",
+                "first_id"=>$first_id,
+                "second_id"=>$second_id,
+                "title"=> "中转页"
+            ],
+        ]];
+
+        
 
         // dd($miniProgram->code->submitAudit($itemList));
         return view('welcome');
