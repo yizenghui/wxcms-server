@@ -91,7 +91,7 @@ class WxOauthController extends Controller
 
         $version = config('point.mini_program_version');
         $version_desc = config('point.mini_program_version_desc');
-        $ret = $miniProgram->code->commit($template_id, $this->ext_data($app), $version, $version_desc);
+        $ret = $miniProgram->code->commit($template_id, json_encode($this->ext_data($app)), $version, $version_desc);
         if(1){ // todo 提交代码失败
             $app->current_version = $version; //当前提交版本
             $app->save();
