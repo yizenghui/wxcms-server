@@ -62,28 +62,18 @@ class WxOauthController extends Controller
     /**
      * 获取小程序配置参数
      */
-    private function ext_json_string($app){
-        return '{
-            extEnable:true,
-            extAppid:"'.$app->app_id.'",
-            ext:{
-                "api_token":"'.Hashids::encode($app->id,date('Ymd')).'",
-                "app_name":"'.$app->app_name.'",
-                "version":"'.config('point.mini_program_version').'",
-                "base_url":"https://readfollow.com/api/v1",
-            },
-        }';
-        // return [
-        //     "extEnable"=>true,
-        //     "extAppid"=>$app->app_id,
-        //     "directCommit"=>false,
-        //     "ext"=> [
-        //         "api_token"=> Hashids::encode($app->id,date('Ymd')),
-        //         "app_name"=> $app->app_name,
-        //         "version"=> config('point.mini_program_version'),
-        //         "base_url"=> "https://readfollow.com/api/v1"
-        //     ]
-        // ];
+    private function ext_json($app){
+        return [
+            "extEnable"=>true,
+            "extAppid"=>$app->app_id,
+            "directCommit"=>false,
+            "ext"=> [
+                "api_token"=> Hashids::encode($app->id,date('Ymd')),
+                "app_name"=> $app->app_name,
+                "version"=> config('point.mini_program_version'),
+                "base_url"=> "https://readfollow.com/api/v1"
+            ]
+        ];
     }
 
     public function commitCode(Request $request){ // 提交代码
@@ -101,8 +91,10 @@ class WxOauthController extends Controller
 
         $version = config('point.mini_program_version');
         $version_desc = config('point.mini_program_version_desc');
-        $ret = $miniProgram->code->commit($template_id, $this->ext_json_string($app), $version, $version_desc);
-        if(1){ // todo 提交代码失败
+        $ret = $miniProgram->code->commit($template_id, json_encode($this->ext_json($app)), $version, $version_desc);
+        if( !$ret["errcode"] ){
+            return $ret["errmsg"];
+        }else{
             $app->current_version = $version; //当前提交版本
             $app->save();
         }
