@@ -66,7 +66,7 @@ class WxOauthController extends Controller
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
-        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@CMuaHhGhW0T0cKjmFLGvRyrGknttrKA4mXWlnD-45Jk";
+        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@tFhycYDb71RoLJCRRUQMvE2pi151wEJAG6bEfKzF5cM";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $c = $openPlatform->code_template; // 模板
         $l = $c->list(); // 模板列表
@@ -83,7 +83,7 @@ class WxOauthController extends Controller
         // return $ret;
         $qrcode = '/wxoauth/getQrCode?appid='.$appid;
         // 跳转去获取体验版二维码
-        $cate = $miniProgram->code->categories();
+        $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
         return view('commit',compact('qrcode','categories'));
     }
@@ -99,7 +99,7 @@ class WxOauthController extends Controller
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $all_categories = $miniProgram->setting->getAllCategories();
         // todo 检查用户类型及设置相应分类 "errcode":41033 非第三方快速创建的小程序，获取、设置用户帐号私密信息都容易出这个错，暂时无解，以后再尝试解决
-        $cate = $miniProgram->code->categories();
+        $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
         return view('commit',compact('qrcode','categories'));
     }
