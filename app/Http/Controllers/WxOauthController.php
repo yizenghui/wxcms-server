@@ -62,18 +62,28 @@ class WxOauthController extends Controller
     /**
      * 获取小程序配置参数
      */
-    private function ext_data($app){
-        return [
-            "extEnable"=>true,
-            "extAppid"=>"wxa94ddd94358b2d1d",
-            "directCommit"=>false,
-            "ext"=> [
-                "api_token"=> Hashids::encode($app->id,date('Ymd')),
-                "app_name"=> $app->app_name,
-                "version"=> config('point.mini_program_version'),
-                "base_url"=> "https://readfollow.com/api/v1"
-            ]
-        ];
+    private function ext_json_string($app){
+        return '{
+            extEnable:true,
+            extAppid:"'.$app->app_id.'",
+            ext:{
+                "api_token":"'.Hashids::encode($app->id,date('Ymd')).'",
+                "app_name":"'.$app->app_name.'",
+                "version":"'.config('point.mini_program_version').'",
+                "base_url":"https://readfollow.com/api/v1",
+            },
+        }';
+        // return [
+        //     "extEnable"=>true,
+        //     "extAppid"=>$app->app_id,
+        //     "directCommit"=>false,
+        //     "ext"=> [
+        //         "api_token"=> Hashids::encode($app->id,date('Ymd')),
+        //         "app_name"=> $app->app_name,
+        //         "version"=> config('point.mini_program_version'),
+        //         "base_url"=> "https://readfollow.com/api/v1"
+        //     ]
+        // ];
     }
 
     public function commitCode(Request $request){ // 提交代码
@@ -82,7 +92,7 @@ class WxOauthController extends Controller
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
-        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@tFhycYDb71RoLJCRRUQMvE2pi151wEJAG6bEfKzF5cM";
+        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@mDipKwa1XOMderGFqEovsVpMuWmY6u0iAf_Ef9Y0in8";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $c = $openPlatform->code_template; // 模板
         $l = $c->list(); // 模板列表
@@ -91,7 +101,7 @@ class WxOauthController extends Controller
 
         $version = config('point.mini_program_version');
         $version_desc = config('point.mini_program_version_desc');
-        $ret = $miniProgram->code->commit($template_id, json_encode($this->ext_data($app)), $version, $version_desc);
+        $ret = $miniProgram->code->commit($template_id, $this->ext_json_string($app), $version, $version_desc);
         if(1){ // todo 提交代码失败
             $app->current_version = $version; //当前提交版本
             $app->save();
