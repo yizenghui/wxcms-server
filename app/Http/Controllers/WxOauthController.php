@@ -59,6 +59,22 @@ class WxOauthController extends Controller
         ]);
     }
 
+    /**
+     * 获取小程序配置参数
+     */
+    private function ext_data($app){
+        return [
+            "extEnable"=>true,
+            "extAppid"=>"wxa94ddd94358b2d1d",
+            "directCommit"=>false,
+            "ext"=> [
+                "api_token"=> Hashids::encode($app->id,date('Ymd')),
+                "app_name"=> $app->app_name,
+                "version"=> config('point.mini_program_version'),
+                "base_url"=> "https://readfollow.com/api/v1"
+            ]
+        ];
+    }
 
     public function commitCode(Request $request){ // 提交代码
         $appid = $request->get('appid');
@@ -75,7 +91,7 @@ class WxOauthController extends Controller
 
         $version = config('point.mini_program_version');
         $version_desc = config('point.mini_program_version_desc');
-        $ret = $miniProgram->code->commit($template_id,json_encode(['api_token'=>Hashids::encode($app->id,date('Ymd')), 'app_name'=>$app->app_name]), $version, $version_desc);
+        $ret = $miniProgram->code->commit($template_id, $this->ext_data($app), $version, $version_desc);
         if(1){ // todo 提交代码失败
             $app->current_version = $version; //当前提交版本
             $app->save();
