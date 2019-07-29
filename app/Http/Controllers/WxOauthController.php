@@ -69,7 +69,7 @@ class WxOauthController extends Controller
             "directCommit"=>false,
             "ext"=> [
                 "api_token"=> Hashids::encode($app->id,date('Ymd')),
-                "app_name"=> $app->app_name,
+                // "app_name"=> $app->app_name,
                 "version"=> config('point.mini_program_version'),
                 "base_url"=> "https://readfollow.com/api/v1"
             ]
