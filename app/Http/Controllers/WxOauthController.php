@@ -134,11 +134,15 @@ class WxOauthController extends Controller
 
         $first_id = 0;
         $second_id = 0;
+        $first_class = "";
+        $second_class = "";
         // 首次选择 (企业小程序) todo 有空去问问有企业资质的人，这个参数是多少
         foreach ($category_list as $key => $value) {
             if($value["first_id"] == 8 && $value["second_id"] == 578){ // 17 + ?
                 $first_id = 8;
                 $second_id = 578;
+                $first_class = $value["first_class"];
+                $second_class = $value["second_class"];
                 break;
             }
         }
@@ -149,6 +153,8 @@ class WxOauthController extends Controller
                 if($value["first_id"] == 8 && $value["second_id"] == 578){
                     $first_id = 8;
                     $second_id = 578;
+                    $first_class = $value["first_class"];
+                    $second_class = $value["second_class"];
                     break;
                 }
             }
@@ -159,6 +165,8 @@ class WxOauthController extends Controller
             // 补底默认选择第一个
             $first_id = $category_list[0]["first_id"];
             $second_id = $category_list[0]["second_id"];
+            $first_class = $value["first_class"];
+            $second_class = $value["second_class"];
         }
 
 
@@ -167,8 +175,8 @@ class WxOauthController extends Controller
             [
                 "address"=>"pages/index/index",
                 "tag"=>"文章 阅读",
-                "first_class"=> "教育",
-                "second_class"=> "教育信息服务",
+                "first_class"=>  $first_class,
+                "second_class"=> $second_class,
                 "first_id"=>$first_id,
                 "second_id"=>$second_id,
                 "title"=> "首页"
@@ -176,18 +184,16 @@ class WxOauthController extends Controller
             [
                 "address"=>"pages/jump/index",
                 "tag"=>"跳转 wecontr",
-                "first_class"=> "教育",
-                "second_class"=> "教育信息服务",
+                "first_class"=>  $first_class,
+                "second_class"=> $second_class,
                 "first_id"=>$first_id,
                 "second_id"=>$second_id,
                 "title"=> "中转页"
             ],
         ]];
-
         
-
-        // dd($miniProgram->code->submitAudit($itemList));
-        return view('welcome');
+        $miniProgram->code->submitAudit($itemList); // submitAudit
+        return view('audit');
     }
 
     public function releaseCode(Request $request){
