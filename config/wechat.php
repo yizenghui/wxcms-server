@@ -22,7 +22,7 @@ return [
         /*
          * 使用 Laravel 的缓存系统
          */
-        'use_laravel_cache' => false,
+        'use_laravel_cache' => true,
 
         /*
          * 日志配置
