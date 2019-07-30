@@ -26,14 +26,14 @@
 				企业小程序请添加类目  文娱 > 资讯 <br>
 				个人小程序请添加类目  教育 > 教育信息服务 <br>
 			</p>
-			$endif
+			@endif
 			@if(!empty($categories))
 				@foreach($categories as $k=>$v)
 				<p>
-					{{$v["first_class"]}} > {{$v["second_class"]}} @if($k == 0) (选中) $endif
+					{{$v["first_class"]}} > {{$v["second_class"]}} @if($k == 0) (选中) @endif
 				</p>
-				$endforeach
-			$endif
+				@endforeach
+			@endif
 			<p class="description">系统会选择第一个类目提交，如果有多个类目，请删除多余的（请根据您的使用情况选择合适的类目，WeContr不承担因类目内容不符合造成的任何损失）</p>
 			<a class="button" href="/wxoauth/submitAudit?appid={{$app->id}}" >提交审核</a>
 
