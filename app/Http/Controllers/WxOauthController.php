@@ -68,8 +68,12 @@ class WxOauthController extends Controller
             "extAppid"=>$app->app_id,
             "directCommit"=>false,
             "ext"=> [
+<<<<<<< HEAD
                 "api_token"=> Hashids::encode($app->id,date('Ymd')),
                 // "app_name"=> $app->app_name,
+=======
+                "api_token"=> Hashids::encode($app->appid,date('Ymd')),
+>>>>>>> b11d16f05de723dcec8d5163403c06be62ff7264
                 "version"=> config('point.mini_program_version'),
                 "base_url"=> "https://readfollow.com/api/v1"
             ]
@@ -97,6 +101,14 @@ class WxOauthController extends Controller
         }else{
             $app->current_version = $version; //当前提交版本
             $app->save();
+
+            $miniProgram->domain->modify([
+                "action"=>"add",
+                "requestdomain"=>["https://readfollow.com"],
+                "wsrequestdomain"=>["wss://readfollow.com"],
+                "uploaddomain"=>["https://readfollow.com"],
+                "downloaddomain"=>["https://readfollow.com","https://wx1.wechatrank.com"],
+            ]);
         }
         // return $ret;
         $qrcode = '/wxoauth/getQrCode?appid='.$appid;
@@ -113,10 +125,11 @@ class WxOauthController extends Controller
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
-        // $app_id = "wxa94ddd94358b2d1d";$refresh_token = "refreshtoken@@@CMuaHhGhW0T0cKjmFLGvRyrGknttrKA4mXWlnD-45Jk";
+        // $app_id = "wx151b74959f898c5b";$refresh_token = "refreshtoken@@@dYoCRoBAdCk9Y90RQNRvvs9v0n6KWIc5KaqvJ8d06sA";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $all_categories = $miniProgram->setting->getAllCategories();
         // todo 检查用户类型及设置相应分类 "errcode":41033 非第三方快速创建的小程序，获取、设置用户帐号私密信息都容易出这个错，暂时无解，以后再尝试解决
+        $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
         return view('commit',compact('qrcode','categories'));
