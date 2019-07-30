@@ -56,12 +56,13 @@ class WxOauthController extends Controller
         $last_audit = $code->getLatestAuditStatus();
         $audit_status = '审核成功'; $audit_reason = '';
         if($last_audit['errcode']){
-            $audit_status = '错误码：'.$last_audit['errcode'];
+            // $audit_status = '错误码：'.$last_audit['errcode'];
+            $audit_status = '未知';
         }else{
             // 0为审核成功，1为审核失败，2为审核中，3已撤回
             $audit_arr = [0=>'审核成功', 1=>'为审核失败', 2=>'为审核中', 3=>'已撤回'];
-            $audit_status = $audit_arr[$last_audit['sattus']];
-            if($last_audit['sattus']==1) $audit_reason = $last_audit['audit_reason'];
+            $audit_status = $audit_arr[$last_audit['status']];
+            if($last_audit['status']==1) $audit_reason = $last_audit['audit_reason'];
         }
 
         return view('code',[
@@ -240,7 +241,7 @@ class WxOauthController extends Controller
         
         Log::useFiles( storage_path('logs/submit_audit/'.$app->id.'.log') );
         
-        Log::info(var_export($ret));
+        Log::info(var_export($ret,true));
 
         if($ret['errcode']){
             return  $ret['errmsg'];
