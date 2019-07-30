@@ -35,6 +35,8 @@
 
 			<a class="button" href="/wxoauth/submitAudit?appid={{$app->id}}" >提交审核</a>
 			<br>
+			审核状态：{{$audit_status}}
+			<br>{{$audit_reason}}<br>
 
 			<a class="button" href="/wxoauth/releaseCode?appid={{$app->id}}" >发布代码(全量)</a>
 			<br>
