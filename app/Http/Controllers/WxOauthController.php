@@ -47,14 +47,15 @@ class WxOauthController extends Controller
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $appid = $request->get('appid');
         $app = App::find(intval($appid));
-        // $app = App::find(1);
+        // $app = \App\Models\App::find(1);
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
         $code =  $miniProgram->code; // 代码管理
         $last_audit = $code->getLatestAuditStatus();
-        $audit_status = '审核成功'; $audit_reason = '';
+        $audit_status = '审核成功'; 
+        $audit_reason = '';
         if($last_audit['errcode']){
             // $audit_status = '错误码：'.$last_audit['errcode'];
             $audit_status = '未知';
@@ -62,7 +63,7 @@ class WxOauthController extends Controller
             // 0为审核成功，1为审核失败，2为审核中，3已撤回
             $audit_arr = [0=>'审核成功', 1=>'为审核失败', 2=>'为审核中', 3=>'已撤回'];
             $audit_status = $audit_arr[$last_audit['status']];
-            if($last_audit['status']==1) $audit_reason = $last_audit['audit_reason'];
+            if($last_audit['status']==1) $audit_reason = $last_audit['reason'];
         }
 
         return view('code',[
