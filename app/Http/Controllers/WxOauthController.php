@@ -110,7 +110,7 @@ class WxOauthController extends Controller
         // 跳转去获取体验版二维码
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
-        return view('commit',compact('qrcode','categories'));
+        return view('commit',compact('qrcode','categories','app'));
     }
 
     // 为客户设置分类(暂不支持)
