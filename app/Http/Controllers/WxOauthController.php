@@ -37,7 +37,7 @@ class WxOauthController extends Controller
             $app->refresh_token = $refresh_token;
             //记录refresh_token到数据库
             $app->save();
-            return redirect('wxoauth/commitCode?appid='.$app->id);
+            return redirect('wxoauth/code?appid='.$app->id);
         }else{ // 不正常的
             return "出错了，无法匹配到相应的AppID";
         }
