@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\App;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Log;
+
 class WxOauthController extends Controller
 {
 
@@ -45,16 +47,32 @@ class WxOauthController extends Controller
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         $appid = $request->get('appid');
         $app = App::find(intval($appid));
+        // $app = \App\Models\App::find(1);
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
-        // $code =  $miniProgram->code; // 代码管理
+        $code =  $miniProgram->code; // 代码管理
+        $last_audit = $code->getLatestAuditStatus();
+        $audit_status = '审核成功'; 
+        $audit_reason = '';
+        if($last_audit['errcode']){
+            // $audit_status = '错误码：'.$last_audit['errcode'];
+            $audit_status = '未知';
+        }else{
+            // 0为审核成功，1为审核失败，2为审核中，3已撤回
+            $audit_arr = [0=>'审核成功', 1=>'为审核失败', 2=>'为审核中', 3=>'已撤回'];
+            $audit_status = $audit_arr[$last_audit['status']];
+            if($last_audit['status']==1) $audit_reason = $last_audit['reason'];
+        }
+
         return view('code',[
             'app'=>$app,
             'qrcode'=> '/wxoauth/getQrCode?appid='.$appid,
             'release_version'=>$app->release_version, //发布版本
             'current_version'=>$app->current_version, //用户提供体验版本
+            'audit_status'=>$audit_status,
+            'audit_reason'=>$audit_reason,
             'master_version' =>config('point.mini_program_version'), //当前主版本
         ]);
     }
@@ -111,7 +129,7 @@ class WxOauthController extends Controller
         // 跳转去获取体验版二维码
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
-        return view('commit',compact('qrcode','categories'));
+        return view('commit',compact('qrcode','categories','app'));
     }
 
     // 为客户设置分类(暂不支持)
@@ -192,13 +210,13 @@ class WxOauthController extends Controller
             // 补底默认选择第一个
             $first_id = $category_list[0]["first_id"];
             $second_id = $category_list[0]["second_id"];
-            $first_class = $value["first_class"];
-            $second_class = $value["second_class"];
+            $first_class = $category_list[0]["first_class"];
+            $second_class = $category_list[0]["second_class"];
         }
 
 
         // https://developers.weixin.qq.com/miniprogram/product/ 提交审核前提醒必须了解相关运营要求，以免产生不必要的损失又来找我们
-        $itemList = ["item_list"=>[
+        $itemList = [
             [
                 "address"=>"pages/index/index",
                 "tag"=>"文章 阅读",
@@ -217,9 +235,20 @@ class WxOauthController extends Controller
                 "second_id"=>$second_id,
                 "title"=> "中转页"
             ],
-        ]];
+        ];
         
-        $miniProgram->code->submitAudit($itemList); // submitAudit
+        $ret = $miniProgram->code->submitAudit($itemList); // submitAudit
+
+
+        
+        Log::useFiles( storage_path('logs/submit_audit/'.$app->id.'.log') );
+        
+        Log::info(var_export($ret,true));
+
+        if($ret['errcode']){
+            return  $ret['errmsg'];
+        }
+
         return view('audit');
     }
 
