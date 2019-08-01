@@ -17,18 +17,23 @@
 			<p class="description">请求获取授权，为您代发布小程序代码。</p>
 			
 			<p>
-				授权前请先完成以后设置
+				授权前请先完成以下操作
 				<ol>
 				<li>已成功注册小程序</li>
-				<li>已设置服务类目</li>
+				<li>已设置相关服务类目(企业设置“文娱 》 资讯”, 个人设置“教育 》 教育信息服务”)</li>
 				</ol>
 			</p>
 			
 			<p>
 				操作流程说明
 				<ol>
-				<li>登录后台设置小程序相关信息<a target="_blank" href="https://readfollow.com/admin/auth/setting#tab-form-2">立即设置</a></li>
-				<li>已设置服务类目</li>
+				<li>登录后台设置小程序相关信息<a target="_blank" href="https://readfollow.com/admin/auth/setting#tab-form-2">立即设置AppID和AppSecret</a></li>
+				<li>点击“前往微信公众号平台授权”授权WeContr管理您的应用</li>
+				<li>提交您的代码</li>
+				<li>在后台添加基础数据</li>
+				<li>扫描二维码体验小程序</li>
+				<li>提交审核</li>
+				<li>发布小程序</li>
 				</ol>
 			</p>
 			<p>
@@ -38,7 +43,7 @@
 			</p>
 
 			<p>
-				如有疑问，请咨询客服QQ：121258121(在线时间9:00~23:00)
+				如有疑问，请咨询客服QQ：121258121(在线时间14:00~22:00)
 			</p>
 		</section>
     </body>

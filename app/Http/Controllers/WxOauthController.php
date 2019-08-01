@@ -35,16 +35,18 @@ class WxOauthController extends Controller
             $app->refresh_token = $refresh_token;
             //记录refresh_token到数据库
             $app->save();
-            return redirect('wxoauth/code?appid='.$app->id);
+            return redirect('wxoauth/code?appid='.$app->tid);
         }else{ // 不正常的
             return "出错了，无法匹配到相应的AppID";
         }
     }
 
     public function code(Request $request){
+        $tid = $request->get('appid');
+        $data = Hashids::decode($tid);
+        $appid = $data[0];
+        $app = App::where('id','=',$appid)->firstOrFail();
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
-        $appid = $request->get('appid');
-        $app = App::find(intval($appid));
         // $app = \App\Models\App::find(1);
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
@@ -93,8 +95,11 @@ class WxOauthController extends Controller
     }
 
     public function commitCode(Request $request){ // 提交代码
-        $appid = $request->get('appid');
-        $app = App::find(intval($appid));
+      
+        $tid = $request->get('appid');
+        $data = Hashids::decode($tid);
+        $appid = $data[0];
+        $app = App::where('id','=',$appid)->firstOrFail();
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
@@ -123,7 +128,7 @@ class WxOauthController extends Controller
             ]);
         }
         // return $ret;
-        $qrcode = '/wxoauth/getQrCode?appid='.$appid;
+        $qrcode = '/wxoauth/getQrCode?appid='.$tid;
         // 跳转去获取体验版二维码
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
@@ -149,8 +154,11 @@ class WxOauthController extends Controller
 
     // 获取体验二维码
     public function getQrCode(Request $request){
-        $appid = $request->get('appid');
-        $app = App::find(intval($appid));
+        
+        $tid = $request->get('appid');
+        $data = Hashids::decode($tid);
+        $appid = $data[0];
+        $app = App::where('id','=',$appid)->firstOrFail();
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return 'falt'; //没有app_id或refresh_token
@@ -164,8 +172,11 @@ class WxOauthController extends Controller
         // $first_id = $request->get("first_id");
         // $second_id = $request->get("second_id");
 
-        $appid = $request->get('appid');
-        $app = App::find(intval($appid));
+        
+        $tid = $request->get('appid');
+        $data = Hashids::decode($tid);
+        $appid = $data[0];
+        $app = App::where('id','=',$appid)->firstOrFail();
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
@@ -251,11 +262,10 @@ class WxOauthController extends Controller
     }
 
     public function releaseCode(Request $request){
-        // $first_id = $request->get("first_id");
-        // $second_id = $request->get("second_id");
-
-        $appid = $request->get('appid');
-        $app = App::find(intval($appid));
+        $tid = $request->get('appid');
+        $data = Hashids::decode($tid);
+        $appid = $data[0];
+        $app = App::where('id','=',$appid)->firstOrFail();
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权

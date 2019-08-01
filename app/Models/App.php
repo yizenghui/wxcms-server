@@ -22,4 +22,10 @@ class App extends Model
         }
         return false;
     }
+
+    // 加密的apps表的id 
+    public function getTidAttribute()
+    {
+        return Hashids::encode( $this->id,date('Ymd'));
+    }
 }

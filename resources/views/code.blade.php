@@ -30,19 +30,19 @@
 			@if($master_version != $current_version)
 
 			@endif
-			<a class="button" href="/wxoauth/commitCode?appid={{$app->id}}" >提交代码</a>
+			<a class="button" href="/wxoauth/commitCode?appid={{$app->tid}}" >提交代码</a>
 			<br>
 
-			<a class="button" href="/wxoauth/submitAudit?appid={{$app->id}}" >提交审核</a>
+			<a class="button" href="/wxoauth/submitAudit?appid={{$app->tid}}" >提交审核</a>
 			<br>
 			审核状态：{{$audit_status}}
 			<br>{{$audit_reason}}<br>
 
-			<a class="button" href="/wxoauth/releaseCode?appid={{$app->id}}" >发布代码(全量)</a>
+			<a class="button" href="/wxoauth/releaseCode?appid={{$app->tid}}" >发布代码(全量)</a>
 			<br>
 
 			<p>
-				如有疑问，请咨询客服QQ：121258121(在线时间9:00~23:00)
+				如有疑问，请咨询客服QQ：121258121(在线时间14:00~22:00)
 			</p>
 		</section>
     </body>

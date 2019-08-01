@@ -21,7 +21,7 @@
 			<p>
 				请联系客服索取帐号密码
 			</p>
-			<p>客服QQ：121258121(在线时间9:00~23:00)</p>
+			<p>客服QQ：121258121(在线时间14:00~22:00)</p>
 
 			<p> 演示小程序 <br> <img style="width:180px;" src="https://github.com/yizenghui/wxcms/raw/master/screenshot/case1.png" /> </p>
 			<p> 测试小程序 <br> <img style="width:180px;" src="https://github.com/yizenghui/wxcms/raw/master/screenshot/wxcmsdemo.jpg" /> </p>
