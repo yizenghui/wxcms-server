@@ -21,6 +21,7 @@ Route::group([
     $router->resource('fan', FanController::class);
     $router->resource('boss', BossController::class);
     $router->resource('ad', AdController::class);
+    $router->resource('app', AppController::class);
     $router->resource('carousel', CarouselController::class);
     $router->resource('share', ShareController::class);
     $router->resource('visitor', VisitorController::class);

@@ -32,6 +32,8 @@ class CreateAppsTable extends Migration
             $table->float('point_score_ratio')->comment('积分比值(小程序展示积分实值比)')->nullable();
             $table->string('point_score_type')->comment('积分类型(小程序展示积分标题)')->nullable();
             $table->string('default_search')->comment('默认搜索值')->nullable();
+            $table->string('jump_adpage')->comment('分享图跳转广告页地址')->nullable();
+            $table->string('jump_background')->comment('分享图跳转广告页背景')->nullable();
             $table->integer('index_share_id')->comment('首页分享策略')->default(0);
             $table->integer('topic_share_id')->comment('专题首页分享策略')->default(0);
             $table->integer('quota')->comment('周期额度量')->default(0);
@@ -66,6 +68,10 @@ class CreateAppsTable extends Migration
             $table->integer('point_day_fansign_action')->comment('受邀用户签到')->default(2);
             $table->integer('point_day_fansign_num')->comment('一天可以获得300次邀请新人签到积分')->default(300);
             $table->boolean('point_day_team_double_enabled')->comment('组队双倍积分功能是否开启')->default(0);
+
+            $table->integer('vip_status')->comment('vip状态')->default(0);
+            $table->timestamp('vip_deadline',0)->comment('vip截止时间')->nullable();
+            $table->boolean('secret_locking')->comment('锁定小程序密令不给更改')->default(0);
             $table->timestamps();
         });
     }

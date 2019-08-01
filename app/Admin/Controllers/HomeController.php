@@ -8,6 +8,7 @@ use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\InfoBox;
+use Encore\Admin\Widgets\Box;
 use App\Models\Fan;
 use App\Models\Order;
 use App\Models\Article;
@@ -22,6 +23,15 @@ class HomeController extends Controller
     {
         $content->header('Info box');
         $content->description('Description...');
+
+        $app = Admin::user()->app;
+        $vip_status_arr = [0=>'普通用户',1=>'体验VIP用户',2=>'免费VIP用户',30=>'月度VIP',90=>'季度VIP',365=>'包年VIP',999=>'合作伙伴'];
+
+        if($app->isvip){
+            $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好', '您的会员截止时间为'.$app->vip_deadline));
+        }else{
+            $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好','如需开通VIP会员请与我们联系。售后微信：wecontr'));
+        }
 
         $content->row(function ($row) {
             $fan_count = Fan::where('appid', '=', Admin::user()->id)->count();

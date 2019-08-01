@@ -14,15 +14,28 @@
     <body>
 		<section class="container" style="padding-top:50px;" >
 			<h3 class="title">WeContr</h3>
-			<p class="description">小程序代码提交审核成功</p>
+			<p class="description">请求获取授权，为您代发布小程序代码。</p>
 			
 			<p>
-				小程序已提交审核，请耐心等待！
+				授权前请先完成以后设置
+				<ol>
+				<li>已成功注册小程序</li>
+				<li>已设置服务类目</li>
+				</ol>
+			</p>
+			
+			<p>
+				操作流程说明
+				<ol>
+				<li>登录后台设置小程序相关信息<a target="_blank" href="https://readfollow.com/admin/auth/setting#tab-form-2">立即设置</a></li>
+				<li>已设置服务类目</li>
+				</ol>
+			</p>
+			<p>
+				<a class="button" href="{{$url}}">前往微信公众号平台授权</a>
 				<br>
 				多谢您的使用
 			</p>
-			
-			<p class="description">提交审核后，由微信官方团队进行审核，审核通过后可进行发布。</p>
 
 			<p>
 				如有疑问，请咨询客服QQ：121258121(在线时间9:00~23:00)

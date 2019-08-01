@@ -14,15 +14,14 @@
     <body>
 		<section class="container" style="padding-top:50px;" >
 			<h3 class="title">WeContr</h3>
-			<p class="description">小程序代码提交审核成功</p>
+			<p class="description">小程序代码发布成功</p>
 			
 			<p>
-				小程序已提交审核，请耐心等待！
+				小程序已提交发布成功！
 				<br>
 				多谢您的使用
 			</p>
 			
-			<p class="description">提交审核后，由微信官方团队进行审核，审核通过后可进行发布。</p>
 
 			<p>
 				如有疑问，请咨询客服QQ：121258121(在线时间9:00~23:00)

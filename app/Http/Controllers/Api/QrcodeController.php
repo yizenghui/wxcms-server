@@ -25,11 +25,21 @@ class QrcodeController extends Controller
     $fromid = $data[1];
     $articleid = $data[2];
 
+    $app = ( new \App\Repositories\AppRepository($appid) )->getminiapp();
+
+
+    $adpage = '/pages/index/index?fromid='.$fromid;
+
+    if($app['jump_adpage']){
+      $adpage = strtr($app['jump_adpage'],['{$fromid}'=>$fromid]);
+    }
+
+    $adpagebackground = $app['jump_background']?$app['jump_background']:'https://wx1.wechatrank.com/base64img/20190528131816.jpeg';
 
     $ret = [
-      'adpage'  => '/pages/index/index?fromid='.$fromid,
+      'adpage'  => $adpage,
       'page'  => '/pages/index/index?fromid='.$fromid,
-      'background'=>'https://wx1.wechatrank.com/base64img/20190528131816.jpeg',
+      'background'=> $adpagebackground,
     ];
 
     if($articleid){

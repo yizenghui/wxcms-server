@@ -17,14 +17,12 @@ class WxOauthController extends Controller
 
     
     public function authorization(){
-        $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+        // $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         // $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
 
-        $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
-
-        // return redirect($url);
-        // authorization
-        return "操作流程提醒+<a href='$url'>前往微信公众号平台授权</a>";
+        //  $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
+            $url = 'xx';
+        return view( 'authorization', compact('url') );
     }
 
     public function callback(){ // 前往微信公众号平台授权跳回来这里了
@@ -265,7 +263,10 @@ class WxOauthController extends Controller
 
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token); //小程序
         
-        // dd($miniProgram->code->release());
-        return view('welcome');
+        $ret = $miniProgram->code->release();
+        if( $ret["errcode"] ){
+            return $ret["errmsg"];
+        }
+        return view('release');
     }
 }
