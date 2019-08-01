@@ -17,11 +17,11 @@ class WxOauthController extends Controller
 
     
     public function authorization(){
-        // $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+        $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
         // $openPlatform = Factory::openPlatform(config('wechat.open_platform'));
 
-        //  $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
-            $url = 'xx';
+         $url = $openPlatform->getPreAuthorizationUrl('https://readfollow.com/wxoauth/callback');
+            // $url = 'xx';
         return view( 'authorization', compact('url') );
     }
 
