@@ -25,9 +25,10 @@ class AuthController extends BaseAuthController
 
         $form->ignore(['app.vip_status','app.vip_deadline']);
 
-        if(Admin::user()->app->secret_locking) $form->ignore(['app.vip_status','app.vip_deadline', 'app.app_id', 'app.app_secret']);
+        $app = Admin::user()->app;
+        if($app && $app->secret_locking) $form->ignore(['app.app_id', 'app.app_secret']);
 
-        $form =  Admin::user()->app->isvip ? $this->vipForm($form) : $this->generalForm($form);
+        $form =  $app && $app->isvip ? $this->vipForm($form) : $this->generalForm($form);
         
         // 如果锁定密令，不再给修改 app的app_id和app_secret
 

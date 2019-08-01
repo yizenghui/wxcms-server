@@ -27,10 +27,14 @@ class HomeController extends Controller
         $app = Admin::user()->app;
         $vip_status_arr = [0=>'普通用户',1=>'体验VIP用户',2=>'免费VIP用户',30=>'月度VIP',90=>'季度VIP',365=>'包年VIP',999=>'合作伙伴'];
 
-        if($app->isvip){
-            $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好', '您的会员截止时间为'.$app->vip_deadline));
+        if($app){
+            if($app->isvip){
+                $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好', '您的会员截止时间为'.$app->vip_deadline));
+            }else{
+                $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好','如需开通VIP会员请与我们联系。售后微信：wecontr'));
+            }
         }else{
-            $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好','如需开通VIP会员请与我们联系。售后微信：wecontr'));
+            $content->body(new Box('接入提醒', '尊敬的用户您好，请先完成小程序配置！<a href="/admin/auth/setting#tab-form-2">前往设置</a>'));
         }
 
         $content->row(function ($row) {
