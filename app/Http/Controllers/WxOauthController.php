@@ -68,7 +68,7 @@ class WxOauthController extends Controller
 
         return view('code',[
             'app'=>$app,
-            'qrcode'=> '/wxoauth/getQrCode?appid='.$appid,
+            'qrcode'=> '/wxoauth/getQrCode?appid='.$tid,
             'release_version'=>$app->release_version, //发布版本
             'current_version'=>$app->current_version, //用户提供体验版本
             'audit_status'=>$audit_status,
