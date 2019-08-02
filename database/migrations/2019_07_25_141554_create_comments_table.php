@@ -22,10 +22,10 @@ class CreateCommentsTable extends Migration
             $table->string('commented_type')->nullable(); // 暂定用户
             $table->index(['commented_id', 'commented_type']);
             $table->longText('comment'); // 评论正文
-            $table->unsignedInteger('rank'); // 认可热度排序 用户的评论，别人可以支持或者反对
+            $table->integer('rank'); // 认可热度排序 用户的评论，别人可以支持或者反对
             $table->integer('reply_id');  // 回复id，如果有引用别人的话咯
             $table->tinyInteger('status'); // 0是未经过审核的 1是审核通过的 -1是审核不通过的
-            $table->timestamp('check_at'); // 审核时间
+            $table->timestamp('moderated_at')->nullable(); // 审核时间
             $table->timestamps();
             $table->softDeletes();
         });
