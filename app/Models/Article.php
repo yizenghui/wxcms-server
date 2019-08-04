@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Overtrue\LaravelFollow\Traits\CanBeLiked;
 use Overtrue\LaravelFollow\Traits\CanBeFavorited;
@@ -10,8 +11,9 @@ use Overtrue\LaravelFollow\Traits\CanBeVoted;
 use Overtrue\LaravelFollow\Traits\CanBeBookmarked;
 use Overtrue\LaravelFollow\Traits\CanBeSubscribed;
 use Laravel\Scout\Searchable;
+use App\Contracts\Commentable;
 
-class Article extends Model
+class Article extends Model implements Commentable 
 {
     use CanBeLiked, CanBeFavorited, CanBeVoted, CanBeBookmarked, CanBeSubscribed;
     use SoftDeletes;
@@ -59,4 +61,24 @@ class Article extends Model
 
         return $array;
     }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function primaryId(): string
+    {
+        return (string)$this->getAttribute($this->primaryKey);
+    }
+
+    public function totalCommentsCount(): int
+    {
+        if (0) {
+            return $this->comments()->count();
+        }
+
+        return $this->comments()->approvedComments()->count();
+    }
+
 }

@@ -81,6 +81,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
         
         Route::get('/poster/article/{id}','PosterController@article');
         
+        //评论
+        Route::get('/article/{commentable_id}/comments','CommentController@article');
+        Route::post('/article/{commentable_id}/comments','CommentController@postArticle');
+        
+        Route::get('/comments/{id}/like','CommentController@like');
+        Route::get('/comments/{id}/unlike','CommentController@unlike');
+        Route::get('/comments/{id}/cancelVote','CommentController@cancelVote'); //取消投票
+        Route::get('/comments/{id}/upvote','CommentController@upvote'); //投票赞同
+        Route::get('/comments/{id}/downvote','CommentController@downvote'); //投票否定
         
         Route::get('/team/create','TeamController@create');
         Route::get('/team/show','TeamController@show');

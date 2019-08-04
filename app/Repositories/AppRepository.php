@@ -72,6 +72,7 @@ class AppRepository {
         $config = [
         'app_id' => $app->app_id,
         'secret' => $app->app_secret,
+        'refresh_token' => $app->refresh_token,
         'follow_status' => $app->follow_status, // 关注组件状态
         'reward_adid' => $app->reward_adid,
         'banner_adid' => $app->banner_adid,

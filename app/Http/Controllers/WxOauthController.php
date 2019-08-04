@@ -144,9 +144,9 @@ class WxOauthController extends Controller
         if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
         // $app_id = "wx151b74959f898c5b";$refresh_token = "refreshtoken@@@dYoCRoBAdCk9Y90RQNRvvs9v0n6KWIc5KaqvJ8d06sA";
         $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
-        $all_categories = $miniProgram->setting->getAllCategories();
         // todo 检查用户类型及设置相应分类 "errcode":41033 非第三方快速创建的小程序，获取、设置用户帐号私密信息都容易出这个错，暂时无解，以后再尝试解决
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
+        $all_categories = $miniProgram->setting->getAllCategories();
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
         return view('commit',compact('qrcode','categories'));

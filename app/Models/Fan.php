@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,7 @@ use Overtrue\LaravelFollow\Traits\CanSubscribe;
 use Overtrue\LaravelFollow\Traits\CanVote;
 use Overtrue\LaravelFollow\Traits\CanBookmark;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Contracts\Commentable;
 
 class Fan extends Authenticatable implements JWTSubject
 {
@@ -162,5 +164,41 @@ class Fan extends Authenticatable implements JWTSubject
     public function fromuser()
     {
         return $this->belongsTo(Fan::class,'fromid');
+    }
+
+
+    /**评论功能 */
+    public function comment(Commentable $commentable, string $commentText = '', int $reply_id = 0): Comment
+    {
+        $comment = new Comment([
+            'comment'        => $commentText,
+            'approve'       => 0,  // 默认未审核
+            'rank'       => 0,      // 默认没有排序参数
+            'reply_id'       => $reply_id, // 引用回复评论
+            'commented_id'   => $this->primaryId(),
+            'commented_type' => get_class(),
+        ]);
+        $commentable->comments()->save($comment);
+        return $comment;
+    }
+
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commented');
+    }
+
+    public function hasCommentsOn(Comment $commentable): bool
+    {
+        return $this->comments()
+            ->where([
+                'commentable_id'   => $commentable->primaryId(),
+                'commentable_type' => get_class($commentable),
+            ])
+            ->exists();
+    }
+
+    private function primaryId(): string
+    {
+        return (string)$this->getAttribute($this->primaryKey);
     }
 }

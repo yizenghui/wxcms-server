@@ -79,7 +79,14 @@ class AuthController extends Controller
             ],
         ],
       ];
-      $app = Factory::miniProgram($appconfig);
+      
+      if($appconfig['secret']){ //如果没有 secret 尝试使用 refresh_token
+        $app = Factory::miniProgram($appconfig);
+      }else{
+        $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+        $app = $openPlatform->miniProgram($config['app_id'], $config['refresh_token']);
+      }
+    
       $ret = $app->auth->session($request->get('code'));
     // }
 
@@ -205,7 +212,12 @@ class AuthController extends Controller
         ],
       ],
     ];
-    $app = Factory::miniProgram($appconfig);
+    if($appconfig['secret']){ //如果没有 secret 尝试使用 refresh_token
+      $app = Factory::miniProgram($appconfig);
+    }else{
+      $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+      $app = $openPlatform->miniProgram($config['app_id'], $config['refresh_token']);
+    }
     $user = $request->user();
     $decryptedData = $app->encryptor->decryptData($user->session_key, $request->post('iv'), $request->post('ed'));
     $user->name = $decryptedData['nickName'];   

@@ -97,8 +97,8 @@ class AuthController extends BaseAuthController
             // $form->display('app.total_point', '总使用额度')->help('每日更新统计');
 
             $form->text('app.app_name', '应用名称')->rules('required');
-            $form->text('app.app_id', 'AppID');
-            $form->text('app.app_secret', 'AppSecret');
+            $form->text('app.app_id', 'AppID')->help('AppID(小程序ID) 可在<a target="_blank" href="https://mp.weixin.qq.com/">微信公众平台小程序管理后台</a>，开发设置处获得。');
+            $form->text('app.app_secret', 'AppSecret')->help('AppSecret(小程序密钥)	获取方法同上。 填写AppSecret有助于提供小程序接口调用的稳定性，建议填写。');
 
             $form->text('app.reward_adid', '激励式视频广告ID')->help('签到激励视频ID，由浏量主后台获得');
             $form->text('app.banner_adid', 'banner广告ID')->help('banner广告ID，由浏量主后台获得');

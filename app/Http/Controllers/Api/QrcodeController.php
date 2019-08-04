@@ -48,11 +48,18 @@ class QrcodeController extends Controller
     
     return response()->json( $ret );
   }
+  
   public function article($token, Request $request){
     $data = Hashids::decode($token);
     $appid = $data[0];
-    $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();
-    $app = Factory::miniProgram($config);
+    $config = ( new \App\Repositories\AppRepository($appid) )->getconfig();    
+    if( $config['secret'] ){ //如果没有 secret 尝试使用 refresh_token
+      $app = Factory::miniProgram($config);
+    }else{
+      $openPlatform = \EasyWeChat::openPlatform(); // 开放平台
+      $app = $openPlatform->miniProgram($config['app_id'], $config['refresh_token']);
+    }
+
     $response = $app->app_code->getUnlimit($token, [
       'page'  => 'pages/jump/index',
       'width' => 160,
