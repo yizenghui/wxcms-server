@@ -25,5 +25,6 @@ Route::group([
     $router->resource('carousel', CarouselController::class);
     $router->resource('share', ShareController::class);
     $router->resource('visitor', VisitorController::class);
+    $router->resource('comment', CommentController::class);
 
 });

@@ -171,7 +171,8 @@ class Fan extends Authenticatable implements JWTSubject
     public function comment(Commentable $commentable, string $commentText = '', int $reply_id = 0): Comment
     {
         $comment = new Comment([
-            'comment'        => $commentText,
+            'comment'       => $commentText,
+            'appid'         =>$this->appid, //appid需要
             'approve'       => 0,  // 默认未审核
             'rank'       => 0,      // 默认没有排序参数
             'reply_id'       => $reply_id, // 引用回复评论

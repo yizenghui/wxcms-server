@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Overtrue\LaravelFollow\Traits\CanBeLiked;
 use Overtrue\LaravelFollow\Traits\CanBeVoted;
+use Illuminate\Database\Eloquent\Builder;
 
 class Comment extends Model
 {
@@ -14,7 +15,7 @@ class Comment extends Model
     use CanBeLiked,CanBeVoted;
 
     protected $fillable = [
-        'comment','approve','rank','reply_id','commented_id','commented_type','commentable_id','commentable_type',
+        'comment','approve','rank','reply_id','appid','commented_id','commented_type','commentable_id','commentable_type',
     ];
 
     use SoftDeletes;

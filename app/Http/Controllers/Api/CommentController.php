@@ -30,7 +30,13 @@ class CommentController extends Controller
         $article = Article::findOrFail($commentable_id);
         $sort = $request->get('sort');
         $sort = $sort == 'rank'?'rank':'id';
-        $data = $article->comments()->orderBy($sort,'desc')->with('commented')->simplePaginate(10);
+        if($article->comment_status ==0){
+            return response()->json([]);
+        }else if( $article->comment_status == 2 || $article->comment_status == 4 ){
+            $data = $article->comments()->ApprovedComments()->orderBy($sort,'desc')->with('commented')->simplePaginate(10);
+        }else{
+            $data = $article->comments()->orderBy($sort,'desc')->with('commented')->simplePaginate(10);
+        }
         $comments = CommentResource::collection($data);
         return response()->json($comments);
     }

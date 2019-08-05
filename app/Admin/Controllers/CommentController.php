@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Admin;
 
 class CommentController extends Controller
 {
@@ -80,11 +81,20 @@ class CommentController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Comment);
-
-        $grid->id('ID');
+        $grid->model()->with('commented','commentable');
+        
+        $grid->id('ID')->sortable();
+        $grid->commented()->name('用户');
+        $grid->model()->where('appid', '=', Admin::user()->id);
+        
+        $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
+        $grid->approve('状态')->select($approve_arr);
+        $grid->comment('评论');
+        $grid->commentable()->title('文章');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
+        $grid->disableCreateButton();
         return $grid;
     }
 
@@ -114,9 +124,16 @@ class CommentController extends Controller
     {
         $form = new Form(new Comment);
 
-        $form->display('ID');
-        $form->display('Created at');
-        $form->display('Updated at');
+        $form->display('id','ID');
+        
+        $form->display('commentable.title','标题');
+        $form->display('commented.name','用户');
+        
+        $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
+        $form->select('approve','状态')->options($approve_arr)->default(0);
+        $form->textarea('comment', '评论');
+        $form->display('created_at', 'Created at');
+        $form->display('updated_at', 'Updated at');
 
         return $form;
     }

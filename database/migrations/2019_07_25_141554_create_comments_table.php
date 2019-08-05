@@ -15,6 +15,7 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('appid')->index()->comment('数据所属项目id');
             $table->string('commentable_id')->nullable(); // 暂定评论的内容id
             $table->string('commentable_type')->nullable(); // 暂定内容：文章
             $table->index(['commentable_id', 'commentable_type']);
