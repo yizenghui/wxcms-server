@@ -30,6 +30,7 @@ class CreateArticlesTable extends Migration
             $table->integer('liked')->comment('喜欢人数')->default(0);
             $table->integer('rewarded')->comment('激励人次')->default(0);
             $table->boolean('state')->default(1);
+            $table->boolean('comment_status')->comment('0隐藏；1自由；2审核；3关闭并展示自由；4关闭并展示审核')->default(0);
             $table->boolean('allow_comment')->comment('允许评论')->default(1);
             $table->boolean('need_reward')->comment('设置激励后可阅读全文(需要设置作者激励id)')->default(0);
             $table->dateTime('commented_at')->comment('最后评论时间戳')->nullable();

@@ -208,6 +208,11 @@ class ArticleController extends Controller
             $form->select('share_id','自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
             $form->text('audio','音频地址')->help('请确认链接地址可用');
             $form->text('video','腾讯视频vid')->help('目前仅支持vid参数视频');
+
+            $comment_status_arr = [0=>'隐藏评论',1=>'自由评论',2=>'严格审核',4=>'关闭评论'];
+            $form->select('comment_status','评论设置')->options($comment_status_arr)->default(0)->help('说明<br>隐藏评论：文章底部不会显示评论功能组件；<br>自由评论：任何用户可以发布评论并立即展示；<br>严格审核：评论内容需要通过管理员审核后才能展示；<br>关闭评论：显示通过审核的评论记录但不允许新增评论');
+          
+
         })/*->tab('数据', function (Form $form) {
             
             $form->display('view','浏览量')->default(0);
