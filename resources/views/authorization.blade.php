@@ -42,6 +42,7 @@
 				多谢您的使用
 			</p>
 
+			<a class="button" href="/admin" title="WeContr管理后台">进入后台</a>
 			<p>
 				如有疑问，请咨询客服QQ：121258121(在线时间14:00~22:00)
 			</p>

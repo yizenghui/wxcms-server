@@ -278,6 +278,8 @@ class WxOauthController extends Controller
         $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token); //小程序
         
         $ret = $miniProgram->code->release();
+        Log::useFiles( storage_path('logs/release/'.$app->id.'.log') );
+        Log::info(var_export($ret,true));
         if( $ret["errcode"] ){
             return $ret["errmsg"];
         }
