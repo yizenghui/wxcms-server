@@ -50,31 +50,35 @@ class WxOauthController extends Controller
         // $app = \App\Models\App::find(1);
         $app_id = $app->app_id;//$request->get('app_id');
         $refresh_token = $app->refresh_token; //$request->get('refresh_token');
-        if(!$app_id || !$refresh_token) return redirect('wxoauth'); //没有app_id或refresh_token,都去跑授权
-        $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);
-        $code =  $miniProgram->code; // 代码管理
-        $last_audit = $code->getLatestAuditStatus();
-        $audit_status = '审核成功'; 
-        $audit_reason = '';
-        if($last_audit['errcode']){
-            // $audit_status = '错误码：'.$last_audit['errcode'];
-            $audit_status = '未知';
-        }else{
-            // 0为审核成功，1为审核失败，2为审核中，3已撤回
-            $audit_arr = [0=>'审核成功', 1=>'为审核失败', 2=>'为审核中', 3=>'已撤回'];
-            $audit_status = $audit_arr[$last_audit['status']];
-            if($last_audit['status']==1) $audit_reason = $last_audit['reason'];
-        }
+        if(!$app_id || !$refresh_token) return redirect('/wxoauth'); //没有app_id或refresh_token,都去跑授权
+        
+        try {
+            $miniProgram = $openPlatform->miniProgram($app_id, $refresh_token);$code =  $miniProgram->code; // 代码管理
+            $last_audit = $code->getLatestAuditStatus();
+            $audit_status = '审核成功'; 
+            $audit_reason = '';
+            if($last_audit['errcode']){
+                // $audit_status = '错误码：'.$last_audit['errcode'];
+                $audit_status = '未知';
+            }else{
+                // 0为审核成功，1为审核失败，2为审核中，3已撤回
+                $audit_arr = [0=>'审核成功', 1=>'为审核失败', 2=>'为审核中', 3=>'已撤回'];
+                $audit_status = $audit_arr[$last_audit['status']];
+                if($last_audit['status']==1) $audit_reason = $last_audit['reason'];
+            }
 
-        return view('code',[
-            'app'=>$app,
-            'qrcode'=> '/wxoauth/getQrCode?appid='.$tid,
-            'release_version'=>$app->release_version, //发布版本
-            'current_version'=>$app->current_version, //用户提供体验版本
-            'audit_status'=>$audit_status,
-            'audit_reason'=>$audit_reason,
-            'master_version' =>config('point.mini_program_version'), //当前主版本
-        ]);
+            return view('code',[
+                'app'=>$app,
+                'qrcode'=> '/wxoauth/getQrCode?appid='.$tid,
+                'release_version'=>$app->release_version, //发布版本
+                'current_version'=>$app->current_version, //用户提供体验版本
+                'audit_status'=>$audit_status,
+                'audit_reason'=>$audit_reason,
+                'master_version' =>config('point.mini_program_version'), //当前主版本
+            ]);
+       } catch (Exception $e) {
+            return redirect('/wxoauth');
+       }
     }
 
     /**

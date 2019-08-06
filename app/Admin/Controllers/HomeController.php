@@ -67,12 +67,13 @@ class HomeController extends Controller
 
         
         if($app){
-            $content ->row(function (Row $row) {
-                $row->column(4, function (Column $column) {
+            $code_url = "/wxoauth/code?appid=".$app->tid;
+            $content ->row(function (Row $row) use($code_url) {
+                $row->column(4, function (Column $column) use($code_url) {
                     $column->append(
                         new Box(
                         '代发布小程序代码', 
-                        '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a href="/wxoauth">小程序代码管理</a>'
+                        '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a href="'.$code_url.'">小程序代码管理</a>'
                         )
                     );
                 });
@@ -85,7 +86,7 @@ class HomeController extends Controller
                 $row->column(4, function (Column $column) {
                     $column->append(new Box(
                         '高级服务', 
-                        '我们可为大客户搭建支持更高访问需求的独立服务器（群）和提供订制开发服务，为您量身定制，欢迎咨询免费获取报价。
+                        '我们可为大客户搭建支持更高访问需求的独立服务器和提供订制开发服务，为您量身定制，欢迎咨询免费获取报价。
                         如果您有更深层次的需求，需要购买后端源码二次开发自架服务器，也可与我们联系。'
                         ));
                 });
