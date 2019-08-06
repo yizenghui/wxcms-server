@@ -17,6 +17,7 @@ Route::get('wxoauth/callback', 'WxOauthController@callback'); //授权回调接�
 Route::get('wxoauth/commitCode', 'WxOauthController@commitCode'); //提交代码
 Route::get('wxoauth/submitAudit', 'WxOauthController@submitAudit'); //提交审核
 Route::get('wxoauth/getQrCode', 'WxOauthController@getQrCode'); //获取体验码
+Route::get('wxoauth/releaseCode', 'WxOauthController@releaseCode'); //发布代码
 Route::get('wxoauth/code', 'WxOauthController@code'); // 代码管理
 
 
