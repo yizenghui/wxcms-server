@@ -22,20 +22,15 @@
 			<br>
 			<p>请根据自身情况检查设置类目(WeContr暂不支持帐号设置，所以无法为您自动创建类目)</p>
 			@if(empty($categories))
-			<p>
-				企业小程序请添加类目  文娱 > 资讯 <br>
-				个人小程序请添加类目  教育 > 教育信息服务 <br>
-			</p>
-			@endif
-			@if(!empty($categories))
-				@foreach($categories as $k=>$v)
+			
+				<p>检查到您的小程序还未添加类目</p>
 				<p>
-					{{$v["first_class"]}} > {{$v["second_class"]}} @if($k == 0) (选中) @endif
+					企业小程序请添加类目  文娱 > 资讯 <br>
+					个人小程序请添加类目  教育 > 教育信息服务 <br>
 				</p>
-				@endforeach
 			@endif
-			<p class="description">系统会选择第一个类目提交，如果有多个类目，请删除多余的（请根据您的使用情况选择合适的类目，WeContr不承担因类目内容不符合造成的任何损失）</p>
-			<a class="button" href="/wxoauth/submitAudit?appid={{$app->id}}" >提交审核</a>
+			<p class="description">系统会优先选择文娱资讯类目进行提交，其次选择第一个类目提交（请根据您的使用情况选择合适的类目，WeContr不承担因类目内容不符合造成的任何损失）</p>
+			<a class="button" href="/wxoauth/submitAudit?appid={{$app->tid}}" >提交审核</a>
 
 			<p class="description">提交审核后，由微信官方团队进行审核，审核通过后可进行发布。</p>
 
