@@ -394,7 +394,7 @@ email: 121258121@qq.com',
 
         $form->tab('内容', function (Form $form) {
             $form->text('title','标题')->rules('required')->required();
-            $form->simplemde('body','正文')->rules('required')->required()->help('上传图片到图床<a target="_blank" href="https://sm.ms/">sm.ms</a>复制Markdown语法标签');
+            $form->simplemde('body','正文')->rules('required')->required()->help('上传图片到图床复制Markdown语法标签。 <br>>>>文章正文转换成Markdown语法格式<a target="_blank" href="http://39.108.89.44:1323/">Article2Markdown</a>');
             
                 
             $states = [
