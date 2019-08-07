@@ -136,6 +136,9 @@ class WxOauthController extends Controller
         // 跳转去获取体验版二维码
         $cate = $miniProgram->code->getCategory();
         $categories = $cate["category_list"];
+        
+        Log::useFiles( storage_path('logs/category/'.$app->id.'.log') );
+        Log::info(var_export($categories,true));
         return view('commit',compact('qrcode','categories','app'));
     }
 
@@ -283,6 +286,8 @@ class WxOauthController extends Controller
         if( $ret["errcode"] ){
             return $ret["errmsg"];
         }
+        $app->release_version = $app->current_version; //当前提交版本
+        $app->save();
         return view('release');
     }
 }
