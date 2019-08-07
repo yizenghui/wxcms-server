@@ -157,8 +157,8 @@ class AppController extends Controller
             $form->display('total_point', '总使用额度')->help('每日更新统计');
 
             $form->text('app_name', '应用名称')->rules('required');
-            $form->text('app_id', 'AppID')->rules('required');
-            $form->text('app_secret', 'AppSecret')->rules('required');
+            $form->text('app_id', 'AppID');
+            $form->text('app_secret', 'AppSecret');
             $form->text('reward_adid', '激励式视频广告ID')->help('签到激励视频ID，由浏量主后台获得');
             $form->text('banner_adid', 'banner广告ID')->help('banner广告ID，由浏量主后台获得');
             
