@@ -26,9 +26,9 @@ class Article extends Model implements Commentable
      * @var array
      */
     protected $fillable = [
-        'title','author_id','topic_id',
+        'appid','title','author_id','topic_id', 'intro', 'cover','state','comment_status','recommend_at','body',
     ];
-
+            
     /**
      * 作家
      */
@@ -43,6 +43,21 @@ class Article extends Model implements Commentable
     {
         return $this->belongsTo(Share::class,'share_id');
     }
+
+
+    public function readlogs()
+    {
+         return $this->bookmarkers(\App\Models\Article::class);
+    }
+    
+    public function likelogs()
+    {
+         return $this->likers(\App\Models\Article::class);
+    }
+    public function rewardlogs(){
+        return $this->subscribers(\App\Models\Fan::class);
+    }
+
 
     /**
      * Get the indexable data array for the model.

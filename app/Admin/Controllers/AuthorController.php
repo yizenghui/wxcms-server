@@ -25,8 +25,8 @@ class AuthorController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('作者')
+            ->description('管理您的作者')
             ->body($this->grid());
     }
 

@@ -123,6 +123,11 @@ class Fan extends Authenticatable implements JWTSubject
          return $this->likes(\App\Models\Article::class);
     }
     
+    public function rewardlogs()
+    {
+         return $this->subscriptions(\App\Models\Article::class);
+    }
+
     /**
      * 用户所有任务
      */

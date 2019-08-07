@@ -25,8 +25,8 @@ class AdController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('广告')
+            ->description('系统广告管理')
             ->body($this->grid());
     }
 
@@ -130,7 +130,7 @@ class AdController extends Controller
         $grid->genre('类型')->select($genre_arr);
         $grid->state('状态')->switch();
         // $grid->load_num('加载次数');
-        $grid->click_num('点击次数');
+        // $grid->click_num('点击次数');
         $grid->start_at('开始时间');
         $grid->end_at('结束时间');
 

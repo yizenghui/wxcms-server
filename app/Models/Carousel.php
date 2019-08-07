@@ -11,9 +11,14 @@ class Carousel extends Model
     use SoftDeletes;
 
 
-    
-
-    
-
+    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'appid','name','cover','position','genre', 'state','start_at','end_at','priority'
+    ];
     
 }

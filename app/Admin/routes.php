@@ -11,6 +11,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
+    $router->get('article/createInitData', 'ArticleController@createInitData');
 
     $router->resource('article', ArticleController::class);
     $router->resource('author', AuthorController::class);

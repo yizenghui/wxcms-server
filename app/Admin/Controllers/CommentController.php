@@ -24,8 +24,8 @@ class CommentController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('评论')
+            ->description('管理您的评论')
             ->body($this->grid());
     }
 

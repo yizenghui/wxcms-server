@@ -96,8 +96,8 @@ class ArticleController extends Controller
     public function rewardusers($id,Request $request)
     {
         $article = Article::findOrFail($id);
-        // $fans = $article->subscribers()->simplePaginate(10);
-        $fans = $article->subscribers()->get();
+        $fans = $article->subscribers()->simplePaginate(100);
+        // $fans = $article->subscribers()->get();
         return response()->json(FanResource::collection($fans));
     }
 

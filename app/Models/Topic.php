@@ -10,6 +10,14 @@ class Topic extends Model
     use SoftDeletes;
     
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'appid','name','intro', 'cover','state','order'
+    ];
+    /**
      * 自定义分享
      */
     public function share()

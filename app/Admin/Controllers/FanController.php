@@ -25,8 +25,8 @@ class FanController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('粉丝')
+            ->description('管理您的粉丝')
             ->body($this->grid());
     }
 
@@ -141,13 +141,21 @@ class FanController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Fan::findOrFail($id));
-
+        $show = new Show(Fan::where('appid', '=', Admin::user()->id)->findOrFail($id));
         $show->id('ID');
         $show->openid('OpenID');
+        $show->name('名称');
 
 
         $show->readlogs('阅读记录', function ($readlog) {
+            $readlog->id();
+            $readlog->title();
+            $readlog->disableCreateButton();
+            $readlog->disableExport();
+            $readlog->disableRowSelector();
+            $readlog->disableActions();
+        });
+        $show->rewardlogs('激励文章', function ($readlog) {
             $readlog->id();
             $readlog->title();
             $readlog->disableCreateButton();

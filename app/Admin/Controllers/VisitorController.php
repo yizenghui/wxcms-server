@@ -24,8 +24,8 @@ class VisitorController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('访客')
+            ->description('访客记录查询')
             ->body($this->grid());
     }
 

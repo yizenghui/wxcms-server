@@ -25,8 +25,8 @@ class TopicController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('专题')
+            ->description('管理您的专题。')
             ->body($this->grid());
     }
 

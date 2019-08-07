@@ -25,8 +25,8 @@ class ShareController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('分享')
+            ->description('自定义分享管理')
             ->body($this->grid());
     }
 
@@ -124,7 +124,7 @@ class ShareController extends Controller
     {
         $form = new Form(new Share);
 
-        $form->display('ID');
+        $form->display('id','ID');
          
         
         // 抛出错误信息
@@ -153,9 +153,8 @@ class ShareController extends Controller
         $form->text('name','名称'); //->help('如何固定格式(如：A1介绍,T1专题)方便搜索');
         $form->textarea('title','自定义分享标题')->help('随机一个标题，使用回车分隔(机制：除首页，专题首页是单次会话随机外，专题文章列表、文章详情页每次打开随机)');
         $form->multipleImage('cover','自定义分享封面图')->removable()->uniqueName()->help('随机一张图片，建议像素500*400 (机制如上)');
-        $form->display('Created at');
-        $form->display('Updated at');
-
+        $form->display('created_at','Created at');
+        $form->display('updated_at','Updated at');
         return $form;
     }
 }
