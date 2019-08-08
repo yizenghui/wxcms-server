@@ -9,7 +9,7 @@ use Admin;
 use Vinkla\Hashids\Facades\Hashids;
 class AuthController extends BaseAuthController
 {
-
+    
     /**
      * Model-form for user setting.
      *

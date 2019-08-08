@@ -2,6 +2,7 @@
 
 use Illuminate\Routing\Router;
 
+
 Admin::registerAuthRoutes();
 
 Route::group([
@@ -9,6 +10,8 @@ Route::group([
     'namespace'     => config('admin.route.namespace'),
     'middleware'    => config('admin.route.middleware'),
 ], function (Router $router) {
+
+    $router->resource('auth/users', 'CustomUserController')->names('admin.auth.users');
 
     $router->get('/', 'HomeController@index');
     $router->get('article/createInitData', 'ArticleController@createInitData');

@@ -149,7 +149,7 @@ class AppController extends Controller
 
             $vip_status_arr = [0=>'普通用户',1=>'体验VIP用户',2=>'免费VIP用户',30=>'月度VIP',90=>'季度VIP',365=>'包年VIP',999=>'合作伙伴'];
             $form->select('vip_status','会员类型')->options($vip_status_arr)->default('0')->help('会员类型和截止时间需要同时为有效值');
-            $form->datetime('vip_deadline','VIP截止时间')->default(date('Y-m-d 23:59:59',time()+86400*60));
+            $form->datetime('vip_deadline','VIP截止时间')->default(date('Y-m-d 23:59:59',time()+86400*7));
         
 
             $form->number('quota', '当前月额度')->help('如需提升额度请联系客服');
