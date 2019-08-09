@@ -84,21 +84,20 @@ class HomeController extends Controller
                     $column->append(
                         new Box(
                         '代发布小程序代码', 
-                        '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a href="'.$code_url.'">小程序代码管理</a>'
+                        '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a target="_blank" href="'.$code_url.'">小程序代码管理</a>'
                         )
                     );
                 });
                 $row->column(4, function (Column $column) {
                     $column->append(new Box(
                         '自行发布小程序代码', 
-                        '如果您需要自行修改并发布小程序代码，可以联系售后购买小程序代码，我们会协助您完成修改和发布，您随时都可以获取更新版本，但不支持退款。'
+                        '如果您需要自行修改并发布小程序代码，可以下载小程序源码进行修改和发布。 <a target="_blank" href="https://github.com/yizenghui/wecontr">https://github.com/yizenghui/wecontr</a> '
                         ));
                 });
                 $row->column(4, function (Column $column) {
                     $column->append(new Box(
                         '高级服务', 
-                        '我们可为大客户搭建支持更高访问需求的独立服务器和提供订制开发服务，为您量身定制，欢迎咨询免费获取报价。
-                        如果您有更深层次的需求，需要购买后端源码二次开发自架服务器，也可与我们联系。'
+                        '可提供满足高访问需求的独立服务器和订制定制开发服务，欢迎进行业务咨询。'
                         ));
                 });
             });

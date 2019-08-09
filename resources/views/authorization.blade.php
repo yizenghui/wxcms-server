@@ -27,7 +27,7 @@
 			<p>
 				操作流程说明
 				<ol>
-				<li>登录后台设置小程序相关信息<a target="_blank" href="https://readfollow.com/admin/auth/setting#tab-form-2">立即设置AppID和AppSecret</a></li>
+				<li>登录后台设置小程序相关信息<a target="_blank" href="https://readfollow.com/admin/auth/setting#tab-form-1">立即设置AppID和AppSecret</a></li>
 				<li>点击“前往微信公众号平台授权”授权WeContr管理您的应用</li>
 				<li>提交您的代码</li>
 				<li>在后台添加基础数据</li>

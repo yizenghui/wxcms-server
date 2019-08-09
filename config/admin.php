@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'WeContro-admin',
+    'name' => 'WeContr-admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -269,7 +269,7 @@ return [
     */
     'show_version' => false,
 
-    'footer_service_contact' => env('FOOTER_SERVICE_CONTACT','售后微信：wecontr'),
+    'footer_service_contact' => env('FOOTER_SERVICE_CONTACT','技术支持微信：wecontr'),
     /*
     |--------------------------------------------------------------------------
     | Show environment at footer
