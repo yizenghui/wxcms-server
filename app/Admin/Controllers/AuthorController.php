@@ -160,7 +160,7 @@ class AuthorController extends Controller
         
         $form->text('name','作者名');
         $form->number('user_id','粉丝ID')->default(0)->help('为该绑定粉丝ID');
-        $form->image('reward_qrcode','打赏码');
+        $form->image('reward_qrcode','赞赏码');
         // $form->cropper('avatar','头像');
         // $form->textarea('intro','描述');
         // $form->text('mobile','手机');
