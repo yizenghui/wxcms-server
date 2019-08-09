@@ -5,10 +5,10 @@
 return [
 
     // 当前小程序版本
-    'mini_program_version'=> '1.1.3',
+    'mini_program_version'=> '1.2.1',
 
     // 当前小程序版本描述
-    'mini_program_version_desc'=> '初始版',
+    'mini_program_version_desc'=> '初创版',
     
     /*
      * 积分系统是否启动?
