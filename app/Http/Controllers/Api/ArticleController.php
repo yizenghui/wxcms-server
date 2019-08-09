@@ -16,16 +16,11 @@ class ArticleController extends Controller
 {
     //
     public function index(Request $request){
-
         $authors_ids = Author::where('appid', '=', $request->get('appid'))->where('state','=',1)->pluck('id');
         // dd($authors_ids);
         $topic_id = $request->get('topic');
-        if( $topic_id ){
-            $data = Article::where('appid', '=', $request->get('appid'))->where('topic_id','=',$topic_id)->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
-        }else{
-            $data = Article::where('appid', '=', $request->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
-        }
-        // dd($data);
+        $author_id = $request->get('author');
+        $data = Article::whereTopic($topic_id)->whereAuthor($author_id)->where('appid', '=', $request->get('appid'))->whereIn('author_id',$authors_ids)->orderBy('id','desc')->simplePaginate(10);
         $articles = ArticleResource::collection($data);
         return response()->json($articles);
     }
@@ -50,14 +45,15 @@ class ArticleController extends Controller
         // $article->author_reward_adid = $article->author->reward_adid;
         // $article->author_banner_adid = $article->author->banner_adid;
 
+        // $article->video = '';
         $share = $article->share;
-        $article->video = '';
         $article->share_title = $share?$share->oneTitle:'';
         $article->share_cover = $share?$share->oneCover:'';
         $article->userlikearticle = $request->user()->hasLiked($article);
         $article->userrewardarticle = $request->user()->hasSubscribed($article);  // 用户已经激励该文章
         $encode_qrcode = Hashids::encode( $request->get('appid'), $request->user()->id, $article->id, date("ymdHi") );
         $article->qrcode = $encode_qrcode;
+        $article->qrcode_url = url('/qrcode/article/'.$article->qrcode);
         return response()->json($article);
     }
 

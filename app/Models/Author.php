@@ -15,4 +15,14 @@ class Author extends Model
     protected $fillable = [
         'appid','name','intro', 'state','user_id'
     ];
+
+    
+    /**
+     * 自定义分享
+     */
+    public function share()
+    {
+        return $this->belongsTo(Share::class,'share_id');
+    }
+
 }

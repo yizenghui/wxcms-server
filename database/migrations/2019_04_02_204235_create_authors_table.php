@@ -26,6 +26,7 @@ class CreateAuthorsTable extends Migration
             $table->string('wxid')->comment('微信号')->nullable();
             $table->string('wxappid')->comment('微信公众号')->nullable();
             $table->timestamp('sign_at')->comment('签约时间')->nullable();
+            $table->integer('share_id')->comment('分享策略')->default(0);
             $table->string('reward_adid')->comment('激励式视频id')->nullable(); // 不同作者用不同广告ID， 分成可依据流量主后台统计
             $table->string('banner_adid')->comment('banner广告id')->nullable();
             $table->string('reward_qrcode')->comment('赞赏码')->nullable();

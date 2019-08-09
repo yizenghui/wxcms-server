@@ -77,6 +77,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api', 'middleware' => ['checkapp
         Route::get('/articles/{id}/rewardusers','ArticleController@rewardusers');
         Route::get('/topics','TopicController@index');
         Route::get('/topics/{id}','TopicController@show');
+        Route::get('/authors','AuthorController@index');
+        Route::get('/authors/{id}','AuthorController@show');
         Route::get('/orders/{id}','OrderController@show');
         
         Route::get('/poster/article/{id}','PosterController@article');

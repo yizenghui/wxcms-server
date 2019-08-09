@@ -28,7 +28,21 @@ class Article extends Model implements Commentable
     protected $fillable = [
         'appid','title','author_id','topic_id', 'intro', 'cover','state','comment_status','recommend_at','body',
     ];
-            
+    
+    // Topic 是否有专题参数限制
+    public function scopeWhereTopic($query, $topic)
+    {
+        if($topic) return $query->where('topic_id',$topic);
+        return $query;
+    }
+    
+    // Author 是否有专题参数限制
+    public function scopeWhereAuthor($query, $author)
+    {
+        if($author) return $query->where('author_id', $author);
+        return $query;
+    }
+
     /**
      * 作家
      */
@@ -57,6 +71,7 @@ class Article extends Model implements Commentable
     public function rewardlogs(){
         return $this->subscribers(\App\Models\Fan::class);
     }
+
 
 
     /**

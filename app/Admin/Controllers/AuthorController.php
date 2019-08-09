@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Author;
+use App\Models\Share;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -160,9 +161,12 @@ class AuthorController extends Controller
         
         $form->text('name','作者名');
         $form->number('user_id','粉丝ID')->default(0)->help('为该绑定粉丝ID');
-        $form->image('reward_qrcode','赞赏码')->help('您可以上传作者的赞赏码，用于小程序文章详情页赞赏功能。（获取：微信 》收付款 》赞赏码 》保存）');
+        $form->cropper('reward_qrcode','赞赏码')->help('您可以上传作者的赞赏码，用于小程序文章详情页赞赏功能。（获取：微信 》收付款 》赞赏码 》保存）');
         // $form->cropper('avatar','头像');
-        // $form->textarea('intro','描述');
+        $form->textarea('intro','描述');
+        
+        $share_arr = collect([0=>'无'])->union(Share::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();
+        $form->select('share_id','自定义分享')->options($share_arr)->default(0)->help('需预设分享策略');
         // $form->text('mobile','手机');
         // $form->text('email','邮箱');
         // $form->text('wxid','微信号');
