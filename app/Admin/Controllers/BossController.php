@@ -25,8 +25,8 @@ class BossController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('供应商')
+            ->description('管理您的供应商')
             ->body($this->grid());
     }
 

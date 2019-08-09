@@ -25,8 +25,8 @@ class CarouselController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('轮播')
+            ->description('轮播内容管理')
             ->body($this->grid());
     }
 

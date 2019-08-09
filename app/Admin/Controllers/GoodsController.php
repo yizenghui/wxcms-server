@@ -26,8 +26,8 @@ class GoodsController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('商品')
+            ->description('积分商城可兑换商品')
             ->body($this->grid());
     }
 

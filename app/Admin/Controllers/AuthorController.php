@@ -133,9 +133,9 @@ class AuthorController extends Controller
         $form = new Form(new Author);
 
         $form->display('ID');
-
+        $app = Admin::user()->app;
         // 抛出错误信息
-        $form->saving(function ($form) {
+        $form->saving(function ($form) use($app) {
 
             if($form->model()->id){
                 if( $form->model()->appid !=Admin::user()->id ){
@@ -159,27 +159,31 @@ class AuthorController extends Controller
         $form->hidden('appid')->default(Admin::user()->id);
         
         $form->text('name','作者名');
-        $form->number('user_id','粉丝ID')->default(0)->help('将积分结算到绑定的粉丝余额上');
-        $form->cropper('avatar','头像');
-        $form->textarea('intro','描述');
-        $form->text('mobile','手机');
-        $form->text('email','邮箱');
-        $form->text('wxid','微信号');
+        $form->number('user_id','粉丝ID')->default(0)->help('为该绑定粉丝ID');
+        $form->image('reward_qrcode','打赏码');
+        // $form->cropper('avatar','头像');
+        // $form->textarea('intro','描述');
+        // $form->text('mobile','手机');
+        // $form->text('email','邮箱');
+        // $form->text('wxid','微信号');
         $form->text('wxappid','微信公众号');
         $form->datetime('sign_at','签约时间');
-        $form->number('point','剩余积分')->default(0);
-        $form->number('current_point','当前可用积分')->default(0);
-        $form->number('total_point','总积分')->default(0);
-        $form->text('reward_adid', '激励式视频广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
-        $form->text('banner_adid', 'banner广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
+        // $form->number('point','剩余积分')->default(0);
+        // $form->number('current_point','当前可用积分')->default(0);
+        // $form->number('total_point','总积分')->default(0);
+        
+        if($app && $app->isvip){
+            $form->text('reward_adid', '激励式视频广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
+            $form->text('banner_adid', 'banner广告ID')->help('不同作者用不同广告ID， 分成可依据流量主后台统计');
+        }
         $states = [
             'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
             'off' => ['value' => 0, 'text' => '屏蔽', 'color' => 'danger'],
         ];
         
         $form->switch('state', '状态')->states($states)->default(1);
-        $form->display('Created at');
-        $form->display('Updated at');
+        $form->display('created_at', 'Created at');
+        $form->display('updated_at', 'Updated at');
 
         return $form;
     }

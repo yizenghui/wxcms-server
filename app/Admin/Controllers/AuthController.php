@@ -27,7 +27,7 @@ class AuthController extends BaseAuthController
 
         $app = Admin::user()->app;
 
-        $form =  $this->buildMyForm($form, ($app && $app->isvip), $app && $app->secret_locking);
+        $form =  $this->buildMyForm($form, $app && $app->isvip, $app && $app->secret_locking);
         
         // 如果锁定密令，不再给修改 app的app_id和app_secret
 

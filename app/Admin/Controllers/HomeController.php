@@ -97,7 +97,7 @@ class HomeController extends Controller
                 $row->column(4, function (Column $column) {
                     $column->append(new Box(
                         '高级服务', 
-                        '可提供满足高访问需求的独立服务器和订制定制开发服务，欢迎进行业务咨询。'
+                        '可提供满足高访问需求的独立服务器和订制定制开发服务，欢迎咨询。'
                         ));
                 });
             });

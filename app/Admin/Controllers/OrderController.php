@@ -27,8 +27,8 @@ class OrderController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('订单')
+            ->description('管理您的订单')
             ->body($this->grid());
     }
 

@@ -241,7 +241,7 @@ class AdController extends Controller
         $form->switch('state', '状态')->states($states)->default(1);
 
         // $form->display('load_num','加载次数');
-        $form->display('click_num','点击次数');
+        // $form->display('click_num','点击次数');
         $form->display('created_at','Created at');
         $form->display('updated_at','Updated at');
 
