@@ -160,7 +160,7 @@ class AuthorController extends Controller
         
         $form->text('name','作者名');
         $form->number('user_id','粉丝ID')->default(0)->help('为该绑定粉丝ID');
-        $form->image('reward_qrcode','赞赏码');
+        $form->image('reward_qrcode','赞赏码')->help('您可以上传作者的赞赏码，用于小程序文章详情页赞赏功能。（获取：微信 》收付款 》赞赏码 》保存）');
         // $form->cropper('avatar','头像');
         // $form->textarea('intro','描述');
         // $form->text('mobile','手机');
