@@ -41,8 +41,8 @@ class AuthorController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('作者详细')
+            ->description('查看作者详细信息')
             ->body($this->detail($id));
     }
 
@@ -118,9 +118,35 @@ class AuthorController extends Controller
         $show = new Show(Author::findOrFail($id));
 
         $show->id('ID');
+        $show->name('作者');
+        $show->avatar('头像')->image();
+        $show->intro('介绍');
+        $show->sign_at('签约时间');
+        $show->user_id('绑定粉丝号ID');
+        $show->state('状态')->as(function($v){
+            $state_arr = [
+                0=>'暂停',
+                1=>'启用',
+            ];
+            if(isset($state_arr[$v])) return $state_arr[$v];
+            return $v;
+        });
+        $show->articles('文章', function ($article) {
+            $article->resource('/admin/article');
+            $article->id();
+            $article->title('标题');
+            $article->rewarded('激励');
+            $article->view('阅读');
+            $article->commented('评论');
+            $article->liked('点赞');
+            $article->created_at();
+            $article->updated_at();
+            $article->filter(function ($filter) {
+                $filter->like('title','标题');
+            });
+        });
         $show->created_at('Created at');
         $show->updated_at('Updated at');
-
         return $show;
     }
 

@@ -96,7 +96,7 @@ class CashController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Cash::findOrFail($id));
+        $show = new Show(Cash::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');

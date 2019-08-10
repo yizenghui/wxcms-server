@@ -40,8 +40,8 @@ class TopicController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('专题详细')
+            ->description('查看专题详细')
             ->body($this->detail($id));
     }
 
@@ -118,6 +118,38 @@ class TopicController extends Controller
         $show = new Show(Topic::where('appid', '=', Admin::user()->id)->findOrFail($id));
 // dd($show );
         $show->id('ID');
+
+        
+        $show->name('标题');
+        $show->cover()->image();
+        $show->state('状态')->as(function($v){
+                
+            $state_arr = [
+                0=>'暂停',
+                1=>'启用',
+            ];
+            if(isset($state_arr[$v])) return $state_arr[$v];
+            return $v;
+        });
+
+        $show->articles('文章', function ($article) {
+
+            $article->resource('/admin/article');
+        
+            $article->id();
+            $article->title('标题');
+            $article->rewarded('激励');
+            $article->view('阅读');
+            $article->commented('评论');
+            $article->liked('点赞');
+            $article->created_at();
+            $article->updated_at();
+        
+            $article->filter(function ($filter) {
+                $filter->like('title','标题');
+            });
+        });
+
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 

@@ -81,11 +81,10 @@ class CommentController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Comment);
+        $grid->model()->where('appid', '=', Admin::user()->id);
         $grid->model()->with('commented','commentable');
-        
         $grid->id('ID')->sortable();
         $grid->commented()->name('用户');
-        $grid->model()->where('appid', '=', Admin::user()->id);
         
         $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
         $grid->approve('状态')->select($approve_arr);
@@ -106,9 +105,29 @@ class CommentController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Comment::findOrFail($id));
+        $show = new Show(Comment::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
+
+        $show->commented('用户', function ($fans) {
+            $fans->setResource('/admin/fans');
+            $fans->id();
+            $fans->name();
+        });
+
+        $show->commentable('文章信息', function ($article) {
+            $article->setResource('/admin/article');
+            $article->id();
+            $article->title();
+        });
+
+        $show->approve('状态')->as(function($v){
+            $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
+            if(isset($approve_arr[$v])) return $approve_arr[$v];
+            return $v;
+        });
+        $show->comment('评论');
+
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 

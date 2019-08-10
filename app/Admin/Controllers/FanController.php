@@ -144,10 +144,27 @@ class FanController extends Controller
         $show = new Show(Fan::where('appid', '=', Admin::user()->id)->findOrFail($id));
         $show->id('ID');
         $show->openid('OpenID');
+        $show->avatar('头像')->image();
         $show->name('名称');
+        $show->lock_at('锁定用户');
+        $show->current_point('当前积分');
+        $show->remarks('备注');
+        
+        $show->comments('Ta的评论', function ($comment) {
+            $comment->disableCreateButton();
+            $comment->resource('/admin/comment');
+            $comment->id()->sortable();
+            $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
+            $comment->approve('状态')->select($approve_arr);
+            $comment->commentable()->title('文章');
+            $comment->comment('评论');
+            $comment->filter(function ($filter) {
+                $filter->like('comment','评论');
+            });
+        });
 
-
-        $show->readlogs('阅读记录', function ($readlog) {
+        
+        $show->rewardlogs('Ta的激励文章记录', function ($readlog) {
             $readlog->id();
             $readlog->title();
             $readlog->disableCreateButton();
@@ -155,7 +172,7 @@ class FanController extends Controller
             $readlog->disableRowSelector();
             $readlog->disableActions();
         });
-        $show->rewardlogs('激励文章', function ($readlog) {
+        $show->readlogs('Ta的阅读记录', function ($readlog) {
             $readlog->id();
             $readlog->title();
             $readlog->disableCreateButton();
@@ -163,7 +180,7 @@ class FanController extends Controller
             $readlog->disableRowSelector();
             $readlog->disableActions();
         });
-        $show->likelogs('点赞记录', function ($readlog) {
+        $show->likelogs('Ta的点赞记录', function ($readlog) {
             $readlog->id();
             $readlog->title();
             $readlog->disableCreateButton();
@@ -171,7 +188,7 @@ class FanController extends Controller
             $readlog->disableRowSelector();
             $readlog->disableActions();
         });
-        $show->orders('订单记录', function ($order) {
+        $show->orders('Ta的订单记录', function ($order) {
             $order->id();
             $order->name('名称');
             $order->point_total('积分小计');
@@ -190,7 +207,7 @@ class FanController extends Controller
             $order->disableActions();
         });
 
-        $show->pointlogs('积分记录', function ($pointlogs) {
+        $show->pointlogs('Ta的积分记录', function ($pointlogs) {
             $pointlogs->id();
             $pointlogs->change();
             $pointlogs->intro()->limit(10);

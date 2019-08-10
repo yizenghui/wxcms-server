@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'WeContr-admin',
+    'name' => 'WeContr Admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -256,7 +256,7 @@ return [
     | This value is used to set the background image of login page.
     |
     */
-    'login_background_image' => '',
+    'login_background_image' => '/images/login-bg.jpg',
 
     /*
     |--------------------------------------------------------------------------

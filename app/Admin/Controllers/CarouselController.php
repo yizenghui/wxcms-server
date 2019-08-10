@@ -113,8 +113,8 @@ class CarouselController extends Controller
         $grid->state('状态')->display(function ($state) {
             return $state ? '启用' : '暂停';
         });
-        $grid->load_num('加载次数');
-        $grid->click_num('点击次数');
+        // $grid->load_num('加载次数');
+        // $grid->click_num('点击次数');
         $grid->start_at('开始时间');
         $grid->end_at('结束时间');
 
@@ -129,9 +129,54 @@ class CarouselController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Carousel::findOrFail($id));
+        $show = new Show(Carousel::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
+
+        $show->name('标题');
+        $show->position('展现位置')->as(function($v){
+            $postion_arr = [
+                1=>'首页',
+                2=>'用户页',
+                3=>'积分商城',
+            ];
+            if(isset($postion_arr[$v])) return $postion_arr[$v];
+            return $v;
+        });
+       
+        $show->genre('展现类型')->as(function($v){
+                
+            $genre_arr = [
+                0=>'仅展示',
+                1=>'链接',
+                2=>'海报',
+                3=>'跳小程序',
+            ];
+            if(isset($genre_arr[$v])) return $genre_arr[$v];
+            return $v;
+        });
+        $show->cover()->image();
+        $show->url('链接地址');
+        $show->gotoapp('跳转小程序');
+        $show->poster('海报图片')->image();
+        $show->start_at('开始时间');
+        $show->end_at('结束时间');
+        $show->priority('优先度');
+
+        $show->state('状态')->as(function($v){
+                
+            $state_arr = [
+                0=>'暂停',
+                1=>'启用',
+            ];
+            if(isset($state_arr[$v])) return $state_arr[$v];
+            return $v;
+        });
+
+        // $show->load_num('加载次数');
+        // $show->click_num('点击次数');
+
+
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -203,8 +248,8 @@ class CarouselController extends Controller
         
         $form->switch('state', '状态')->states($states)->default(1);
 
-        $form->display('load_num','加载次数');
-        $form->display('click_num','点击次数');
+        // $form->display('load_num','加载次数');
+        // $form->display('click_num','点击次数');
 
         $form->display('Created at');
         $form->display('Updated at');

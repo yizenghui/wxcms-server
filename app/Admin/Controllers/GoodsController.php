@@ -113,7 +113,7 @@ class GoodsController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Goods::findOrFail($id));
+        $show = new Show(Goods::where('appid', '=', Admin::user()->id)->findOrFail($id));
         $show->id('ID');
         $show->name('商品名称');
         $show->cash_value('现金价值(单位分)');
@@ -122,12 +122,14 @@ class GoodsController extends Controller
         $show->out('出货量');
         $show->lower_at('下架时间');
         $show->invalid_at('兑换卷失效时间');
-        $states = [
-            'on'  => ['value' => 1, 'text' => '展示', 'color' => 'success'],
-            'off' => ['value' => 0, 'text' => '隐藏', 'color' => 'danger'],
-        ];
-        
-        $form->switch('state', '状态')->states($states)->default(1);
+        $show->state('状态')->as(function($v){
+            $state_arr = [
+                0=>'隐藏',
+                1=>'展示',
+            ];
+            if(isset($state_arr[$v])) return $state_arr[$v];
+            return $v;
+        });
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 

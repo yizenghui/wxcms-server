@@ -40,8 +40,8 @@ class AdController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('广告详细')
+            ->description('查看系统广告详细信息')
             ->body($this->detail($id));
     }
 
@@ -145,9 +145,71 @@ class AdController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Ad::findOrFail($id));
+        $show = new Show(Ad::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
+        $show->name('标题');
+        $show->position('展现位置')->as(function ($v) {
+            $postion_arr = [
+                1=>'首页H1',
+                2=>'首页H2',
+                3=>'文章A1',
+                4=>'文章A2',
+                5=>'专题T1',
+                6=>'专题T2',
+                7=>'专题列表L1',
+                8=>'专题列表L2',
+                9=>'用户主页U1',
+                10=>'用户主页U2',
+                11=>'组队页J1',
+                12=>'组队页J2',
+                13=>'生成海报P1',
+                14=>'生成海报P2',
+                15=>'积分攻略G1',
+                16=>'积分攻略G2',
+            ];
+            if(isset($postion_arr[$v])) return $postion_arr[$v];
+            return $v;
+        });
+        
+        $show->genre('展现类型')->as(function ($v) {
+            $genre_arr = [
+                0=>'仅展示',
+                1=>'图片链接',
+                2=>'文字链接',
+                // 3=>'图文链接',
+                4=>'图片海报',
+                5=>'文字海报',
+                // 6=>'图文海报',
+                7=>'图片跳小程序',
+                8=>'文字跳小程序',
+                // 9=>'图文跳小程序',
+            ];
+            if(isset($genre_arr[$v])) return $genre_arr[$v];
+            return $v;
+        });
+       
+        $show->name('标题');
+        $show->cover('图片')->image();
+        $show->text('纯文本');
+        $show->url('链接地址');
+        $show->gotoapp('跳转小程序');
+        $show->poster('海报图片')->image();
+        $show->intro('描述');
+        $show->start_at('开始时间');
+        $show->end_at('结束时间');
+        $show->priority('优先度');
+
+        
+        $show->state('状态')->as(function ($v) {
+            $states = [
+                1=>'启用',
+                0=>'暂停'
+            ];
+            if(isset($states[$v])) return $states[$v];
+            return $v;
+        });
+
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 

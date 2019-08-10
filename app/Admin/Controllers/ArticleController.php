@@ -13,8 +13,10 @@ use App\Models\Topic;
 use App\Models\Author;
 use App\Models\Share;
 use App\Models\Carousel;
+use Encore\Admin\Widgets\Tab;
 use Illuminate\Support\MessageBag;
 use Admin;
+use GrahamCampbell\Markdown\Facades\Markdown;
 
 class ArticleController extends Controller
 {
@@ -135,8 +137,33 @@ class ArticleController extends Controller
         $show = new Show(Article::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
-
+        $show->title('文章标题');
+        $show->cover('封面')->image();
+        $show->intro('描述');
+        $show->body('正文')->unescape()->as(function ($v) {
+            return Markdown::convertToHtml($v);
+        });
         
+        $show->comments('评论', function ($comment) {
+            $comment->disableCreateButton();
+            $comment->resource('/admin/comment');
+            $comment->id()->sortable();
+            $approve_arr = [0=>'待审核',1=>'审核通过',-1=>'审核不通过'];
+            $comment->approve('状态')->select($approve_arr);
+            $comment->commented()->name('用户');
+            $comment->comment('评论');
+            $comment->filter(function ($filter) {
+                $filter->like('comment','评论');
+            });
+        });
+
+        $show->author('作者信息', function ($author) {
+
+            $author->setResource('/admin/author');
+        
+            $author->id();
+            $author->name();
+        });
         $show->rewardlogs('激励文章', function ($readlog) {
             $readlog->id();
             $readlog->name();

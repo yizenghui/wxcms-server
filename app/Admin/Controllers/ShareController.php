@@ -106,7 +106,7 @@ class ShareController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Share::findOrFail($id));
+        $show = new Show(Share::where('appid', '=', Admin::user()->id)->findOrFail($id));
 
         $show->id('ID');
         $show->created_at('Created at');

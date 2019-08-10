@@ -25,4 +25,8 @@ class Author extends Model
         return $this->belongsTo(Share::class,'share_id');
     }
 
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
