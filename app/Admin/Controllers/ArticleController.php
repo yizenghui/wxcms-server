@@ -96,7 +96,7 @@ class ArticleController extends Controller
     {
         $grid = new Grid(new Article);
         $grid->model()->with('author');
-        $grid->model()->where('appid', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id)->orderBy('id', 'DESC');
         $grid->id('ID')->sortable();
         
         // dd(Topic::where('appid', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'));

@@ -89,7 +89,7 @@ class FanController extends Controller
     {
         $grid = new Grid(new Fan);
         // $grid->model()->with('fromuser');
-        $grid->model()->where('appid', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id)->orderBy('id', 'DESC');
         $grid->id('ID')->sortable();
         // $grid->wxid('微信号')->editable();
         $grid->name('昵称')->limit(10);

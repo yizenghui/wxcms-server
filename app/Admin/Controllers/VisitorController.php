@@ -83,7 +83,7 @@ class VisitorController extends Controller
         $grid = new Grid(new Visitor);
         
         // $grid->model()->ordered();
-        $grid->model()->where('appid', '=', Admin::user()->id);
+        $grid->model()->where('appid', '=', Admin::user()->id)->orderBy('id', 'DESC');
 
         $grid->id('ID')->sortable();
         $grid->fromid('FromID')->sortable();
