@@ -94,13 +94,13 @@ class TopicController extends Controller
         $grid->id('ID');
         $grid->name('标题');
         $grid->state('状态')->switch();
+        $grid->order('排序号')->editor();
         $grid->cover()->display(function ($url) {
             if(!$url) return '';
             // $url = \Storage::disk(config('admin.upload.disk'))->downloadUrl($url,'https');
             $image = "<img style='width: 90px;' src='{$url}'>";
             return $image;
         });
-        $grid->order('排序号')->editor();
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 

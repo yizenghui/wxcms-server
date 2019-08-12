@@ -23,6 +23,7 @@ class JWTGenerateSecretCommand extends Command
      */
     protected $signature = 'jwt:secret
         {--s|show : Display the key instead of modifying files.}
+        {--always-no : Skip generating key if it already exists.}
         {--f|force : Skip confirmation when overwriting an existing key.}';
 
     /**
@@ -52,16 +53,22 @@ class JWTGenerateSecretCommand extends Command
         }
 
         if (Str::contains(file_get_contents($path), 'JWT_SECRET') === false) {
-            // update existing entry
-            file_put_contents($path, PHP_EOL."JWT_SECRET=$key", FILE_APPEND);
+            // create new entry
+            file_put_contents($path, PHP_EOL."JWT_SECRET=$key".PHP_EOL, FILE_APPEND);
         } else {
+            if ($this->option('always-no')) {
+                $this->comment('Secret key already exists. Skipping...');
+
+                return;
+            }
+
             if ($this->isConfirmed() === false) {
                 $this->comment('Phew... No changes were made to your secret key.');
 
                 return;
             }
 
-            // create new entry
+            // update existing entry
             file_put_contents($path, str_replace(
                 'JWT_SECRET='.$this->laravel['config']['jwt.secret'],
                 'JWT_SECRET='.$key, file_get_contents($path)

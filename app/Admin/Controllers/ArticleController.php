@@ -98,28 +98,35 @@ class ArticleController extends Controller
         $grid->model()->with('author');
         $grid->model()->where('appid', '=', Admin::user()->id)->orderBy('id', 'DESC');
         $grid->id('ID')->sortable();
+        $grid->title('标题')->filter('like');
         
         // dd(Topic::where('appid', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'));
         $topic_arr = collect([0=>'无'])->union(Topic::where('appid', '=', Admin::user()->id)->orderBy('id', 'desc')->get()->pluck('name', 'id'))->all();
-        $grid->topic_id('专题')->select($topic_arr);
+        $grid->topic_id('专题')->using($topic_arr)->filter($topic_arr);
         // $grid->position('ID')->display(function($id) { //editable
         //     return $topic_arr[$k];
         // });
+        $author_arr = collect([0=>'无'])->union(Author::where('appid', '=', Admin::user()->id)->get()->pluck('name', 'id'))->all();        
+        $grid->author_id('作者')->using($author_arr)->filter($author_arr);
 
-        $grid->title('标题');
-        $grid->author()->name('作者');
-        $grid->view('浏览量')->sortable();
-        $grid->liked('喜欢人数')->sortable();
+        
+
+        $grid->view('浏览量')->sortable()->totalRow();
+        $grid->liked('喜欢人数')->sortable()->totalRow();
         // $grid->commented('评论数');
-        $grid->state('状态')->switch();
+        $grid->state('状态')->switch()->filter([
+            0 => '无效',
+            1 => '有效',
+        ]);
         $grid->recommend_at('推荐截止');
         // $grid->created_at('Created at');
         // $grid->updated_at('Updated at');
 
-        $grid->filter(function($filter){
+        $grid->filter(function($filter) use($author_arr,$topic_arr) {
             $filter->like('title', '标题');
-            $author_arr = collect([0=>'无'])->merge(Author::all()->pluck('name', 'id'))->all();
+            // $author_arr = collect([0=>'无'])->merge(Author::all()->pluck('name', 'id'))->all();
             $filter->equal('author_id','作者')->select($author_arr);
+            $filter->equal('topic_id','专题')->select($topic_arr);
         });
         return $grid;
     }

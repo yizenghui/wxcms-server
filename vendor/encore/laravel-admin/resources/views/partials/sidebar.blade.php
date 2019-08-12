@@ -15,6 +15,7 @@
             </div>
         </div>
 
+        @if(config('admin.enable_menu_search'))
         <!-- search form (Optional) -->
         <form class="sidebar-form" style="overflow: initial;" onsubmit="return false;">
             <div class="input-group">
@@ -26,13 +27,14 @@
                 <ul class="dropdown-menu" role="menu" style="min-width: 210px;max-height: 300px;overflow: auto;">
                     @foreach(Admin::menuLinks() as $link)
                     <li>
-                        <a href="{{ admin_base_path($link['uri']) }}"><i class="fa {{ $link['icon'] }}"></i>{{ $link['title'] }}</a>
+                        <a href="{{ admin_base_path($link['uri']) }}"><i class="fa {{ $link['icon'] }}"></i>{{ admin_trans($link['title']) }}</a>
                     </li>
                     @endforeach
                 </ul>
             </div>
         </form>
         <!-- /.search form -->
+        @endif
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">

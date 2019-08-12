@@ -5,6 +5,7 @@ namespace Encore\Admin\Grid\Tools;
 use Encore\Admin\Grid\Column;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class TotalRow extends AbstractTool
 {
@@ -17,6 +18,11 @@ class TotalRow extends AbstractTool
      * @var array
      */
     protected $columns;
+
+    /**
+     * @var Collection
+     */
+    protected $visibleColumns;
 
     /**
      * TotalRow constructor.
@@ -39,7 +45,7 @@ class TotalRow extends AbstractTool
      *
      * @return mixed
      */
-    protected function total($column, $display)
+    protected function total($column, $display = null)
     {
         if (!is_callable($display) && !is_null($display)) {
             return $display;
@@ -55,19 +61,46 @@ class TotalRow extends AbstractTool
     }
 
     /**
+     * @param Collection $columns
+     */
+    public function setVisibleColumns($columns)
+    {
+        $this->visibleColumns = $columns;
+    }
+
+    /**
+     * @return Collection|static
+     */
+    public function getVisibleColumns()
+    {
+        if ($this->visibleColumns) {
+            return $this->visibleColumns;
+        }
+
+        return $this->getGrid()->visibleColumns();
+    }
+
+    /**
      * Render total-row.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render()
     {
-        $columns = $this->getGrid()->columns()->flatMap(function (Column $column) {
+        $columns = $this->getVisibleColumns()->map(function (Column $column) {
             $name = $column->getName();
 
-            $total = ($display = Arr::get($this->columns, $name)) ? $this->total($name, $display) : '';
+            $total = '';
 
-            return [$name => $total];
-        })->toArray();
+            if (Arr::has($this->columns, $name)) {
+                $total = $this->total($name, Arr::get($this->columns, $name));
+            }
+
+            return [
+                'class' => $column->getClassName(),
+                'value' => $total,
+            ];
+        });
 
         return view('admin::grid.total-row', compact('columns'));
     }

@@ -13,16 +13,6 @@
 
 <p align="center">Socialite is an OAuth2 Authentication tool. It is inspired by <a href="https://github.com/laravel/socialite">laravel/socialite</a>, You can easily use it in any PHP project.</p>
 
-
-<p align="center">
-  <br>
-  <b>创造不息，交付不止</b>
-  <br>
-  <a href="https://www.yousails.com">
-    <img src="https://yousails.com/banners/brand.png" width=350>
-  </a>
-</p>
-
 # Requirement
 
 ```
@@ -92,9 +82,9 @@ $user->getProviderName(); // GitHub
 
 Now we support the following sites:
 
-`facebook`, `github`, `google`, `linkedin`, `outlook`, `weibo`, `qq`, `wechat`, `douyin`, and `douban`.
+`facebook`, `github`, `google`, `linkedin`, `outlook`, `weibo`, `taobao`, `qq`, `wechat`, `douyin`, and `douban`.
 
-Each drive uses the same configuration keys: `client_id`, `client_secret`, `redirect`.
+Each driver uses the same configuration keys: `client_id`, `client_secret`, `redirect`.
 
 Example:
 ```
@@ -119,7 +109,7 @@ $response = $socialite->driver('github')
 
 ### Redirect URL
 
-You may also want to dynamic set `redirect`，you can use the following methods to change the `redirect` URL:
+You may also want to dynamicly set `redirect`，you can use the following methods to change the `redirect` URL:
 
 ```php
 $socialite->redirect($url);
@@ -175,7 +165,7 @@ $user = $socialite->driver('weibo')->user();
 }
 ```
 
-You can fetch the user attribute as a array key like this:
+You can fetch the user attribute as a array keys like these:
 
 ```php
 $user['id'];        // 1472352
@@ -185,7 +175,7 @@ $user['email'];     // "anzhengchao@gmail.com"
 ...
 ```
 
-Or using method:
+Or using the method:
 
 ```php
 $user->getId();
@@ -233,7 +223,7 @@ Or set request to `SocialiteManager` instance:
 $socialite->setRequest($request);
 ```
 
-You can get the request from `SocialiteManager` instance by `getRequest()`:
+You can get the request from the `SocialiteManager` instance by `getRequest()`:
 
 ```php
 $request = $socialite->getRequest();
@@ -241,7 +231,7 @@ $request = $socialite->getRequest();
 
 #### Set custom session manager.
 
-By default, the `SocialiteManager` use `Symfony\Component\HttpFoundation\Session\Session` instance as session manager, you can change it as following lines:
+By default, the `SocialiteManager` uses the `Symfony\Component\HttpFoundation\Session\Session` instance as session manager, you can change it as follows:
 
 ```php
 $session = new YourCustomSessionManager();
@@ -264,6 +254,12 @@ Enjoy it! :heart:
 - [微信开放平台 - 代公众号发起网页授权](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318590&token=&lang=zh_CN)
 - [豆瓣 - OAuth 2.0 授权机制说明](http://developers.douban.com/wiki/?title=oauth2)
 - [抖音 - 网站应用开发指南](http://open.douyin.com/platform/doc)
+
+## PHP 扩展包开发
+
+> 想知道如何从零开始构建 PHP 扩展包？
+>
+> 请关注我的实战课程，我会在此课程中分享一些扩展开发经验 —— [《PHP 扩展包实战教程 - 从入门到发布》](https://learnku.com/courses/creating-package)
 
 # License
 

@@ -234,6 +234,12 @@ return [
     */
     'skin' => 'skin-purple',
 
+    'enable_menu_search'=>false,
+
+    'top_alert'=>false,//'系统升级提醒：系统将在2月13号进行维护升级，预计2月14号完成升级。',
+    // 行内操作按钮
+    'grid_action_class' => \Encore\Admin\Grid\Displayers\DropdownActions::class,
+
     /*
     |--------------------------------------------------------------------------
     | Application layout

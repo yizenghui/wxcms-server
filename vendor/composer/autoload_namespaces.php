@@ -7,9 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'UpdateHelper\\' => array($vendorDir . '/kylekatarnls/update-helper/src'),
-    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
 );

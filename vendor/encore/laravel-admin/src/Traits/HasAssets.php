@@ -12,12 +12,27 @@ trait HasAssets
     /**
      * @var array
      */
+    public static $deferredScript = [];
+
+    /**
+     * @var array
+     */
+    public static $style = [];
+
+    /**
+     * @var array
+     */
     public static $css = [];
 
     /**
      * @var array
      */
     public static $js = [];
+
+    /**
+     * @var array
+     */
+    public static $html = [];
 
     /**
      * @var array
@@ -173,16 +188,51 @@ trait HasAssets
 
     /**
      * @param string $script
+     * @param bool   $deferred
      *
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public static function script($script = '')
+    public static function script($script = '', $deferred = false)
     {
         if (!empty($script)) {
+            if ($deferred) {
+                return self::$deferredScript = array_merge(self::$deferredScript, (array) $script);
+            }
+
             return self::$script = array_merge(self::$script, (array) $script);
         }
 
-        return view('admin::partials.script', ['script' => array_unique(self::$script)]);
+        $script = array_unique(array_merge(static::$script, static::$deferredScript));
+
+        return view('admin::partials.script', compact('script'));
+    }
+
+    /**
+     * @param string $style
+     *
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public static function style($style = '')
+    {
+        if (!empty($style)) {
+            return self::$style = array_merge(self::$style, (array) $style);
+        }
+
+        return view('admin::partials.style', ['style' => array_unique(self::$style)]);
+    }
+
+    /**
+     * @param string $html
+     *
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public static function html($html = '')
+    {
+        if (!empty($html)) {
+            return self::$html = array_merge(self::$html, (array) $html);
+        }
+
+        return view('admin::partials.html', ['html' => array_unique(self::$html)]);
     }
 
     /**

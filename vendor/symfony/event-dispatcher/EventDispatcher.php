@@ -50,19 +50,17 @@ class EventDispatcher implements EventDispatcherInterface
      */
     public function dispatch($event/*, string $eventName = null*/)
     {
-        $eventName = 1 < \func_num_args() ? \func_get_arg(1) : null;
+        $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
 
         if (\is_object($event)) {
             $eventName = $eventName ?? \get_class($event);
-        } else {
-            @trigger_error(sprintf('Calling the "%s::dispatch()" method with the event name as first argument is deprecated since Symfony 4.3, pass it second and provide the event object first instead.', EventDispatcherInterface::class), E_USER_DEPRECATED);
+        } elseif (\is_string($event) && (null === $eventName || $eventName instanceof Event)) {
+            @trigger_error(sprintf('Calling the "%s::dispatch()" method with the event name as the first argument is deprecated since Symfony 4.3, pass it as the second argument and provide the event object as the first argument instead.', EventDispatcherInterface::class), E_USER_DEPRECATED);
             $swap = $event;
             $event = $eventName ?? new Event();
             $eventName = $swap;
-
-            if (!$event instanceof Event) {
-                throw new \TypeError(sprintf('Argument 1 passed to "%s::dispatch()" must be an instance of %s, %s given.', EventDispatcherInterface::class, Event::class, \is_object($event) ? \get_class($event) : \gettype($event)));
-            }
+        } else {
+            throw new \TypeError(sprintf('Argument 1 passed to "%s::dispatch()" must be an object, %s given.', EventDispatcherInterface::class, \is_object($event) ? \get_class($event) : \gettype($event)));
         }
 
         if (null !== $this->optimized && null !== $eventName) {
