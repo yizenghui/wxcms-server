@@ -133,7 +133,7 @@ class AuthController extends BaseAuthController
                 $form->number('app.point_reward_action', '签到激励积分')->default(0);
                 $form->number('app.point_author_article_reward_action', '作者文章被激励积分')->default(0)->help('需要给作者绑定激励式视频广告id');
         
-                $form->divide();
+                // $form->divide();
                 $form->switch('app.point_repeated_incentives', '重复激励文章奖励')->states($states)->default(0);
                 $form->number('app.point_reward_article_action', '激励文章积分')->default(0);
                 $form->number('app.point_day_reward_article_num', '激励文章次数')->default(0);

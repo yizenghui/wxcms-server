@@ -8,6 +8,7 @@ use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\InfoBox;
+use Encore\Admin\Widgets\Collapse;
 use Encore\Admin\Widgets\Box;
 use App\Models\Fan;
 use App\Models\Order;
@@ -78,29 +79,37 @@ class HomeController extends Controller
                 $content->body(new Box('尊敬的'.$vip_status_arr[$app->vip_status].'您好','欢迎您的到来。'));
             }
 
+            $collapse = new Collapse();
+
             $code_url = "/wxoauth/code?appid=".$app->tid;
-            $content ->row(function (Row $row) use($code_url) {
-                $row->column(4, function (Column $column) use($code_url) {
-                    $column->append(
-                        new Box(
-                        '代发布小程序代码', 
-                        '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a target="_blank" href="'.$code_url.'">小程序代码管理</a>'
-                        )
-                    );
-                });
-                $row->column(4, function (Column $column) {
-                    $column->append(new Box(
-                        '自行发布小程序代码', 
-                        '如果您需要自行修改并发布小程序代码，可以下载小程序源码进行修改和发布。 <a target="_blank" href="https://github.com/yizenghui/wecontr">https://github.com/yizenghui/wecontr</a> '
-                        ));
-                });
-                $row->column(4, function (Column $column) {
-                    $column->append(new Box(
-                        '高级服务', 
-                        '可提供满足高访问需求的独立服务器和订制定制开发服务，欢迎咨询。'
-                        ));
-                });
-            });
+            $collapse->add('快速发布', '填写AppID(<a href="/admin/auth/setting#tab-form-1">前往设置</a>)后，您可以授权WeContr发布小程序代码。<a target="_blank" href="'.$code_url.'">小程序代码管理</a>');
+            $collapse->add('下载代码', '您可以下载小程序源码进行修改和发布。 <a target="_blank" href="https://github.com/yizenghui/wecontr">https://github.com/yizenghui/wecontr</a>');
+            $collapse->add('高级服务', '如需提供满足高访问需求的独立服务器和订制定制开发服务，欢迎咨询。');
+
+            $content->body($collapse);
+
+            // $content ->row(function (Row $row) use($code_url) {
+            //     $row->column(4, function (Column $column) use($code_url) {
+            //         $column->append(
+            //             new Box(
+            //             '代发布小程序代码', 
+            //             '填写AppID和AppSecret后<a href="/admin/auth/setting#tab-form-2">前往设置</a>，您可以通过第三方代发布小程序代码的方式快速上传发布小程序代码。<a target="_blank" href="'.$code_url.'">小程序代码管理</a>'
+            //             )
+            //         );
+            //     });
+            //     $row->column(4, function (Column $column) {
+            //         $column->append(new Box(
+            //             '自行发布小程序代码', 
+            //             '如果您需要自行修改并发布小程序代码，可以下载小程序源码进行修改和发布。 <a target="_blank" href="https://github.com/yizenghui/wecontr">https://github.com/yizenghui/wecontr</a> '
+            //             ));
+            //     });
+            //     $row->column(4, function (Column $column) {
+            //         $column->append(new Box(
+            //             '', 
+            //             '可提供满足高访问需求的独立服务器和订制定制开发服务，欢迎咨询。'
+            //             ));
+            //     });
+            // });
             
         }else{
             $content->body(new Box('接入提醒', '尊敬的用户您好，请先完成小程序配置！<a href="/admin/auth/setting#tab-form-2">前往设置</a>'));

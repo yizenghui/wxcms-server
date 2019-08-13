@@ -104,6 +104,14 @@ class AuthorController extends Controller
         $grid->filter(function($filter){
             $filter->like('name', '作者名');
         });
+        // $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
+        //     $create->text('name', '名称')->default('xx');
+        //     $create->text('appid')->default(Admin::user()->id); // 要有appid才行
+        //     $create->select('state', '状态')->options([
+        //         1 => '展示',
+        //         0 => '屏蔽',
+        //     ])->default(1);
+        // });
         return $grid;
     }
 
@@ -186,7 +194,7 @@ class AuthorController extends Controller
         $form->hidden('appid')->default(Admin::user()->id);
         
         $form->text('name','作者名');
-        $form->number('user_id','粉丝ID')->default(0)->help('为该绑定粉丝ID');
+        $form->number('user_id','粉丝ID')->default(0)->help('为作者绑定粉丝ID');
         $form->cropper('reward_qrcode','赞赏码')->help('您可以上传作者的赞赏码，用于小程序文章详情页赞赏功能。（获取：微信 》收付款 》赞赏码 》保存）');
         // $form->cropper('avatar','头像');
         $form->textarea('intro','描述');
