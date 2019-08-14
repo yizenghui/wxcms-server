@@ -19,6 +19,11 @@ use App\Models\PointLog;
 use App\Models\Visitor;
 use Carbon\Carbon;
 use Admin;
+use App\Admin\Forms\Setting;
+use App\Admin\Forms\FastImportArticle\Resource;
+use App\Admin\Forms\FastImportArticle\Post;
+use Encore\Admin\Widgets\Tab;
+use Encore\Admin\Widgets\MultipleSteps;
 
 class HomeController extends Controller
 {
@@ -68,9 +73,14 @@ class HomeController extends Controller
             });
         }
 
+        $forms = [
+            'resource'    => Resource::class,
+            'post'     => Post::class,
+        ];
 
-
+        $content->body(MultipleSteps::make($forms));
         
+        // $content->body(new Resource());
         if($app){
             
             if($app->isvip){

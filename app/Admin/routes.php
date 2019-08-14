@@ -16,6 +16,7 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->get('article/createInitData', 'ArticleController@createInitData');
 
+    $router->get('article/quickcreate', 'ArticleController@quickCreate');
     $router->resource('article', ArticleController::class);
     $router->resource('author', AuthorController::class);
     $router->resource('topic', TopicController::class);

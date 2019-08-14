@@ -17,6 +17,10 @@ use Encore\Admin\Widgets\Tab;
 use Illuminate\Support\MessageBag;
 use Admin;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use App\Admin\Actions\Article\QuickRelease;
+use Encore\Admin\Widgets\MultipleSteps;
+use App\Admin\Forms\FastImportArticle\Resource;
+use App\Admin\Forms\FastImportArticle\Post;
 
 class ArticleController extends Controller
 {
@@ -128,6 +132,11 @@ class ArticleController extends Controller
             $filter->equal('author_id','作者')->select($author_arr);
             $filter->equal('topic_id','专题')->select($topic_arr);
         });
+
+        $grid->tools(function (Grid\Tools $tools) {
+            $tools->append(new QuickRelease());
+        });
+        
         return $grid;
     }
 
@@ -290,7 +299,16 @@ class ArticleController extends Controller
     }
 
 
-    
+    public function quickCreate(Content $content){
+        
+        $forms = [
+            'resource'    => Resource::class,
+            'post'     => Post::class,
+        ];
+
+        $content->body(MultipleSteps::make($forms));
+        return $content;
+    }
     // 创建初始数据
     public function createInitData(Content $content){
         $appid = Admin::user()->id;
