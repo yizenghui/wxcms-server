@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'tomarkdownapi' => env('TO_MARKDOWN_API', 'http://localhost:1323/api/md?url='),
+    // http://localhost:1323 
+    'tomarkdownapi' => env('TO_MARKDOWN_API', 'http://39.108.89.44:1323/api/md?url='),
 
 
 ];

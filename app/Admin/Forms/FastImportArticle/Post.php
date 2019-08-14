@@ -5,6 +5,7 @@ namespace App\Admin\Forms\FastImportArticle;
 use Encore\Admin\Widgets\StepForm;
 use Illuminate\Http\Request;
 use Admin;
+use App\Models\Article;
 
 class Post extends StepForm
 {
@@ -24,11 +25,28 @@ class Post extends StepForm
      */
     public function handle(Request $request)
     {
-        dd($request->all());
+        $appid = $request->get('appid');
+        if( Admin::user()->id !== $appid && !Admin::user()->isAdministrator() ){
+            admin_error('出错了.');
+            return back();
+        }
 
-        admin_success('Processed successfully.');
+        $data = [
+            'appid'=>$request->get('appid'),
+            'title'=>$request->get('title'),
+            'body'=>$request->get('body'),
+            'topic_id'=>0,
+            'author_id'=>0,
+            'state'=>1,
+            'comment_status'=>0,
+        ];
 
-        return back();
+        $newArticle = Article::create($data);
+        admin_success('已快速创建文章，您可以基于此进行二次修改。');
+
+        $this->clear();
+
+        return redirect('/admin/article/'.$newArticle->id.'/edit');
     }
 
     /**
