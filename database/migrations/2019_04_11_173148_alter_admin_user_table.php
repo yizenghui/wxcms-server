@@ -21,11 +21,11 @@ class AlterAdminUserTable extends Migration
      */
     public function up()
     {
-        // Schema::table(config('admin.database.users_table'), function(Blueprint $table) {
-        //     $table->string('username', 190)->nullable()->change();
-        //     $table->string('email', 190)->after('username');//->unique();
-        //     $table->timestamp('email_verified_at')->after('updated_at')->nullable();
-        // });
+        Schema::table(config('admin.database.users_table'), function(Blueprint $table) {
+            $table->string('username', 190)->nullable()->change();
+            $table->string('email', 190)->after('username');//->unique();
+            $table->timestamp('email_verified_at')->after('updated_at')->nullable();
+        });
 
         Schema::create('admin_password_resets', function (Blueprint $table) {
             $table->string('email')->index();
@@ -47,11 +47,11 @@ class AlterAdminUserTable extends Migration
      */
     public function down()
     {
-        // Schema::table(config('admin.database.users_table'), function(Blueprint $table) {
-        //     $table->dropColumn('email');
-        //     $table->dropColumn('email_verified_at');
-        //     $table->integer('username');
-        // });
+        Schema::table(config('admin.database.users_table'), function(Blueprint $table) {
+            $table->dropColumn('email');
+            $table->dropColumn('email_verified_at');
+            $table->integer('username');
+        });
 
         Schema::dropIfExists('admin_password_resets');
         Schema::dropIfExists('admin_user_verifications');

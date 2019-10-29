@@ -79,11 +79,11 @@ class RegistrationServiceProvider extends ServiceProvider
 
         Route::group($attributes, __DIR__ . '/../routes/web.php');
 
-        Registration::routes(function ($router) {
-            $router->get('auth/setting', SettingController::class.'@getSetting')->name('admin.setting');
-            $router->put('auth/setting', SettingController::class.'@putSetting');
-            $router->resource('auth/users', UserController::class);
-        });
+        // Registration::routes(function ($router) {
+        //     $router->get('auth/setting', SettingController::class.'@getSetting')->name('admin.setting');
+        //     $router->put('auth/setting', SettingController::class.'@putSetting');
+        //     $router->resource('auth/users', UserController::class);
+        // });
     }
 
     public function register()
