@@ -17,16 +17,39 @@
 			<p class="description">小程序代码控制</p>
 			
 
+			
+			<p>
+				操作流程说明
+				<ol>
+				<li>提交您的代码</li>
+				<li>在后台添加基础数据</li>
+				<li>扫描二维码体验小程序</li>
+				<li>提交审核</li>
+				<li>审核通过后,发布小程序</li>
+				</ol>
+			</p>
+			<a class="button" href="/admin" title="WeContr管理后台">进入后台</a>
+			
+
 			<p>
 				WeContr 小程序版本 v{{$master_version}}
 			</p>
 
-			<p>
-				您当前小程序版本 v{{$current_version}} (当前发布版本 v{{$release_version?$release_version:'未发布'}}</a>) <br>
-				<img style="width:180px;" src="{{$qrcode}}" />  <br>
-				扫码体验(邀请非管理员体验请在微信小程序官方后台添加用户及权限)
-			</p>
+			@if($current_version)
+
+				<p>
+					您当前小程序版本 v{{$current_version}} (当前发布版本 v{{$release_version?$release_version:'未发布'}}</a>) <br>
+					<img style="width:180px;" src="{{$qrcode}}" />  <br>
+					扫码体验(邀请非管理员体验请在微信小程序官方后台添加用户及权限)
+				</p>
+				@else
+				<p>
+					请点击提交代码后扫二维码体验。
+				</p>
+			@endif
 			
+
+
 			@if($master_version != $current_version)
 
 			@endif
@@ -41,17 +64,6 @@
 			<a class="button" href="/wxoauth/releaseCode?appid={{$app->tid}}" >发布代码(全量)</a>
 			<br>
 	
-			<p>
-				操作流程说明
-				<ol>
-				<li>提交您的代码</li>
-				<li>在后台添加基础数据</li>
-				<li>扫描二维码体验小程序</li>
-				<li>提交审核</li>
-				<li>审核通过后,发布小程序</li>
-				</ol>
-			</p>
-			<a class="button" href="/admin" title="WeContr管理后台">进入后台</a>
 			<p>
 				如有疑问，请咨询客服QQ：121258121(在线时间14:00~22:00)
 			</p>
