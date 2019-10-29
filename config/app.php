@@ -182,7 +182,7 @@ return [
         // zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
         Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
 
-        HyanCat\DirectMail\AliyunDirectMailServiceProvider::class,
+       // HyanCat\DirectMail\AliyunDirectMailServiceProvider::class,
 
     ],
 
