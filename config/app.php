@@ -181,6 +181,9 @@ return [
         Overtrue\LaravelFollow\FollowServiceProvider::class,
         // zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
         Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
+
+        HyanCat\DirectMail\AliyunDirectMailServiceProvider::class,
+
     ],
 
     /*

@@ -20,8 +20,8 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
@@ -29,6 +29,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'f0e7e63bbb278a92db02393536748c5f' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Support/Helpers.php',
         '6747f579ad6817f318cc3a7e7a0abb93' => __DIR__ . '/..' . '/overtrue/wechat/src/Kernel/Helpers.php',
+        '5e8fe2a5ffaded85af682684fe3bbf5a' => __DIR__ . '/..' . '/mews/captcha/src/helpers.php',
         '72b1e3f4a2af9b30b3f137b3ec2057fc' => __DIR__ . '/..' . '/spatie/laravel-activitylog/src/helpers.php',
         'd7354eb4c8441fbf08eec280b61c7c73' => __DIR__ . '/..' . '/rachidlaasri/laravel-installer/src/Helpers/functions.php',
         '67969b779fc2b57b79f39cdaef36a10e' => __DIR__ . '/..' . '/yab/laravel-scout-mysql-driver/src/helpers.php',
@@ -141,6 +142,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'M' => 
         array (
             'Monolog\\' => 8,
+            'Mews\\Captcha\\' => 13,
         ),
         'L' => 
         array (
@@ -163,6 +165,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         ),
         'H' => 
         array (
+            'HyanCat\\DirectMail\\' => 19,
             'Hashids\\' => 8,
         ),
         'G' => 
@@ -182,6 +185,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             'Encore\\Simplemde\\' => 17,
             'Encore\\Cropper\\' => 15,
+            'Encore\\Admin\\Registration\\' => 26,
             'Encore\\Admin\\RedisManager\\' => 26,
             'Encore\\Admin\\Helpers\\' => 21,
             'Encore\\Admin\\' => 13,
@@ -474,6 +478,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'Mews\\Captcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mews/captcha/src',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
@@ -514,6 +522,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
+        'HyanCat\\DirectMail\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hyancat/aliyun-direct-mail/src',
+        ),
         'Hashids\\' => 
         array (
             0 => __DIR__ . '/..' . '/hashids/hashids/src',
@@ -553,6 +565,10 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Encore\\Cropper\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel-admin-ext/cropper/src',
+        ),
+        'Encore\\Admin\\Registration\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel-admin-ext/registration/src',
         ),
         'Encore\\Admin\\RedisManager\\' => 
         array (
@@ -653,6 +669,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
     );
 
     public static $classMap = array (
+        'App\\Admin\\Actions\\Article\\QuickRelease' => __DIR__ . '/../..' . '/app/Admin/Actions/Article/QuickRelease.php',
         'App\\Admin\\Controllers\\AdController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AdController.php',
         'App\\Admin\\Controllers\\AppController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AppController.php',
         'App\\Admin\\Controllers\\ArticleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ArticleController.php',
@@ -672,6 +689,9 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'App\\Admin\\Controllers\\ShareController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ShareController.php',
         'App\\Admin\\Controllers\\TopicController' => __DIR__ . '/../..' . '/app/Admin/Controllers/TopicController.php',
         'App\\Admin\\Controllers\\VisitorController' => __DIR__ . '/../..' . '/app/Admin/Controllers/VisitorController.php',
+        'App\\Admin\\Forms\\FastImportArticle\\Post' => __DIR__ . '/../..' . '/app/Admin/Forms/FastImportArticle/Post.php',
+        'App\\Admin\\Forms\\FastImportArticle\\Resource' => __DIR__ . '/../..' . '/app/Admin/Forms/FastImportArticle/Resource.php',
+        'App\\Admin\\Forms\\Setting' => __DIR__ . '/../..' . '/app/Admin/Forms/Setting.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Contracts\\Commentable' => __DIR__ . '/../..' . '/app/Contracts/Commentable.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -1737,6 +1757,23 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Encore\\Admin\\RedisManager\\RedisController' => __DIR__ . '/..' . '/laravel-admin-ext/redis-manager/src/RedisController.php',
         'Encore\\Admin\\RedisManager\\RedisManager' => __DIR__ . '/..' . '/laravel-admin-ext/redis-manager/src/RedisManager.php',
         'Encore\\Admin\\RedisManager\\RedisManagerServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/redis-manager/src/RedisManagerServiceProvider.php',
+        'Encore\\Admin\\Registration\\Events\\Verified' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Events/Verified.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\ForgotPasswordController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/ForgotPasswordController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\LoginController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/LoginController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\RegisterController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/RegisterController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\ResetPasswordController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/ResetPasswordController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\SettingController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/SettingController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\UserController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/UserController.php',
+        'Encore\\Admin\\Registration\\Http\\Controllers\\VerificationController' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Controllers/VerificationController.php',
+        'Encore\\Admin\\Registration\\Http\\Middleware\\AdminGuest' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Middleware/AdminGuest.php',
+        'Encore\\Admin\\Registration\\Http\\Middleware\\EnsureEmailIsVerified' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Middleware/EnsureEmailIsVerified.php',
+        'Encore\\Admin\\Registration\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Http/Middleware/ValidateSignature.php',
+        'Encore\\Admin\\Registration\\MustVerifyEmail' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/MustVerifyEmail.php',
+        'Encore\\Admin\\Registration\\Notifications\\ResetPassword' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Notifications/ResetPassword.php',
+        'Encore\\Admin\\Registration\\Notifications\\VerifyEmail' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Notifications/VerifyEmail.php',
+        'Encore\\Admin\\Registration\\Registration' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/Registration.php',
+        'Encore\\Admin\\Registration\\RegistrationServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/RegistrationServiceProvider.php',
+        'Encore\\Admin\\Registration\\User' => __DIR__ . '/..' . '/laravel-admin-ext/registration/src/User.php',
         'Encore\\Admin\\Show' => __DIR__ . '/..' . '/encore/laravel-admin/src/Show.php',
         'Encore\\Admin\\Show\\AbstractField' => __DIR__ . '/..' . '/encore/laravel-admin/src/Show/AbstractField.php',
         'Encore\\Admin\\Show\\Divider' => __DIR__ . '/..' . '/encore/laravel-admin/src/Show/Divider.php',
@@ -2242,6 +2279,7 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'GuzzleHttp\\Exception\\ClientException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ClientException.php',
         'GuzzleHttp\\Exception\\ConnectException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ConnectException.php',
         'GuzzleHttp\\Exception\\GuzzleException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/GuzzleException.php',
+        'GuzzleHttp\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/InvalidArgumentException.php',
         'GuzzleHttp\\Exception\\RequestException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/RequestException.php',
         'GuzzleHttp\\Exception\\SeekException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/SeekException.php',
         'GuzzleHttp\\Exception\\ServerException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ServerException.php',
@@ -2372,6 +2410,8 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'Hashids\\HashidsException' => __DIR__ . '/..' . '/hashids/hashids/src/HashidsException.php',
         'Hashids\\HashidsInterface' => __DIR__ . '/..' . '/hashids/hashids/src/HashidsInterface.php',
         'Hashids\\Math' => __DIR__ . '/..' . '/hashids/hashids/src/Math.php',
+        'HyanCat\\DirectMail\\AliyunDirectMailServiceProvider' => __DIR__ . '/..' . '/hyancat/aliyun-direct-mail/src/AliyunDirectMailServiceProvider.php',
+        'HyanCat\\DirectMail\\DirectMailTransport' => __DIR__ . '/..' . '/hyancat/aliyun-direct-mail/src/DirectMailTransport.php',
         'Illuminate\\Auth\\Access\\AuthorizationException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/AuthorizationException.php',
         'Illuminate\\Auth\\Access\\Gate' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/Gate.php',
         'Illuminate\\Auth\\Access\\HandlesAuthorization' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/HandlesAuthorization.php',
@@ -3485,6 +3525,11 @@ class ComposerStaticInit72c88c1613208849d9d62159436dd64d
         'League\\Flysystem\\Util\\ContentListingFormatter' => __DIR__ . '/..' . '/league/flysystem/src/Util/ContentListingFormatter.php',
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
+        'Mews\\Captcha\\Captcha' => __DIR__ . '/..' . '/mews/captcha/src/Captcha.php',
+        'Mews\\Captcha\\CaptchaController' => __DIR__ . '/..' . '/mews/captcha/src/CaptchaController.php',
+        'Mews\\Captcha\\CaptchaServiceProvider' => __DIR__ . '/..' . '/mews/captcha/src/CaptchaServiceProvider.php',
+        'Mews\\Captcha\\Facades\\Captcha' => __DIR__ . '/..' . '/mews/captcha/src/Facades/Captcha.php',
+        'Mews\\Captcha\\LumenCaptchaController' => __DIR__ . '/..' . '/mews/captcha/src/LumenCaptchaController.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\Legacy\\TestListenerForV5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/Legacy/TestListenerForV5.php',
         'Mockery\\Adapter\\Phpunit\\Legacy\\TestListenerForV6' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/Legacy/TestListenerForV6.php',
