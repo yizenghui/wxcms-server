@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Encore\Admin\Auth\Database\Administrator;
 
-class Admin extends Administrator
+class Admin extends \Encore\Admin\Registration\User
 {
 
     public function app()
