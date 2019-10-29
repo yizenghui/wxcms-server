@@ -46,7 +46,7 @@ class RegistrationServiceProvider extends ServiceProvider
             ], 'registration');
         }
 
-        // $this->registerRoutes();
+        $this->registerRoutes();
 
         $this->overrideAdminConfiguration();
 
@@ -80,9 +80,9 @@ class RegistrationServiceProvider extends ServiceProvider
         Route::group($attributes, __DIR__ . '/../routes/web.php');
 
         Registration::routes(function ($router) {
-            $router->get('auth/setting', SettingController::class.'@getSetting')->name('admin.setting');
-            $router->put('auth/setting', SettingController::class.'@putSetting');
-            $router->resource('auth/users', UserController::class);
+            // $router->get('auth/setting', SettingController::class.'@getSetting')->name('admin.setting');
+            // $router->put('auth/setting', SettingController::class.'@putSetting');
+            // $router->resource('auth/users', UserController::class);
         });
     }
 
