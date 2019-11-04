@@ -93,6 +93,7 @@ class AppRepository {
         'score_type' => $app->point_score_type, // 积分类型标题
         'score_ratio' => $app->point_score_ratio, // 积分前后台比值
         'template_topic'=>$app->template_topic?$app->template_topic:'green', // 默认绿色主题
+        'show_poster_btn'=>$app->show_poster_btn,
         ];
         return $config;
     }

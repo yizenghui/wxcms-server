@@ -113,6 +113,7 @@ class AuthController extends BaseAuthController
                 $form->switch('app.point_logs_status', '积分记录')->states($states)->default(0);
                 $form->switch('app.follow_status', '展示关注组件')->states($states)->default(0)->help('在小程序内展示对同一主体公众号有效的关注组件 <a target="_blank" href="https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html">文档</a>');
             }
+            $form->switch('app.show_poster_btn', '文章海报按钮')->states($states)->default(0);
             $form->text('app.jump_adpage', '分享图跳转广告页地址')->placeholder('/pages/index/index?fromid={$fromid}')->help('支持替换参数{$fromid} (发起分享粉丝id)');
             $form->image('app.jump_background', '分享图跳转广告页背景')->uniqueName()->help('请选择手机竖屏图片(加载页背景图，从文章详情页生成二维码访问时出现)');
             

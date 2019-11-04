@@ -176,6 +176,7 @@ class AuthController extends Controller
     $success['template_topic'] = $config['template_topic']; // 模板主题
     $success['follow_status'] = $config['follow_status']; // 小程序首页、文章详情页显示公众号关注组件
     $success['app_id'] = $config['app_id']; // 传app_id下去
+    $success['show_poster_btn'] = $config['show_poster_btn'];
     return response()->json($success);
   }
 
