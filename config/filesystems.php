@@ -74,7 +74,7 @@ return [
             'access_key' => env('QINIU_ACCESS_KEY', 'ju5Jhukr3xSn3Fjs0epF7xh0U5yfmXRl1sxUgFJL'),
             'secret_key' => env('QINIU_SECRET_KEY', 'xYF5q64uGDh3V-NR_oOFSLE2c0moo-3CQ99cKDm0'),
             'bucket'     => env('QINIU_BUCKET', 'wxcms'),
-            'domain'     => env('QINIU_DOMAIN', 'https://wx1.wechatrank.com'), // or host: https://xxxx.clouddn.com
+            'domain'     => env('QINIU_DOMAIN', 'http://wx1.wechatrank.com'), // or host: https://xxxx.clouddn.com
          ],
         // 'qiniu' => [
         //     'driver'  => 'qiniu',
