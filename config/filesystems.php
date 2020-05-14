@@ -71,20 +71,20 @@ return [
         ],
         'qiniu' => [
             'driver'     => 'qiniu',
-            'access_key' => env('QINIU_ACCESS_KEY', 'ju5Jhukr3xSn3Fjs0epF7xh0U5yfmXRl1sxUgFJL'),
-            'secret_key' => env('QINIU_SECRET_KEY', 'xYF5q64uGDh3V-NR_oOFSLE2c0moo-3CQ99cKDm0'),
-            'bucket'     => env('QINIU_BUCKET', 'wxcms'),
-            'domain'     => env('QINIU_DOMAIN', 'http://wx1.wechatrank.com'), // or host: https://xxxx.clouddn.com
+            'access_key' => env('QINIU_ACCESS_KEY', 'ju5Jhuk***********mXRl1sxUgFJL'),
+            'secret_key' => env('QINIU_SECRET_KEY', 'xYF5q64***************-3CQ99cKDm0'),
+            'bucket'     => env('QINIU_BUCKET', 'w****s'),
+            'domain'     => env('QINIU_DOMAIN', 'http://wx1.********.com'), // or host: https://xxxx.clouddn.com
          ],
         // 'qiniu' => [
         //     'driver'  => 'qiniu',
         //     'domains' => [
-        //         'https'     => 'wx1.wechatrank.com',         //你的HTTPS域名
-        //         'default'   => 'wx1.wechatrank.com', //你的七牛域名
-        //         'custom'    => 'wx1.wechatrank.com',                //你的自定义域名
+        //         'https'     => 'wx1.******.com',         //你的HTTPS域名
+        //         'default'   => 'wx1.*******.com', //你的七牛域名
+        //         'custom'    => 'wx1.*********.com',                //你的自定义域名
         //      ],
-        //     'access_key'=> 'ju5Jhukr3xSn3Fjs0epF7xh0U5yfmXRl1sxUgFJL',  //AccessKey
-        //     'secret_key'=> 'xYF5q64uGDh3V-NR_oOFSLE2c0moo-3CQ99cKDm0',  //SecretKey
+        //     'access_key'=> 'ju5Jhuk****************Rl1sxUgFJL',  //AccessKey
+        //     'secret_key'=> 'xYF5q6*****************9cKDm0',  //SecretKey
         //     'bucket'    => 'wxcms',  //Bucket名字
         //     'notify_url'=> '',  //持久化处理回调地址
         //     'url'       => 'https://wx1.wechatrank.com',  // 填写文件访问根url
